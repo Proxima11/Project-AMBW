@@ -55,6 +55,13 @@ class CommonDropdownButton extends StatelessWidget {
                 validator: validator,
                 isExpanded: true,
                 hint: Text(hintText ?? ''),
+                iconStyleData: const IconStyleData(
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black45,
+                  ),
+                  iconSize: 30,
+                ),
                 // iconSize: 30,
                 // iconEnabledColor: Colors.black,
                 // icon: const Icon(
@@ -69,6 +76,14 @@ class CommonDropdownButton extends StatelessWidget {
                   );
                 }).toList(),
                 onChanged: onChanged,
+                dropdownStyleData: DropdownStyleData(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    maxHeight: 200),
+                menuItemStyleData: const MenuItemStyleData(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                ),
                 // dropdownMaxHeight: 200,
                 // dropdownDecoration: BoxDecoration(
                 //   borderRadius: BorderRadius.circular(10),
