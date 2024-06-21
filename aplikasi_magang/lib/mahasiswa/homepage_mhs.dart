@@ -9,21 +9,32 @@ class HomePage extends StatelessWidget {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: Row(
-            children: [
-              Icon(Icons.account_circle), // Profile icon
-              SizedBox(width: 8),
-              Text('Welcome, Student Name'), // Student name
-            ],
+          title: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Icon(Icons.account_circle), // Profile icon
+                SizedBox(width: 8),
+                Text(
+                  'Welcome, Student Name',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ), // Student name
+              ],
+            ),
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                // Logout action
-              },
-              child: Text(
-                'Logout',
-                style: TextStyle(color: Colors.black),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextButton(
+                onPressed: () {
+                  // Logout action
+                },
+                child: Text(
+                  'Logout',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                style: ButtonStyle(),
               ),
             ),
           ],
