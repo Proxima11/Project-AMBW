@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
+import 'mahasiswa/homepage_mhs.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      home: HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
