@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   auto_size_text: ^3.0.0
   dropdown_button2: ^2.3.8
+  file_picker: ^8.0.1
+  flutter_dropzone: ^3.0.7
 
 dev_dependencies:
   flutter_test:

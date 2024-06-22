@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import '../mahasiswa/detail_pengumuman.dart';
 
 class ResponsiveGridPengumuman extends StatelessWidget {
   @override
@@ -22,7 +24,7 @@ class ResponsiveGridPengumuman extends StatelessWidget {
                   crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  childAspectRatio: 3 / 2,
+                  childAspectRatio: 4.5 / 2,
                 ),
                 itemBuilder: (context, index) {
                   return GridItem();
@@ -46,28 +48,36 @@ class GridItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Title',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            SizedBox(height: 10),
-            Text('Description goes here.'),
-            SizedBox(height: 10),
-            Text('More details...'),
-            Spacer(),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text('Lihat Pengumuman'),
+      child: Expanded(
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Title',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
-            ),
-          ],
+              SizedBox(height: 10),
+              Text('Description goes here.'),
+              Spacer(),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => detailPengumuman()),
+                      );
+                    },
+                    child: Text('Lihat Pengumuman'),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/mahasiswa/detail_lamaran.dart';
 import 'package:flutter/material.dart';
 
 class ResponsiveGrid extends StatelessWidget {
@@ -63,7 +64,12 @@ class GridItem extends StatelessWidget {
             Align(
               alignment: Alignment.bottomRight,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => detail_lamaran()),
+                  );
+                },
                 child: Text('Lihat Detail'),
               ),
             ),

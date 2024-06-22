@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/mahasiswa/detail_lamaran.dart';
 import 'package:flutter/material.dart';
 import 'mahasiswa/homepage_mhs.dart';
 
@@ -11,6 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: HomePage(),
       debugShowCheckedModeBanner: false,
+      routes: {
+        './mahasiswa/homepage': (context) => HomePage(),
+        './mahasiswa/detail_lamaran': (context) => detail_lamaran(),
+      },
     );
   }
 }
