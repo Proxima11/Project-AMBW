@@ -128,13 +128,13 @@ class LamaranTab extends StatelessWidget {
                     "IPK",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text("3.79"),
+                  Text("3.00"),
                   SizedBox(height: 8.0),
                   Text(
                     "No. Telp",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text("085102193334"),
+                  Text("000000000"),
                 ],
               ),
               Column(
