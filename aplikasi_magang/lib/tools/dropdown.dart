@@ -19,76 +19,104 @@ class CommonDropdownButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double _fontSize = screenWidth * 0.04; // Adjust multiplier as needed
     return Container(
       width: 300,
       child: Row(
         children: [
           Expanded(
+            flex: 1,
             child: DropdownButtonHideUnderline(
-              child: DropdownButtonFormField2<String>(
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  contentPadding: const EdgeInsets.only(right: 10, left: 10),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1.0),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
+              child: Expanded(
+                child: DropdownButtonFormField2<String>(
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    contentPadding: const EdgeInsets.only(right: 10, left: 10),
+                    constraints: BoxConstraints(
+                      minHeight: 50, // Minimum height
                     ),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1.0),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 1.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
                     ),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1.0),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 1.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
                     ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 1.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(width: 1, color: Colors.red),
+                        borderRadius: BorderRadius.circular(10)),
                   ),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1, color: Colors.red),
-                      borderRadius: BorderRadius.circular(10)),
+                  validator: validator,
+                  isDense: true,
+                  isExpanded: true,
+                  hint: Text(hintText ?? ''),
+                  iconStyleData: const IconStyleData(
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black45,
+                    ),
+                    iconSize: 30,
+                  ),
+                  // iconSize: 30,
+                  // iconEnabledColor: Colors.black,
+                  // icon: const Icon(
+                  //   Icons.arrow_drop_down_sharp,
+                  //   size: 15,
+                  // ),
+                  value: chosenValue,
+                  items:
+                      itemsList?.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Expanded(
+                        child: Container(
+                          constraints: BoxConstraints(
+                              minHeight: 100, maxHeight: 200 // Minimum height
+                              ),
+                          child: Text(
+                            value,
+                            softWrap: true,
+                            maxLines: null,
+                            // overflow: TextOverflow.visible,
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: onChanged,
+                  dropdownStyleData: DropdownStyleData(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      maxHeight: 300),
+                  menuItemStyleData: screenWidth > 600
+                      ? const MenuItemStyleData(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          height: 60)
+                      : const MenuItemStyleData(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          height: 100),
+                  // dropdownMaxHeight: 200,
+                  // dropdownDecoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(10),
+                  // ),
+                  // dropdownElevation: 1,
                 ),
-                validator: validator,
-                isExpanded: true,
-                hint: Text(hintText ?? ''),
-                iconStyleData: const IconStyleData(
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black45,
-                  ),
-                  iconSize: 30,
-                ),
-                // iconSize: 30,
-                // iconEnabledColor: Colors.black,
-                // icon: const Icon(
-                //   Icons.arrow_drop_down_sharp,
-                //   size: 15,
-                // ),
-                value: chosenValue,
-                items: itemsList?.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: onChanged,
-                dropdownStyleData: DropdownStyleData(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    maxHeight: 200),
-                menuItemStyleData: const MenuItemStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                ),
-                // dropdownMaxHeight: 200,
-                // dropdownDecoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(10),
-                // ),
-                // dropdownElevation: 1,
               ),
             ),
           ),

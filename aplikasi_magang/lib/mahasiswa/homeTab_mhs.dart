@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/widgets.dart';
 import '../tools/dropdown.dart';
+import '../tools/gridList.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -39,10 +40,12 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double threshold = 600.0;
     return Column(
       children: [
         SizedBox(height: 16),
-        Center(
+        const Center(
           child: AutoSizeText(
             'Lamaran LEAP',
             style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
@@ -153,182 +156,15 @@ class _HomeTabState extends State<HomeTab> {
           padding: const EdgeInsets.all(8.0),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text('xx job found:'),
+            child: Text(
+              'xx job found :',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         Expanded(
           child: Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: ListView(
-                  children: List.generate(5, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 100,
-                        color: Colors.grey[300],
-                      ),
-                    );
-                  }),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Column(
-                    children: [
-                      Wrap(children: [
-                        Container(
-                          padding: EdgeInsets.all(16.0),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              top: BorderSide(width: 0.5, color: Colors.black),
-                              bottom:
-                                  BorderSide(width: 0.5, color: Colors.black),
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Image.network(
-                                    'https://path-to-your-icon.png', // replace with your image URL or asset path
-                                    width: 50, // adjust the size as needed
-                                    height: 50,
-                                  ),
-                                  SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Internship Kotlin Mobile Programmer',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        'PT Angkasa Defender Indonesia - ASDF.ID',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Flexible(
-                                    flex: -1,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        // Apply action
-                                      },
-                                      child: Text(
-                                        'LAMAR CEPAT',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blue,
-                                        textStyle: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w900),
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 20),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius
-                                              .zero, // Make the button edges square
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ]),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Container(
-                            padding: EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Chip(
-                                      label: Text('REST API'),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Chip(
-                                      label: Text('Kotlin'),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Chip(
-                                      label: Text('Mobile App Development'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Deskripsi pekerjaan Internship Kotlin Mobile Programmer PT Angkasa Defender Indonesia - ASDF.ID',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  'Kami mencari banyak kandidat untuk mengisi posisi yang dibutuhkan',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Tanggung jawab :',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  '• Membantu membuat dan mengembangkan aplikasi mobile yang dibutuhkan perusahaan\n'
-                                  '• Membantu melakukan integrasi frontend & backend ke aplikasi mobile...',
-                                ),
-                                SizedBox(height: 16),
-                                Text(
-                                  'Tentang Perusahaan',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'PT Angkasa Defender Indonesia - ASDF.ID, merupakan perusahaan Distributor dan IT Solution yang berfokus untuk memberikan produk dan layanan IT berkualitas untuk para perusahaan rekanan kami. Ayo gabung segera dengan mengikuti tahapan seleksinya.',
-                                ),
-                                SizedBox(height: 16),
-                                // Add more content here if needed
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            children: [Expanded(child: ResponsiveGrid())],
           ),
         ),
       ],

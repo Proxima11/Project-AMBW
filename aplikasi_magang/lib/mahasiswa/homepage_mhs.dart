@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'homeTab_mhs.dart';
 import 'lamaran_mhs.dart';
+import 'pengumuman_mhs.dart';
+import 'leap_mhs.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -10,29 +14,40 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8),
             child: Row(
               children: [
                 Icon(Icons.account_circle), // Profile icon
                 SizedBox(width: 8),
-                Text(
-                  'Welcome, Student Name',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Expanded(
+                  child: AutoSizeText(
+                    'Welcome, Student Name',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    minFontSize: 12.0,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ), // Student name
               ],
             ),
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               child: TextButton(
                 onPressed: () {
                   // Logout action
                 },
-                child: Text(
-                  'Logout',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                child: Expanded(
+                  child: AutoSizeText(
+                    'Logout',
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    minFontSize: 12.0,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 style: ButtonStyle(),
               ),
@@ -50,9 +65,9 @@ class HomePage extends StatelessWidget {
         body: TabBarView(
           children: [
             HomeTab(),
-            lamaranMhs(),
-            Center(child: Text('Tab 3 Content')),
-            Center(child: Text('Tab 4 Content')),
+            lamaran_mhs(),
+            leap_mhs(),
+            pengumuman_mhs(),
           ],
         ),
       ),
