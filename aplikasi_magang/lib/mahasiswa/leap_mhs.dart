@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'detail_selected_magang.dart';
 
 class leap_mhs extends StatelessWidget {
   @override
@@ -127,7 +128,13 @@ class AktifTable extends StatelessWidget {
           DataCell(Container(
             width: 100,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => detail_selected_magang()),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(

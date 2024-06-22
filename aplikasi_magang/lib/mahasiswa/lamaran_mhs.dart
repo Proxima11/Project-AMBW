@@ -49,7 +49,6 @@ class LamaranTable extends StatelessWidget {
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
-            DataCell(Text('-')),
           ],
         ),
       );
@@ -95,9 +94,6 @@ class LamaranTable extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text('Periode',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Aksi',
                             style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: rows, // No data available
@@ -127,7 +123,6 @@ class InterviewTable extends StatelessWidget {
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
-            DataCell(Text('-')),
           ],
         ),
       );
@@ -173,9 +168,6 @@ class InterviewTable extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text('Periode',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Aksi',
                             style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: rows, // No data available
@@ -205,7 +197,6 @@ class ApprovedTable extends StatelessWidget {
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
-            DataCell(Text('-')),
           ],
         ),
       );
@@ -251,9 +242,6 @@ class ApprovedTable extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text('Periode',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Aksi',
                             style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: rows, // No data available
@@ -283,7 +271,6 @@ class RejectedTable extends StatelessWidget {
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
-            DataCell(Text('-')),
           ],
         ),
       );
@@ -329,9 +316,6 @@ class RejectedTable extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text('Periode',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Aksi',
                             style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: rows, // No data available
@@ -361,7 +345,6 @@ class CancelledTable extends StatelessWidget {
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
-            DataCell(Text('-')),
           ],
         ),
       );
@@ -407,9 +390,6 @@ class CancelledTable extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text('Periode',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Aksi',
                             style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: rows, // No data available
