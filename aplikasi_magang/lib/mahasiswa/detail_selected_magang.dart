@@ -4,18 +4,13 @@ class detail_selected_magang extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
+      length: 1,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
               "Lamaran Aplikasi Pusat Layanan Terpadu (Front-End & Back-End)"),
           bottom: TabBar(
             tabs: [
-              Tab(text: "LEAP"),
-              Tab(text: "Activity"),
-              Tab(text: "Bimbingan Dosen"),
-              Tab(text: "Bimbingan Mitra"),
-              Tab(text: "Nilai"),
               Tab(text: "Laporan & Proposal LEAP"),
             ],
           ),
@@ -23,11 +18,6 @@ class detail_selected_magang extends StatelessWidget {
         body: TabBarView(
           children: [
             LamaranTab(),
-            Center(child: Text("CV Content Here")),
-            Center(child: Text("CV Content Here")),
-            Center(child: Text("CV Content Here")),
-            Center(child: Text("CV Content Here")),
-            Center(child: Text("CV Content Here")),
           ],
         ),
       ),
@@ -38,120 +28,163 @@ class detail_selected_magang extends StatelessWidget {
 class LamaranTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Expanded(
+      child: TabBarView(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Tawaran",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Tanggal",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Aplikasi Pusat Layanan Terpadu (Front-End & Back-End)",
-                style: TextStyle(color: Colors.blue),
-              ),
-              Text("28-03-2024 17:05"),
-            ],
-          ),
-          SizedBox(height: 8.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Mitra",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Status",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("PT. Cross Network Indonesia"),
-              Text("Approved"),
-            ],
-          ),
-          SizedBox(height: 8.0),
-          Text(
-            "Periode",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text("Genap 2023"),
-          SizedBox(height: 16.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Nama",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Laporan',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20),
+                      constraints.maxWidth > 800
+                          ? Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    'Nama\nKRISTOFER STEVEN',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'NRP\nC14210139',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Mitra\nPT. Cross Network Indonesia',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Nama Dosen\nDr. John Doe',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Nama\nKRISTOFER STEVEN',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'NRP\nC14210139',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'Mitra\nPT. Cross Network Indonesia',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'Nama Dosen\nDr. John Doe',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                      SizedBox(height: 20),
+                      constraints.maxWidth > 800
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text('Upload Laporan Proposal Leap'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text('Upload Laporan Kemajuan'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text('Upload Laporan Akhir'),
+                                ),
+                              ],
+                            )
+                          : Center(
+                              child: Column(
+                                children: <Widget>[
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text('Upload Laporan Proposal Leap'),
+                                  ),
+                                  SizedBox(height: 10),
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text('Upload Laporan Kemajuan'),
+                                  ),
+                                  SizedBox(height: 10),
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text('Upload Laporan Akhir'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                      SizedBox(height: 20),
+                      Table(
+                        border: TableBorder.all(),
+                        columnWidths: {
+                          0: FlexColumnWidth(2),
+                          1: FlexColumnWidth(3),
+                          2: FlexColumnWidth(2),
+                          3: FlexColumnWidth(2),
+                          4: FlexColumnWidth(2),
+                          5: FlexColumnWidth(2),
+                        },
+                        children: [
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Tipe'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Laporan'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Terakhir Update'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Approve Dosen'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Approve Mitra'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Aksi'),
+                              ),
+                            ],
+                          ),
+                          // Add more TableRow widgets here for each row of the table
+                        ],
+                      ),
+                    ],
                   ),
-                  Text("KRISTOFER STEVEN"),
-                  SizedBox(height: 8.0),
-                  Text(
-                    "NRP",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text("C14210139"),
-                  SizedBox(height: 8.0),
-                  Text(
-                    "Email",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text("c14210139@john.petra.ac.id"),
-                  SizedBox(height: 8.0),
-                  Text(
-                    "Program Studi",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text("Program Studi Informatika"),
-                  SizedBox(height: 8.0),
-                  Text(
-                    "IPK",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text("3.00"),
-                  SizedBox(height: 8.0),
-                  Text(
-                    "No. Telp",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text("000000000"),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    "Foto",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8.0),
-                  Image.network(
-                    'https://via.placeholder.com/150',
-                    width: 100,
-                    height: 150,
-                  ),
-                ],
-              ),
-            ],
+                );
+              },
+            ),
           ),
         ],
       ),
