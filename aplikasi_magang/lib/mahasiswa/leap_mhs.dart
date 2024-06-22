@@ -16,6 +16,7 @@ class leap_mhs extends StatelessWidget {
           ),
         ),
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             AktifTable(),
             SelesaiTable(),

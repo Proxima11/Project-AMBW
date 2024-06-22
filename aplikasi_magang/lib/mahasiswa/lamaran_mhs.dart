@@ -19,6 +19,7 @@ class lamaran_mhs extends StatelessWidget {
           ),
         ),
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             LamaranTable(),
             InterviewTable(),
