@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         './mahasiswa/homepage': (context) => HomePage(),
-        './mahasiswa/detail_lamaran': (context) => detail_lamaran(),
       },
     );
   }

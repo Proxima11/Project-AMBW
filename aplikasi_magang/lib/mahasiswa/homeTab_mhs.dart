@@ -4,6 +4,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/widgets.dart';
 import '../tools/dropdown.dart';
 import '../tools/gridList.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -33,6 +35,30 @@ class _HomeTabState extends State<HomeTab> {
   ];
 
   TextEditingController _searchController = TextEditingController();
+  int jobCount = 0;
+  late Future<List<Map<String, dynamic>>> futureData;
+
+  @override
+  void initState() {
+    super.initState();
+    futureData = fetchData();
+  }
+
+  Future<List<Map<String, dynamic>>> fetchData() async {
+    final response = await http.get(Uri.parse(
+        'https://ambw-leap-default-rtdb.firebaseio.com/dataTawaran.json'));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      setState(() {
+        jobCount = data.length;
+      });
+      return data.entries.map((e) => {'key': e.key, 'value': e.value}).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   void _performSearch() {
     // Implement your search logic here
     print("Searching for: ${_searchController.text}");
@@ -135,17 +161,15 @@ class _HomeTabState extends State<HomeTab> {
               ),
               SizedBox(width: 16),
               Expanded(
-                child: Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 1.0),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 1.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
                       ),
-                      hintText: 'Lokasi',
                     ),
+                    hintText: 'Lokasi',
                   ),
                 ),
               ),
@@ -157,14 +181,14 @@ class _HomeTabState extends State<HomeTab> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'xx job found :',
+              '${jobCount > 0 ? jobCount : 0} job${jobCount != 1 ? 's' : ''} found:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
         ),
         Expanded(
           child: Row(
-            children: [Expanded(child: ResponsiveGrid())],
+            children: [Expanded(child: ResponsiveGrid(fetchData: futureData))],
           ),
         ),
       ],

@@ -6,6 +6,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 
 class detail_lamaran extends StatefulWidget {
+  final Map<String, dynamic> fetchData;
+
+  detail_lamaran({required this.fetchData});
+
   @override
   State<detail_lamaran> createState() => _detail_lamaranState();
 }
@@ -70,6 +74,12 @@ class _detail_lamaranState extends State<detail_lamaran> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    String jobTitle = widget.fetchData['value']['nama_project'].toString();
+    String description = widget.fetchData['value']['deskripsi'].toString();
+    String kuotaTerima = widget.fetchData['value']['kuota_terima'].toString();
+    String waktu = widget.fetchData['value']['waktu'].toString();
+    String skill = widget.fetchData['value']['skill'].toString();
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Lamaran'),
@@ -94,7 +104,7 @@ class _detail_lamaranState extends State<detail_lamaran> {
                     SizedBox(height: 20),
                     Center(
                       child: Text(
-                        'Job Title',
+                        jobTitle, // Job Title from fetchData
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -108,17 +118,24 @@ class _detail_lamaranState extends State<detail_lamaran> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Description',
+                            "Kuota Terima : " +
+                                kuotaTerima, // Job desk from fetchData
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(height: 20),
                           Text(
-                            'Job desk',
+                            "Lama Magang : " + waktu, // Job desk from fetchData
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(height: 20),
                           Text(
-                            'Requirement',
+                            "Skill : " + skill, // Job desk from fetchData
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            "Deskripsi : " +
+                                description, // Job desk from fetchData
                             style: TextStyle(fontSize: 18),
                           ),
                         ],
