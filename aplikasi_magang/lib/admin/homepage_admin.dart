@@ -13,12 +13,12 @@ class HomePageAdmin extends StatelessWidget {
             padding: EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Icon(Icons.account_circle), // Profile icon
+                Icon(Icons.account_circle),
                 SizedBox(width: 8),
                 Text(
                   'Welcome, Admin',
                   style: TextStyle(fontWeight: FontWeight.bold),
-                ), // Student name
+                ),
               ],
             ),
           ),
@@ -27,7 +27,6 @@ class HomePageAdmin extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: TextButton(
                 onPressed: () {
-                  // Logout action
                 },
                 style: const ButtonStyle(),
                 child: const Text(

@@ -10,9 +10,10 @@ class MahasiswaTabAdmin extends StatefulWidget {
 
 class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
   final List<List<String>> _mahasiswa = [
-    ["Mahasiswa1", "NRP 1", "Profile 1", "Index 1"],
-    ["Mahasiswa2", "NRP 2", "Profile 2", "Index 2"],
-    ["Mahasiswa3", "NRP 3", "Profile 3", "Index 3"],
+    ["Andi", "C1421001", "Profile 1", "3.11"],
+    ["Budi", "C1421002", "Profile 2", "3.22"],
+    ["Cika", "C1421010", "Profile 3", "3.33"],
+    ["Dodi", "C1421015", "Profile 4", "3.43"],
   ];
 
   late List<List<String>> _filteredMahasiswa;
@@ -37,9 +38,7 @@ class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
     setState(() {
       _filteredMahasiswa = _mahasiswa.where((student) {
         return student[0].toLowerCase().contains(query) ||
-               student[1].toLowerCase().contains(query) ||
-               student[2].toLowerCase().contains(query) ||
-               student[3].toLowerCase().contains(query);
+               student[1].toLowerCase().contains(query);
       }).toList();
     });
   }
@@ -60,7 +59,7 @@ class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
               ),
             ),
           ),
