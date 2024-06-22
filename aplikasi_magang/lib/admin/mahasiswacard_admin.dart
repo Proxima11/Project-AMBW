@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/admin/detailmahasiswa_admin.dart';
 import 'package:flutter/material.dart';
 
 class MahasiswaCard extends StatelessWidget {
@@ -43,8 +44,7 @@ class MahasiswaCard extends StatelessWidget {
                 flex: 1,
                 child: Container(
                   height: 150,
-                  color: Colors.blue,
-                  child: Align(
+                  child: const Align(
                     alignment: Alignment.center,
                     child: Text("Profile")
                   ),
@@ -57,7 +57,6 @@ class MahasiswaCard extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: Container(
-                        color: Colors.yellow,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,19 +67,35 @@ class MahasiswaCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(nama, style: TextStyle(fontSize: 16),),
-                                  Text(nrp, style: TextStyle(fontSize: 12),),
+                                  Text(nama, style: const TextStyle(fontSize: 16),),
+                                  Text(nrp, style: const TextStyle(fontSize: 12),),
                                 ],
                               ),
                             ),
-                            Text("index : "+indexScore),
+                            Text("index : $indexScore"),
                           ],
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 1,
-                      child: Align(alignment: Alignment.center,child: Text("Button")),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailmahasiswaAdmin(
+                                  profilePicture: profilePicture, nama: nama, nrp: nrp, indexScore: indexScore
+                                ),
+                              ),
+                            );
+                            //DetailmahasiswaAdmin(profilePicture: profilePicture, nama: nama, nrp: nrp, indexScore: indexScore);
+                          },
+                          child: const Text("Edit Status"),
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -90,79 +105,5 @@ class MahasiswaCard extends StatelessWidget {
         ),
       ),
     );
-    // return Padding(
-    //   padding: const EdgeInsets.all(8.0),
-    //   child: Container(
-    //     width: 180,
-    //     height: 200,
-    //     decoration: BoxDecoration(
-    //       color: Colors.white,
-    //       borderRadius: BorderRadius.circular(5),
-    //       boxShadow: const [
-    //         BoxShadow(
-    //           color: Colors.grey,
-    //           offset: Offset(1.0, 1.0),
-    //           blurRadius: 10.0,
-    //           spreadRadius: 0.1,
-    //         ),
-    //       ],
-    //     ),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Expanded(
-    //           flex: 3,
-    //           child: Container(
-    //             decoration: BoxDecoration(
-    //               image: DecorationImage(
-    //                 image: AssetImage(profilePicture),
-    //                 fit: BoxFit.cover,
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //         Expanded(
-    //           flex: 2,
-    //           child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             mainAxisAlignment: MainAxisAlignment.end,
-    //             children: [
-    //               Padding(
-    //                 padding: const EdgeInsets.only(left: 5, bottom: 5),
-    //                 child: Text(
-    //                   nama,
-    //                   style: const TextStyle(
-    //                     fontWeight: FontWeight.w700,
-    //                     fontSize: 15,
-    //                   ),
-    //                 ),
-    //               ),
-    //               Padding(
-    //                 padding: const EdgeInsets.only(left: 5, bottom: 5),
-    //                 child: Text(
-    //                   nrp,
-    //                   style: const TextStyle(
-    //                     fontWeight: FontWeight.w700,
-    //                     fontSize: 12,
-    //                   ),
-    //                 ),
-    //               ),
-    //               Padding(
-    //                 padding: const EdgeInsets.only(left: 5, bottom: 5),
-    //                 child: Text(
-    //                   indexScore,
-    //                   style: const TextStyle(
-    //                     fontWeight: FontWeight.w700,
-    //                     fontSize: 12,
-    //                   ),
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

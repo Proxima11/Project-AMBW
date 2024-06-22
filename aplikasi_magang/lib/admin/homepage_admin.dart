@@ -13,7 +13,7 @@ class HomePageAdmin extends StatelessWidget {
             padding: EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Icon(Icons.account_circle),
+                Icon(Icons.account_circle), // Profile icon
                 SizedBox(width: 8),
                 Text(
                   'Welcome, Admin',

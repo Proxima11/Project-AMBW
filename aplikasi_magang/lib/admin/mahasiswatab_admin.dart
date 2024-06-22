@@ -47,7 +47,7 @@ class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mahasiswa Admin'),
+        title: Center(child: Text('Data Mahasiswa')),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: Padding(
