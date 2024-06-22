@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "369888078407",
+    "firebase_url": "https://ambw-leap-default-rtdb.firebaseio.com",
+    "project_id": "ambw-leap",
+    "storage_bucket": "ambw-leap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:369888078407:android:bc3f493786f46485041f62",
+        "android_client_info": {
+          "package_name": "com.project.ambw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb5m3uc4viIPWKT4DO8VL483pZ9B2HveE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
