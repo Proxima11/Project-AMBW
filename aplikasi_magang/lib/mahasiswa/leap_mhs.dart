@@ -29,26 +29,33 @@ class leap_mhs extends StatelessWidget {
 class AktifTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text('#')),
-            DataColumn(label: Text('Nama')),
-            DataColumn(label: Text('NRP')),
-            DataColumn(label: Text('Judul')),
-            DataColumn(label: Text('Nama Pembimbing')),
-            DataColumn(label: Text('Mentor')),
-            DataColumn(label: Text('Mitra')),
-            DataColumn(label: Text('Periode')),
-            DataColumn(label: Text('Tipe')),
-            DataColumn(label: Text('Aksi')),
-          ],
-          rows: [], // No data available
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('#')),
+                  DataColumn(label: Text('Nama')),
+                  DataColumn(label: Text('NRP')),
+                  DataColumn(label: Text('Judul')),
+                  DataColumn(label: Text('Nama Pembimbing')),
+                  DataColumn(label: Text('Mentor')),
+                  DataColumn(label: Text('Mitra')),
+                  DataColumn(label: Text('Periode')),
+                  DataColumn(label: Text('Tipe')),
+                  DataColumn(label: Text('Aksi')),
+                ],
+                rows: [], // No data available
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -56,26 +63,33 @@ class AktifTable extends StatelessWidget {
 class SelesaiTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text('#')),
-            DataColumn(label: Text('Nama')),
-            DataColumn(label: Text('NRP')),
-            DataColumn(label: Text('Judul')),
-            DataColumn(label: Text('Nama Pembimbing')),
-            DataColumn(label: Text('Mentor')),
-            DataColumn(label: Text('Mitra')),
-            DataColumn(label: Text('Periode')),
-            DataColumn(label: Text('Tipe')),
-            DataColumn(label: Text('Aksi')),
-          ],
-          rows: [], // No data available
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('#')),
+                  DataColumn(label: Text('Nama')),
+                  DataColumn(label: Text('NRP')),
+                  DataColumn(label: Text('Judul')),
+                  DataColumn(label: Text('Nama Pembimbing')),
+                  DataColumn(label: Text('Mentor')),
+                  DataColumn(label: Text('Mitra')),
+                  DataColumn(label: Text('Periode')),
+                  DataColumn(label: Text('Tipe')),
+                  DataColumn(label: Text('Aksi')),
+                ],
+                rows: [], // No data available
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

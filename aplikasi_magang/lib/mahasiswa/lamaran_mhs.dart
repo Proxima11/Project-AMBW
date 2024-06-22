@@ -35,22 +35,32 @@ class lamaran_mhs extends StatelessWidget {
 class LamaranTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text('#')),
-            DataColumn(label: Text('Nama')),
-            DataColumn(label: Text('NRP')),
-            DataColumn(label: Text('Mitra')),
-            DataColumn(label: Text('Tawaran')),
-            DataColumn(label: Text('Tipe')),
-          ],
-          rows: [], // No data available
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('#')),
+                  DataColumn(label: Text('Nama')),
+                  DataColumn(label: Text('NRP')),
+                  DataColumn(label: Text('Mitra')),
+                  DataColumn(label: Text('Tawaran')),
+                  DataColumn(label: Text('Tipe')),
+                  DataColumn(label: Text('Tanggal')),
+                  DataColumn(label: Text('Periode')),
+                  DataColumn(label: Text('Aksi')),
+                ],
+                rows: [], // No data available
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -58,22 +68,32 @@ class LamaranTable extends StatelessWidget {
 class InterviewTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text('#')),
-            DataColumn(label: Text('Nama')),
-            DataColumn(label: Text('NRP')),
-            DataColumn(label: Text('Mitra')),
-            DataColumn(label: Text('Tawaran')),
-            DataColumn(label: Text('Tipe')),
-          ],
-          rows: [], // No data available
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('#')),
+                  DataColumn(label: Text('Nama')),
+                  DataColumn(label: Text('NRP')),
+                  DataColumn(label: Text('Mitra')),
+                  DataColumn(label: Text('Tawaran')),
+                  DataColumn(label: Text('Tipe')),
+                  DataColumn(label: Text('Tanggal')),
+                  DataColumn(label: Text('Periode')),
+                  DataColumn(label: Text('Aksi')),
+                ],
+                rows: [], // No data available
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -81,22 +101,32 @@ class InterviewTable extends StatelessWidget {
 class ApprovedTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text('#')),
-            DataColumn(label: Text('Nama')),
-            DataColumn(label: Text('NRP')),
-            DataColumn(label: Text('Mitra')),
-            DataColumn(label: Text('Tawaran')),
-            DataColumn(label: Text('Tipe')),
-          ],
-          rows: [], // No data available
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('#')),
+                  DataColumn(label: Text('Nama')),
+                  DataColumn(label: Text('NRP')),
+                  DataColumn(label: Text('Mitra')),
+                  DataColumn(label: Text('Tawaran')),
+                  DataColumn(label: Text('Tipe')),
+                  DataColumn(label: Text('Tanggal')),
+                  DataColumn(label: Text('Periode')),
+                  DataColumn(label: Text('Aksi')),
+                ],
+                rows: [], // No data available
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -104,22 +134,32 @@ class ApprovedTable extends StatelessWidget {
 class RejectedTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text('#')),
-            DataColumn(label: Text('Nama')),
-            DataColumn(label: Text('NRP')),
-            DataColumn(label: Text('Mitra')),
-            DataColumn(label: Text('Tawaran')),
-            DataColumn(label: Text('Tipe')),
-          ],
-          rows: [], // No data available
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('#')),
+                  DataColumn(label: Text('Nama')),
+                  DataColumn(label: Text('NRP')),
+                  DataColumn(label: Text('Mitra')),
+                  DataColumn(label: Text('Tawaran')),
+                  DataColumn(label: Text('Tipe')),
+                  DataColumn(label: Text('Tanggal')),
+                  DataColumn(label: Text('Periode')),
+                  DataColumn(label: Text('Aksi')),
+                ],
+                rows: [], // No data available
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -127,22 +167,32 @@ class RejectedTable extends StatelessWidget {
 class CancelledTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
-          columns: [
-            DataColumn(label: Text('#')),
-            DataColumn(label: Text('Nama')),
-            DataColumn(label: Text('NRP')),
-            DataColumn(label: Text('Mitra')),
-            DataColumn(label: Text('Tawaran')),
-            DataColumn(label: Text('Tipe')),
-          ],
-          rows: [], // No data available
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('#')),
+                  DataColumn(label: Text('Nama')),
+                  DataColumn(label: Text('NRP')),
+                  DataColumn(label: Text('Mitra')),
+                  DataColumn(label: Text('Tawaran')),
+                  DataColumn(label: Text('Tipe')),
+                  DataColumn(label: Text('Tanggal')),
+                  DataColumn(label: Text('Periode')),
+                  DataColumn(label: Text('Aksi')),
+                ],
+                rows: [], // No data available
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
