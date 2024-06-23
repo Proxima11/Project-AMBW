@@ -88,57 +88,69 @@ class GridItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              data['value']['nama_project'] ?? ' ',
+              (data['value']['nama_project']?.toString() == 'null' || data['value']['nama_project'] == null
+                  ? ' '
+                  : data['value']['nama_project'].toString()),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
             Text(
-              'Mitra : ' + data['value']['asal_perusahaan'].toString() ??
-                  ' ',
+              'Mitra : ' + (data['value']['asal_perusahaan']?.toString() == 'null' || data['value']['asal_perusahaan'] == null
+                  ? ' '
+                  : data['value']['asal_perusahaan'].toString())
+                  ,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
             Text(
-              'LEAP : ' + data['value']['jenis'].toString() ??
-                  ' ',
+              'LEAP : ' + (data['value']['jenis']?.toString() == 'null' || data['value']['jenis'] == null
+                  ? ' '
+                  : data['value']['jenis'].toString()),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
             Text(
-              'Pendaftaran : ' + (data['value']['tanggal_mulai_rekrut'].toString() ??
-                  '-') + ' s/d ' + (data['value']['tanggal_akhir_rekrut'].toString() ??
-                  '-'),
+              'Pendaftaran : ' + (data['value']['tanggal_mulai_rekrut']?.toString() == 'null' || data['value']['tanggal_mulai_rekrut'] == null
+                  ? ' '
+                  : data['value']['tanggal_mulai_rekrut'].toString()) + ' s/d ' +(data['value']['tanggal_akhir_rekrut']?.toString() == 'null' || data['value']['tanggal_akhir_rekrut'] == null
+                  ? ' '
+                  : data['value']['tanggal_akhir_rekrut'].toString()),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
             Text(
-              'Pelaksanaan : ' + (data['value']['tanggal_pelaksanaan'].toString() ??
-                  '-'),
+              'Pelaksanaan : ' + (data['value']['tanggal_pelaksanaan']?.toString() == 'null' || data['value']['tanggal_pelaksanaan'] == null
+                  ? ' '
+                  : data['value']['tanggal_pelaksanaan'].toString()),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
             Text(
-              'Lokasi : ' + data['value']['lokasi'].toString() ??
-                  ' ',
+              'Lokasi : ' + (data['value']['lokasi']?.toString() == 'null' || data['value']['lokasi'] == null
+                  ? ' '
+                  : data['value']['lokasi'].toString()),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
             Text(
-              'Kuota : ' + data['value']['kuota_terima'].toString() ??
-                  ' ',
+              'Kuota : ' + (data['value']['kuota']?.toString() == 'null' || data['value']['kuota'] == null
+                  ? ' '
+                  : data['value']['kuota'].toString()),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
             Text(
-              'Skill : ' + data['value']['skill'] ?? ' ',
+              'Skill : ' + (data['value']['skill']?.toString() == 'null' || data['value']['skill'] == null
+                  ? ' '
+                  : data['value']['skill'].toString()),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

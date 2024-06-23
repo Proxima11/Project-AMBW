@@ -14,9 +14,9 @@ class ResponsiveGridPengumuman extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         int crossAxisCount;
-        if (constraints.maxWidth < 600) {
+        if (constraints.maxWidth < 800) {
           crossAxisCount = 1;
-        } else if (constraints.maxWidth < 900) {
+        } else if (constraints.maxWidth < 1200) {
           crossAxisCount = 2;
         } else {
           crossAxisCount = 3;
@@ -74,12 +74,18 @@ class GridItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              data['value']['judul'] ?? 'No Title',
+              (data['value']['judul']?.toString() == 'null' || data['value']['judul'] == null
+                  ? 'No Title'
+                  : data['value']['judul'].toString()),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 10),
             Text(
-              data['value']['tanggal'] ?? 'No Date',
+              (data['value']['tanggal']?.toString() == 'null' || data['value']['tanggal'] == null
+                  ? 'No Date'
+                  : data['value']['tanggal'].toString()),
               style: TextStyle(color: Colors.grey[600]),
             ),
             Spacer(),
