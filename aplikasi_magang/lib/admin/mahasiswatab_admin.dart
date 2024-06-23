@@ -1,29 +1,57 @@
+import 'package:aplikasi_magang/admin/mahasiswacard_admin.dart';
 import 'package:flutter/material.dart';
-import 'mahasiswacard_admin.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'mahasiswaModel.dart';
 
 class MahasiswaTabAdmin extends StatefulWidget {
-  MahasiswaTabAdmin({super.key});
+  const MahasiswaTabAdmin({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MahasiswaTabAdminState createState() => _MahasiswaTabAdminState();
 }
 
 class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
-  final List<List<String>> _mahasiswa = [
-    ["Andi", "C1421001", "Profile 1", "3.11"],
-    ["Budi", "C1421002", "Profile 2", "3.22"],
-    ["Cika", "C1421010", "Profile 3", "3.33"],
-    ["Dodi", "C1421015", "Profile 4", "3.43"],
-  ];
+  late List<Mahasiswa> _allMahasiswa = [];
+  late List<Mahasiswa> _filteredMahasiswa = [];
+  int jumlahMahasiswa = 0;
 
-  late List<List<String>> _filteredMahasiswa;
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+
+  Future<List<Mahasiswa>> fetchData() async {
+    final response = await http.get(
+      Uri.parse('https://ambw-leap-default-rtdb.firebaseio.com/dataMahasiswa.json'),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      List<Mahasiswa> mahasiswaList = [];
+
+      data.forEach((key, value) {
+        final Mahasiswa mahasiswa = Mahasiswa.fromJson(value);
+        mahasiswaList.add(mahasiswa);
+      });
+
+      return mahasiswaList;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } 
+
 
   @override
   void initState() {
     super.initState();
-    _filteredMahasiswa = _mahasiswa;
     _searchController.addListener(_filterMahasiswa);
+    fetchData().then((mahasiswaList) {
+      setState(() {
+        _allMahasiswa = mahasiswaList;
+        _filteredMahasiswa = List.from(_allMahasiswa);
+        jumlahMahasiswa = _allMahasiswa.length;
+      });
+    }).catchError((error) {
+    });
   }
 
   @override
@@ -36,9 +64,8 @@ class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
   void _filterMahasiswa() {
     String query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredMahasiswa = _mahasiswa.where((student) {
-        return student[0].toLowerCase().contains(query) ||
-               student[1].toLowerCase().contains(query);
+      _filteredMahasiswa = _allMahasiswa.where((mahasiswa) {
+        return mahasiswa.username.toLowerCase().contains(query);
       }).toList();
     });
   }
@@ -47,9 +74,9 @@ class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Data Mahasiswa')),
+        title: const Center(child: Text('Data Mahasiswa')),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
+          preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -68,14 +95,18 @@ class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisExtent: 150,
+                crossAxisCount: MediaQuery.of(context).size.width ~/ 300,
+                
+                crossAxisSpacing: 5
+              ),
               itemCount: _filteredMahasiswa.length,
               itemBuilder: (context, index) {
+                final mahasiswa = _filteredMahasiswa[index];
                 return MahasiswaCard(
-                  profilePicture: _filteredMahasiswa[index][2],
-                  nama: _filteredMahasiswa[index][0],
-                  nrp: _filteredMahasiswa[index][1],
-                  indexScore: _filteredMahasiswa[index][3],
+                  dataMahasiswa: mahasiswa,
                 );
               },
             ),

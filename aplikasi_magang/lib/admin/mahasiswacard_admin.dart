@@ -1,19 +1,22 @@
 import 'package:aplikasi_magang/admin/detailmahasiswa_admin.dart';
+import 'package:aplikasi_magang/admin/mahasiswaModel.dart';
 import 'package:flutter/material.dart';
 
 class MahasiswaCard extends StatelessWidget {
-  final String profilePicture;
-  final String nama;
-  final String nrp;
-  final String indexScore;
+  final Mahasiswa dataMahasiswa;
+  String ipk = '';
 
-  const MahasiswaCard({
-    required this.profilePicture,
-    required this.nama,
-    required this.nrp,
-    required this.indexScore,
-    super.key
-  });
+  MahasiswaCard({
+    required this.dataMahasiswa,
+    super.key,
+  }) {
+    createIpk();
+  }
+
+  void createIpk(){
+    double ipkNum = dataMahasiswa.indexPrestasi / 100;
+    ipk = ipkNum.toStringAsFixed(2);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +43,11 @@ class MahasiswaCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
+              const Expanded(
                 flex: 1,
-                child: Container(
+                child: SizedBox(
                   height: 150,
+                  width: 300,
                   child: const Align(
                     alignment: Alignment.center,
                     child: Text("Profile")
@@ -56,25 +60,26 @@ class MahasiswaCard extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children:[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(nama, style: const TextStyle(fontSize: 16),),
-                                  Text(nrp, style: const TextStyle(fontSize: 12),),
-                                ],
-                              ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children:[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(dataMahasiswa.username, style: const TextStyle(fontSize: 16),),
+                                Text(dataMahasiswa.nrp, style: const TextStyle(fontSize: 12),),
+                              ],
                             ),
-                            Text("index : $indexScore"),
-                          ],
-                        ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text("index : $ipk"),
+                          ),
+                        ],
                       ),
                     ),
                     Expanded(
@@ -87,7 +92,8 @@ class MahasiswaCard extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DetailmahasiswaAdmin(
-                                  profilePicture: profilePicture, nama: nama, nrp: nrp, indexScore: indexScore
+                                  dataMahasiswa: dataMahasiswa,
+                                  ipk: ipk,
                                 ),
                               ),
                             );

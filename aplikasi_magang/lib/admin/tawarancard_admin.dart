@@ -20,7 +20,7 @@ class TawaranCardAdmin extends StatelessWidget {
       padding: EdgeInsets.all(8.0),
       child: Center(
         child: ConstrainedBox(
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             maxWidth: 400, // Fixed maximum width
           ),
           child: Container(
@@ -49,22 +49,22 @@ class TawaranCardAdmin extends StatelessWidget {
                     children: [
                       Text(
                         namaProject,
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         namaPerusahaan,
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: const TextStyle(fontSize: 12, color: Colors.grey),
                       ),
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                       Text(
                         "Deskripsi : $deskripsi",
-                        style: TextStyle(fontSize: 15),
+                        style: const TextStyle(fontSize: 15),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         "Skill : $skill",
-                        style: TextStyle(fontSize: 15),
+                        style: const TextStyle(fontSize: 15),
                       ),
                     ],
                   ),

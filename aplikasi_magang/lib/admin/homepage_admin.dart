@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 
 
 class HomePageAdmin extends StatelessWidget {
+
+  const HomePageAdmin({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: const Padding(
@@ -41,16 +44,20 @@ class HomePageAdmin extends StatelessWidget {
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Home'),
+              Tab(text: 'Penawaran'),
               Tab(text: 'Mahasiswa'),
+              Tab(text: 'Pengumuman'),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            HomeTabAdmin(),
+            const HomeTabAdmin(),
+            const Center(child: Text('Penawaran Page')),
             //const Center(child: Text('Admin Home Page')),
             MahasiswaTabAdmin(),
             //Center(child: Text('Data Mahasiswa Page')),
+            const Center(child: Text('Pengumuman Page')),
           ],
         ),
       ),

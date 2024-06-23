@@ -11,9 +11,11 @@ class HomeTabAdmin extends StatefulWidget {
 }
 
 class _HomeTabAdminState extends State<HomeTabAdmin> {
+  
+
   late List<Map<String, dynamic>> _allTawaran = [];
   late List<Map<String, dynamic>> _filteredTawaran = [];
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   int jumlahTawaran = 0;
 
@@ -51,7 +53,6 @@ class _HomeTabAdminState extends State<HomeTabAdmin> {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
-      print("Data fetched: $data"); // Print fetched data
       setState(() {
         jumlahTawaran = data.length;
         _allTawaran = data.entries.map((e) => {'key': e.key, 'value': e.value}).toList();
@@ -71,13 +72,11 @@ class _HomeTabAdminState extends State<HomeTabAdmin> {
 
   void _filterTawaran() {
     final query = _searchController.text.toLowerCase();
-    print("Search query: $query"); // Print search query
     setState(() {
       _filteredTawaran = _allTawaran.where((tawaran) {
         final namaProject = tawaran['value']['nama_project'].toLowerCase();
         return namaProject.contains(query);
-      }).toList();
-      print("Filtered results: $_filteredTawaran"); // Print filtered results
+      }).toList(); // Print filtered results
     });
   }
 
@@ -85,9 +84,9 @@ class _HomeTabAdminState extends State<HomeTabAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Data Mahasiswa')),
+        title: const Center(child: Text('Data Tawaran Magang')),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
+          preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -107,7 +106,11 @@ class _HomeTabAdminState extends State<HomeTabAdmin> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            child: ListView.builder(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisExtent: 400,
+                crossAxisCount: MediaQuery.of(context).size.width ~/ 300,
+              ),
               itemCount: _filteredTawaran.length,
               itemBuilder: (context, index) {
                 final tawaran = _filteredTawaran[index]['value'];
