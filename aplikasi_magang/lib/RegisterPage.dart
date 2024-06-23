@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -10,15 +11,32 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String _selectedRole = 'mahasiswa';
+  final TextEditingController _indexPrestasiController = TextEditingController();
+  final TextEditingController _nrpController = TextEditingController();
 
   Future<void> _register() async {
-    final url = Uri.https('ambw-leap-default-rtdb.firebaseio.com', 'account/$_selectedRole.json');
+    final url = Uri.https('ambw-leap-default-rtdb.firebaseio.com', 'account/mahasiswa.json');
+    final url2 = Uri.https('ambw-leap-default-rtdb.firebaseio.com', 'dataMahasiswa.json');
     final response = await http.get(url);
+    final response2 = await http.get(url2);
+
+    if (response2.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response2.body) ?? {};
+      final String newUserKey = 'dataMahasiswa' + (data.length + 1).toString();
+
+      data[newUserKey] = {
+        'indexPrestasi': int.parse(_indexPrestasiController.text),
+        'nrp': _nrpController.text,
+        'status' : 1,
+        'username': _usernameController.text,
+      };
+
+     await http.put(url2, body: json.encode(data));
+    }
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body) ?? {};
-      final String newUserKey = _selectedRole + (data.length + 1).toString();
+      final String newUserKey = 'mahasiswa' + (data.length + 1).toString();
 
       data[newUserKey] = {
         'username': _usernameController.text,
@@ -68,6 +86,15 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.3),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -128,21 +155,38 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                DropdownButton<String>(
-                  value: _selectedRole,
-                  dropdownColor: Colors.black,
+                TextField(
+                  controller: _nrpController,
                   style: TextStyle(color: Colors.white),
-                  items: <String>['admin', 'dosen', 'employer', 'mahasiswa'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedRole = newValue!;
-                    });
-                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.1),
+                    labelText: 'NRP',
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: Icon(Icons.assignment_ind, color: Colors.white),
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _indexPrestasiController,
+                  style: TextStyle(color: Colors.white),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // Hanya memperbolehkan karakter angka
+                  ],
+                  keyboardType: TextInputType.number, // Keyboard tipe angka
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.1),
+                    labelText: 'Index Prestasi',
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: Icon(Icons.school, color: Colors.white),
+                  ),
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
