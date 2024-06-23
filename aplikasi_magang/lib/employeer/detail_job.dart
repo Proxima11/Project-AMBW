@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/employer/applicant_detailjob.dart';
+import 'applicant_detailjob.dart';
 
 class DetailJob extends StatelessWidget {
   final String jobTitle;

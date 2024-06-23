@@ -1,108 +1,70 @@
 import 'package:flutter/material.dart';
 
 class TawaranCardAdmin extends StatelessWidget {
-  final String nrp;
   final String namaProject;
   final String namaPerusahaan;
-  final String status;
-  final ValueChanged<String> onStatusChanged; // Callback function
+  final String deskripsi;
+  final String skill;
 
   const TawaranCardAdmin({
-    required this.nrp,
+    super.key,
     required this.namaProject,
     required this.namaPerusahaan,
-    required this.status,
-    required this.onStatusChanged, // Callback function required
-    super.key,
+    required this.deskripsi,
+    required this.skill,
   });
 
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = getStatusText(); // Helper function to get dropdown value
-
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        alignment: Alignment.center,
-        width: 400,
-        height: 150,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.grey,
-              offset: Offset(1.0, 1.0),
-              blurRadius: 10.0,
-              spreadRadius: 0.1,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: Text(namaProject, style: TextStyle(fontSize: 15, color: Colors.black)),
-                  ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: Text(namaPerusahaan, style: TextStyle(fontSize: 12, color: Colors.grey)),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: DropdownButton<String>(
-                  value: dropdownValue,
-                  onChanged: (String? newValue) {
-                    // Call the callback function with the new value
-                    onStatusChanged(newValue ?? ''); // Pass empty string as fallback
-                  },
-                  items: <String>[
-                    'Applied',
-                    'Interviewed',
-                    'Approved',
-                    'Rejected',
-                    'Canceled',
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+      padding: EdgeInsets.all(8.0),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 400, // Fixed maximum width
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            height: 350,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 10.0,
+                  spreadRadius: 0.1,
                 ),
-              ),
+              ],
             ),
-          ],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  namaProject,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  namaPerusahaan,
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                SizedBox(height: 30),
+                Text(
+                  "Deskripsi : $deskripsi",
+                  style: TextStyle(fontSize: 15),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "Skill : $skill",
+                  style: TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
-  }
-
-  String getStatusText() {
-    switch (status) {
-      case '1':
-        return 'Applied';
-      case '2':
-        return 'Interviewed';
-      case '3':
-        return 'Approved';
-      case '4':
-        return 'Rejected';
-      case '5':
-        return 'Canceled';
-      default:
-        return 'Unknown';
-    }
   }
 }

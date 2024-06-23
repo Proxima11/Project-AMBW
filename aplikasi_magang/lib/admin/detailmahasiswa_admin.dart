@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:aplikasi_magang/admin/tawarancard_admin.dart';
+import 'package:aplikasi_magang/admin/statustawaranmahasiswa_admin.dart';
 
 class DetailmahasiswaAdmin extends StatefulWidget {
   final String profilePicture;
@@ -69,7 +69,7 @@ class _DetailmahasiswaAdminState extends State<DetailmahasiswaAdmin> {
                 child: ListView.builder(
                   itemCount: filteredData.length,
                   itemBuilder: (context, index) {
-                    return TawaranCardAdmin(
+                    return StatusTawaranMahasiswaAdmin(
                       nrp: filteredData[index][0],
                       namaProject: filteredData[index][1],
                       namaPerusahaan: filteredData[index][2],

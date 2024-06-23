@@ -1,45 +1,83 @@
+import 'package:aplikasi_magang/admin/tawarancard_admin.dart';
 import 'package:flutter/material.dart';
-import 'mahasiswacard_admin.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomeTabAdmin extends StatefulWidget {
-  HomeTabAdmin({super.key});
+  const HomeTabAdmin({super.key});
 
   @override
-  _MahasiswaTabAdminState createState() => _MahasiswaTabAdminState();
+  State<HomeTabAdmin> createState() => _HomeTabAdminState();
 }
 
-class _MahasiswaTabAdminState extends State<HomeTabAdmin> {
-  final List<List<String>> _mahasiswa = [
-    ["Andi", "C1421001", "Profile 1", "3.11"],
-    ["Budi", "C1421002", "Profile 2", "3.22"],
-    ["Cika", "C1421010", "Profile 3", "3.33"],
-    ["Dodi", "C1421015", "Profile 4", "3.43"],
+class _HomeTabAdminState extends State<HomeTabAdmin> {
+  late List<Map<String, dynamic>> _allTawaran = [];
+  late List<Map<String, dynamic>> _filteredTawaran = [];
+  TextEditingController _searchController = TextEditingController();
+
+  int jumlahTawaran = 0;
+
+  var chosenTypeMagang;
+  var chosenTypeSkill;
+  var chosenLokasi;
+
+  List<String> TypeMagangList = [
+    "Industrial Experience (Magang)",
+    "Community Engagement",
+    "Research and Innovation"
   ];
 
-  late List<List<String>> _filteredTawaran;
-  TextEditingController _searchController = TextEditingController();
+  List<String> TypeSkillList = [
+    "Business Intelligence",
+    "Game Development",
+    "Mobile Application (Android)",
+    "Artificial Intelligence",
+    "Mobile Application (IOS)",
+    "Cyber Security",
+    "Data Science & Analytics",
+    "Enterprise Information System"
+  ];
 
   @override
   void initState() {
     super.initState();
-    _filteredTawaran = _mahasiswa;
-    _searchController.addListener(_filterMahasiswa);
+    _searchController.addListener(_filterTawaran);
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final response = await http.get(Uri.parse(
+        'https://ambw-leap-default-rtdb.firebaseio.com/dataTawaran.json'));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      print("Data fetched: $data"); // Print fetched data
+      setState(() {
+        jumlahTawaran = data.length;
+        _allTawaran = data.entries.map((e) => {'key': e.key, 'value': e.value}).toList();
+        _filteredTawaran = List.from(_allTawaran); // Initialize filtered data
+      });
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 
   @override
   void dispose() {
-    _searchController.removeListener(_filterMahasiswa);
+    _searchController.removeListener(_filterTawaran);
     _searchController.dispose();
     super.dispose();
   }
 
-  void _filterMahasiswa() {
-    String query = _searchController.text.toLowerCase();
+  void _filterTawaran() {
+    final query = _searchController.text.toLowerCase();
+    print("Search query: $query"); // Print search query
     setState(() {
-      _filteredTawaran = _mahasiswa.where((student) {
-        return student[0].toLowerCase().contains(query) ||
-               student[1].toLowerCase().contains(query);
+      _filteredTawaran = _allTawaran.where((tawaran) {
+        final namaProject = tawaran['value']['nama_project'].toLowerCase();
+        return namaProject.contains(query);
       }).toList();
+      print("Filtered results: $_filteredTawaran"); // Print filtered results
     });
   }
 
@@ -47,7 +85,7 @@ class _MahasiswaTabAdminState extends State<HomeTabAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Tawaran Magang')),
+        title: Center(child: Text('Data Mahasiswa')),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: Padding(
@@ -65,17 +103,18 @@ class _MahasiswaTabAdminState extends State<HomeTabAdmin> {
           ),
         ),
       ),
-      body: Column(
+      body: Row(
         children: [
           Expanded(
             child: ListView.builder(
               itemCount: _filteredTawaran.length,
               itemBuilder: (context, index) {
-                return MahasiswaCard(
-                  profilePicture: _filteredTawaran[index][2],
-                  nama: _filteredTawaran[index][0],
-                  nrp: _filteredTawaran[index][1],
-                  indexScore: _filteredTawaran[index][3],
+                final tawaran = _filteredTawaran[index]['value'];
+                return TawaranCardAdmin(
+                  namaProject: tawaran['nama_project'],
+                  namaPerusahaan: tawaran['asal_perusahaan'],
+                  deskripsi: tawaran['deskripsi'],
+                  skill: tawaran['skill'],
                 );
               },
             ),
