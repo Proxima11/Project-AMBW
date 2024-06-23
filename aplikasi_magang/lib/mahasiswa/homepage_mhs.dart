@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
           children: [
             HomeTab(),
             lamaran_mhs(studentId: "C14210001"),
-            leap_mhs(),
+            leap_mhs(studentId: "C14210001"),
             pengumuman_mhs(),
           ],
         ),

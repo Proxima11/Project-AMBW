@@ -1,6 +1,22 @@
 import 'package:flutter/material.dart';
 
-class detail_selected_magang extends StatelessWidget {
+class detail_selected_magang extends StatefulWidget {
+  final String studentId;
+  final String nama_mahasiswa;
+  final String nama_mitra;
+  final String nama_pembimbing;
+  final String nama_mentor;
+  detail_selected_magang(
+      {required this.studentId,
+      required this.nama_mahasiswa,
+      required this.nama_pembimbing,
+      required this.nama_mentor,
+      required this.nama_mitra});
+  @override
+  State<detail_selected_magang> createState() => _detail_selected_magangState();
+}
+
+class _detail_selected_magangState extends State<detail_selected_magang> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -17,7 +33,13 @@ class detail_selected_magang extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            LamaranTab(),
+            LamaranTab(
+              studentId: widget.studentId.toString(),
+              nama_mahasiswa: widget.nama_mahasiswa.toString(),
+              nama_pembimbing: widget.nama_pembimbing.toString(),
+              nama_mentor: widget.nama_mentor.toString(),
+              nama_mitra: widget.nama_mitra.toString(),
+            ),
           ],
         ),
       ),
@@ -25,7 +47,23 @@ class detail_selected_magang extends StatelessWidget {
   }
 }
 
-class LamaranTab extends StatelessWidget {
+class LamaranTab extends StatefulWidget {
+  final String studentId;
+  final String nama_mahasiswa;
+  final String nama_mitra;
+  final String nama_pembimbing;
+  final String nama_mentor;
+  LamaranTab(
+      {required this.studentId,
+      required this.nama_mahasiswa,
+      required this.nama_pembimbing,
+      required this.nama_mentor,
+      required this.nama_mitra});
+  @override
+  State<LamaranTab> createState() => _LamaranTabState();
+}
+
+class _LamaranTabState extends State<LamaranTab> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -50,25 +88,51 @@ class LamaranTab extends StatelessWidget {
                               children: <Widget>[
                                 Expanded(
                                   child: Text(
-                                    'Nama\nKRISTOFER STEVEN',
+                                    'Nama Mahasiswa\n' +
+                                        (widget.nama_mahasiswa != null ||
+                                                widget.nama_mahasiswa != 'null'
+                                            ? widget.nama_mahasiswa
+                                            : ''),
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ),
                                 Expanded(
                                   child: Text(
-                                    'NRP\nC14210139',
+                                    'NRP\n' +
+                                        (widget.studentId != null ||
+                                                widget.studentId != 'null'
+                                            ? widget.studentId
+                                            : ''),
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ),
                                 Expanded(
                                   child: Text(
-                                    'Mitra\nPT. Cross Network Indonesia',
+                                    'Mitra\n' +
+                                        (widget.nama_mitra != null ||
+                                                widget.nama_mitra != 'null'
+                                            ? widget.nama_mitra
+                                            : ''),
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ),
                                 Expanded(
                                   child: Text(
-                                    'Nama Dosen\nDr. John Doe',
+                                    'Nama Dosen\n' +
+                                        (widget.nama_pembimbing != null ||
+                                                widget.nama_pembimbing != 'null'
+                                            ? widget.nama_pembimbing
+                                            : ''),
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Nama Mentor\n' +
+                                        (widget.nama_mentor != null ||
+                                                widget.nama_mentor != 'null'
+                                            ? widget.nama_mentor
+                                            : ''),
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ),
@@ -78,22 +142,47 @@ class LamaranTab extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'Nama\nKRISTOFER STEVEN',
+                                  'Nama\n' +
+                                      (widget.nama_mahasiswa != null ||
+                                              widget.nama_mahasiswa != 'null'
+                                          ? widget.nama_mahasiswa
+                                          : ''),
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'NRP\nC14210139',
+                                  'NRP\n' +
+                                      (widget.studentId != null ||
+                                              widget.studentId != 'null'
+                                          ? widget.studentId
+                                          : ''),
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'Mitra\nPT. Cross Network Indonesia',
+                                  'Mitra\n' +
+                                      (widget.nama_mitra != null ||
+                                              widget.nama_mitra != 'null'
+                                          ? widget.nama_mitra
+                                          : ''),
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'Nama Dosen\nDr. John Doe',
+                                  'Nama Dosen\n' +
+                                      (widget.nama_pembimbing != null ||
+                                              widget.nama_pembimbing != 'null'
+                                          ? widget.nama_pembimbing
+                                          : ''),
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'Nama Mentor\n' +
+                                      (widget.nama_mentor != null ||
+                                              widget.nama_mentor != 'null'
+                                          ? widget.nama_mentor
+                                          : ''),
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ],
