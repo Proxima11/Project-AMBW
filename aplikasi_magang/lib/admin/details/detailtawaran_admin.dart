@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/admin/mahasiswadalamtawaran_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -83,65 +84,93 @@ class _DetailtawaranAdminState extends State<DetailtawaranAdmin> {
           : _filteredTawaran.isEmpty
               ? Text('No data found')
               : Center(
-                child: Padding(
+                  child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 30),
-                                Container(
-                                  width: 300,
-                                  child: Text(
-                                    'Nama Project: ${_filteredTawaran[0]['value']['nama_project']}',
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Asal Perusahaan: ${_filteredTawaran[0]['value']['asal_perusahaan']}',
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                                const SizedBox(height: 30),
-                              ]
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 30),
-                                Text(
-                                  'Nama Project: ${_filteredTawaran[0]['value']['nama_project']}',
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Asal Perusahaan: ${_filteredTawaran[0]['value']['asal_perusahaan']}',
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                                const SizedBox(height: 30),
-                              ]
-                            )
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Data Magang Mahasiswa',
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.bold),
+                    child: Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 30),
+                                      Text(
+                                        'Nama Project: ${_filteredTawaran[0]['value']['nama_project']}',
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        'Asal Perusahaan: ${_filteredTawaran[0]['value']['asal_perusahaan']}',
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        'Tanggal Pelaksanaan: ${_filteredTawaran[0]['value']['tanggal_pelaksanaan']}',
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ]),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 30),
+                                      Text(
+                                        'Kuota: ${_filteredTawaran[0]['value']['kuota_terima']}',
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        'Min IPK: ${_filteredTawaran[0]['value']['min_ipk']}',
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        'Periode: ${_filteredTawaran[0]['value']['waktu']}',
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ]),
+                              )
+                            ],
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              'Deskripsi: ${_filteredTawaran[0]['value']['deskripsi']}',
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          const Align(
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'Data Magang Mahasiswa',
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            child: Text("Data belum ada")
+                          )
+                        ],
+                      ),
                     ),
                   ),
-              ),
+                ),
     );
   }
 }

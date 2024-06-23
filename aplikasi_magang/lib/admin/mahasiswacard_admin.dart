@@ -97,7 +97,7 @@ class MahasiswaCard extends StatelessWidget {
                                 ),
                               ),
                             );
-                            //DetailmahasiswaAdmin(profilePicture: profilePicture, nama: nama, nrp: nrp, indexScore: indexScore);
+                            
                           },
                           child: const Text("Edit Status"),
                         ),
