@@ -12,12 +12,23 @@ class pengumuman_mhs extends StatefulWidget {
 }
 
 class _pengumuman_mhsState extends State<pengumuman_mhs> {
-  late Future<List<Map<String, dynamic>>> futureData;
+  final TextEditingController _searchController = TextEditingController();
+  late Future<List<Map<String, dynamic>>> futureData = Future.value([]);
+  late Future<List<Map<String, dynamic>>> _allPengumuman = Future.value([]);
+  late Future<List<Map<String, dynamic>>> _filteredPengumuman =
+      Future.value([]);
 
   @override
   void initState() {
     super.initState();
     futureData = fetchData();
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_performSearch);
+    _searchController.dispose();
+    super.dispose();
   }
 
   Future<List<Map<String, dynamic>>> fetchData() async {
@@ -26,20 +37,44 @@ class _pengumuman_mhsState extends State<pengumuman_mhs> {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
-      return data.entries.map((e) => {'key': e.key, 'value': e.value}).toList();
+      final List<Map<String, dynamic>> allPengumuman =
+          data.entries.map((e) => {'key': e.key, 'value': e.value}).toList();
+      setState(() {
+        _allPengumuman = Future.value(allPengumuman);
+        _filteredPengumuman =
+            Future.value(allPengumuman); // Initialize filtered data
+      });
+      return allPengumuman;
     } else {
       throw Exception('Failed to load data');
     }
   }
 
+  Future<List<Map<String, dynamic>>> _filterPengumuman(String query) async {
+    final lowerCaseQuery = query.toLowerCase();
+    final allPengumuman = await _allPengumuman;
+    List<Map<String, dynamic>> filteredPengumuman =
+        allPengumuman.where((pengumuman) {
+      final judulPengumuman = pengumuman['value']['judul'].toLowerCase();
+      return judulPengumuman.contains(lowerCaseQuery);
+    }).toList();
+
+    setState(() {
+      _filteredPengumuman = Future.value(filteredPengumuman);
+    });
+
+    return filteredPengumuman;
+  }
+
+  void _performSearch() {
+    String query = _searchController.text.toLowerCase();
+    setState(() {
+      _filteredPengumuman = _filterPengumuman(query);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _searchController = TextEditingController();
-    void _performSearch() {
-      // Implement your search logic here
-      print("Searching for: ${_searchController.text}");
-    }
-
     return Column(
       children: [
         SizedBox(height: 16),
@@ -93,7 +128,9 @@ class _pengumuman_mhsState extends State<pengumuman_mhs> {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: ResponsiveGridPengumuman(fetchData: futureData))
+              Expanded(
+                  child:
+                      ResponsiveGridPengumuman(fetchData: _filteredPengumuman))
             ],
           ),
         ),
