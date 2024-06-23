@@ -131,22 +131,7 @@ class GridItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
-            Text(
-              'Lokasi : ' + (data['value']['lokasi']?.toString() == 'null' || data['value']['lokasi'] == null
-                  ? ' '
-                  : data['value']['lokasi'].toString()),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 5),
-            Text(
-              'Kuota : ' + (data['value']['kuota']?.toString() == 'null' || data['value']['kuota'] == null
-                  ? ' '
-                  : data['value']['kuota'].toString()),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 5),
+
             Text(
               'Skill : ' + (data['value']['skill']?.toString() == 'null' || data['value']['skill'] == null
                   ? ' '

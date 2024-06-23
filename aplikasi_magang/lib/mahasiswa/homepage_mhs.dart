@@ -63,9 +63,10 @@ class HomePage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             HomeTab(),
-            lamaran_mhs(),
+            lamaran_mhs(studentId: "C14210001"),
             leap_mhs(),
             pengumuman_mhs(),
           ],
