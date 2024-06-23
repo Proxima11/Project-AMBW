@@ -1,44 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class FormAddnewjob extends StatefulWidget {
+class FormAddNewJob extends StatefulWidget {
   @override
-  _FormAddnewjob createState() => _FormAddnewjob();
+  _FormAddNewJob createState() => _FormAddNewJob();
 }
 
-class _FormAddnewjob extends State<FormAddnewjob> {
+class _FormAddNewJob extends State<FormAddNewJob> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _companyController = TextEditingController();
   final TextEditingController _jobTitleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _requirementsController = TextEditingController();
+  final TextEditingController _kuotaController = TextEditingController();
 
   @override
   void dispose() {
+    _companyController.dispose();
     _jobTitleController.dispose();
     _descriptionController.dispose();
     _requirementsController.dispose();
+    _kuotaController.dispose();
     super.dispose();
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // Process the data
+      // Ambil data dari text fields
+      String company = _companyController.text;
       String jobTitle = _jobTitleController.text;
       String description = _descriptionController.text;
       String requirements = _requirementsController.text;
+      String kuota = _kuotaController.text;
 
-      // For now, just print the values to console
-      print('Job Title: $jobTitle');
-      print('Description: $description');
-      print('Requirements: $requirements');
-
-      // Clear the text fields
-      _jobTitleController.clear();
-      _descriptionController.clear();
-      _requirementsController.clear();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Form submitted successfully!')),
+      // URL Firebase Database
+      final url = Uri.https(
+        'ambw-leap-default-rtdb.firebaseio.com',
+        'dataTawaran.json',
       );
+
+      // Ambil data dari Firebase untuk menghitung panjang dataTawaran
+      final getDataResponse = await http.get(url);
+      if (getDataResponse.statusCode == 200) {
+        final Map<String, dynamic> dataTawaran =
+            json.decode(getDataResponse.body);
+        int idTawaran = dataTawaran.length + 1;
+        String tawaran = 'tawaran$idTawaran';
+
+        // Buat data JSON untuk dikirim ke Firebase
+        Map<String, dynamic> data = {
+          'id_tawaran': tawaran,
+          'asal_perusahaan': company,
+          'nama_project': jobTitle,
+          'deskripsi': description,
+          'skill': requirements,
+          'kuota_terima': 3,
+          'sudah_diterima': 0,
+          'username': company,
+          'waktu': company,
+          'status_approval': 0
+        };
+
+        // URL Firebase Database untuk menyimpan data baru
+        final postUrl = Uri.https(
+          'ambw-leap-default-rtdb.firebaseio.com',
+          'dataTawaran/$tawaran.json',
+        );
+
+        // Kirim data ke Firebase
+        final postResponse = await http.put(
+          postUrl,
+          body: json.encode(data),
+        );
+
+        if (postResponse.statusCode == 200) {
+          // Berhasil menyimpan data
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Form submitted successfully!')),
+          );
+
+          // Clear the text fields
+          _companyController.clear();
+          _jobTitleController.clear();
+          _descriptionController.clear();
+          _requirementsController.clear();
+          _kuotaController.clear();
+
+          print('dataTawaran length: ${dataTawaran.length}');
+        } else {
+          // Gagal menyimpan data
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to submit form. Please try again.')),
+          );
+        }
+      } else {
+        print('Failed to fetch data for length calculation.');
+      }
     }
   }
 
@@ -55,9 +113,23 @@ class _FormAddnewjob extends State<FormAddnewjob> {
           child: ListView(
             children: [
               TextFormField(
+                controller: _companyController,
+                decoration: InputDecoration(
+                  labelText: 'Nama Perusahaan',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the company name';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
                 controller: _jobTitleController,
                 decoration: InputDecoration(
-                  labelText: 'Job Title',
+                  labelText: 'Judul Projek',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -99,15 +171,14 @@ class _FormAddnewjob extends State<FormAddnewjob> {
               ),
               SizedBox(height: 16),
               TextFormField(
-                controller: _requirementsController,
+                controller: _kuotaController,
                 decoration: InputDecoration(
                   labelText: 'Kuota',
                   border: OutlineInputBorder(),
                 ),
-                maxLines: 5,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Ajukan rentang kuota ';
+                    return 'Ajukan rentang kuota';
                   }
                   return null;
                 },
@@ -115,7 +186,7 @@ class _FormAddnewjob extends State<FormAddnewjob> {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Submit'),
+                child: Text('Ajukan approval'),
               ),
             ],
           ),
@@ -123,4 +194,10 @@ class _FormAddnewjob extends State<FormAddnewjob> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: FormAddNewJob(),
+  ));
 }

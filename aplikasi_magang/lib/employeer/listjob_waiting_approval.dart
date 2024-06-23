@@ -4,14 +4,14 @@ import 'detail_job.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Listjob extends StatefulWidget {
-  const Listjob({super.key});
+class ListjobWaitingApproval extends StatefulWidget {
+  const ListjobWaitingApproval({super.key});
 
   @override
-  State<Listjob> createState() => _ListjobState();
+  State<ListjobWaitingApproval> createState() => _ListjobState();
 }
 
-class _ListjobState extends State<Listjob> {
+class _ListjobState extends State<ListjobWaitingApproval> {
   List<Map<String, dynamic>> _filteredData = [];
 
   @override
@@ -37,7 +37,7 @@ class _ListjobState extends State<Listjob> {
       data.forEach((key, value) {
         if (value['asal_perusahaan'] == 'PT SINAR ABADI' &&
             value['sudah_diterima'] < value['kuota_terima'] &&
-            value['status_approval'] == 1) {
+            value['status_approval'] == 0) {
           filteredData.add(value as Map<String, dynamic>);
         }
       });
@@ -64,27 +64,6 @@ class _ListjobState extends State<Listjob> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: _filteredData.map((item) {
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailJob(
-                          jobTitle: item['nama_project'],
-                          description: item['deskripsi'],
-                          requirements:
-                              item['requirements'] ?? 'No requirements',
-                          tanggal_akhir_rekrut: item['tanggal_akhir_rekrut'],
-                          tanggal_mulai_rekrut: item['tanggal_mulai_rekrut'],
-                          tanggal_pelaksanaan: item['tanggal_pelaksanaan'],
-                          tanggal_update_tawaran:
-                              item['tanggal_update_tawaran'],
-                          waktu: item['waktu'],
-                          min_ipk: item['min_ipk'],
-                          jenis: item['jenis'],
-                          id_tawaran: item['id_tawaran']),
-                    ),
-                  );
-                },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 35),
                   child: Container(
@@ -134,34 +113,6 @@ class _ListjobState extends State<Listjob> {
                               SizedBox(
                                   height:
                                       30), // Add some space between the text and the button
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Handle button press
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailJob(
-                                          jobTitle: item['nama_project'],
-                                          description: item['deskripsi'],
-                                          requirements: item['requirements'] ??
-                                              'No requirements',
-                                          tanggal_akhir_rekrut:
-                                              item['tanggal_akhir_rekrut'],
-                                          tanggal_mulai_rekrut:
-                                              item['tanggal_mulai_rekrut'],
-                                          tanggal_pelaksanaan:
-                                              item['tanggal_pelaksanaan'],
-                                          tanggal_update_tawaran:
-                                              item['tanggal_update_tawaran'],
-                                          waktu: item['waktu'],
-                                          min_ipk: item['min_ipk'],
-                                          jenis: item['jenis'],
-                                          id_tawaran: item['id_tawaran']),
-                                    ),
-                                  );
-                                },
-                                child: Text('See details'),
-                              ),
                             ],
                           ),
                         ),

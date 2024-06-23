@@ -1,53 +1,135 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'StudentProfiePage.dart';
 
-class ApplicantDetailjob extends StatelessWidget {
+class ApplicantDetailjob extends StatefulWidget {
   final String jobTitle;
   final String description;
   final String requirements;
+  final String id_tawaran;
 
   const ApplicantDetailjob({
     super.key,
     required this.jobTitle,
     required this.description,
     required this.requirements,
+    required this.id_tawaran,
   });
+
+  @override
+  State<ApplicantDetailjob> createState() => _ApplicantDetailjobState();
+}
+
+class _ApplicantDetailjobState extends State<ApplicantDetailjob> {
+  List<Map<String, dynamic>> _filteredData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchDataFromFirebase();
+  }
+
+  Future<void> _fetchDataFromFirebase() async {
+    final urlMahasiswa = Uri.https(
+      'ambw-leap-default-rtdb.firebaseio.com',
+      'dataMahasiswa.json',
+    );
+
+    final urlTawaran = Uri.https(
+      'ambw-leap-default-rtdb.firebaseio.com',
+      'dataTawaran.json',
+    );
+
+    try {
+      final responseMahasiswa = await http.get(urlMahasiswa);
+      final responseTawaran = await http.get(urlTawaran);
+
+      if (responseMahasiswa.statusCode == 200 &&
+          responseTawaran.statusCode == 200) {
+        final Map<String, dynamic> dataMahasiswa =
+            json.decode(responseMahasiswa.body);
+        final Map<String, dynamic> dataTawaran =
+            json.decode(responseTawaran.body);
+
+        // Check if the provided id_tawaran exists in dataTawaran
+        if (dataTawaran.containsKey(widget.id_tawaran)) {
+          final List<Map<String, dynamic>> filteredData = [];
+
+          dataMahasiswa.forEach((key, value) {
+            if (value['tawaranPilihan'] != null) {
+              value['tawaranPilihan'].forEach((tawaranKey, tawaranValue) {
+                final idTawaranMahasiswa = tawaranValue['id_tawaran'];
+                if (idTawaranMahasiswa == widget.id_tawaran) {
+                  filteredData.add({
+                    'username': value['username'],
+                    'nama_project': dataTawaran[widget.id_tawaran]
+                        ['nama_project'],
+                    'index_score': value['indexPrestasi']
+                  });
+                }
+              });
+            }
+          });
+
+          setState(() {
+            _filteredData = filteredData;
+          });
+
+          print(
+              'Data filtered with id_tawaran = ${widget.id_tawaran}: $_filteredData');
+        } else {
+          print('The provided id_tawaran does not exist in dataTawaran');
+        }
+      } else {
+        print(
+            'Failed to fetch data from Firebase. Mahasiswa status code: ${responseMahasiswa.statusCode}, Tawaran status code: ${responseTawaran.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Applicant detail page')),
+        title: Text('Applicant Homepage'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(20.0),
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                width: 900,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
+            child: Column(
+              children: [
+                Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Text(
-                          jobTitle,
-                          style: TextStyle(
-                            fontSize: 34,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                    ),
+                  ),
+                ),
+                Column(
+                  children: _filteredData.map((student) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StudentProfilePage(),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Container(
                           width: double.infinity,
+                          height: 200,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
@@ -56,122 +138,126 @@ class ApplicantDetailjob extends StatelessWidget {
                                 color: Colors.grey.withOpacity(0.5),
                                 spreadRadius: 2,
                                 blurRadius: 7,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
+                                offset: Offset(0, 3),
                               ),
                             ],
                           ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage('assets/profilepic.png'),
-                                    fit: BoxFit.cover,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/profilepic.png'),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Student name',
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
+                                SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            student['username'] ?? 'N/A',
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          child: Align(
-                                            alignment: Alignment.centerRight,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                'Index score : 4.00',
-                                                style: TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.bold,
+                                          Expanded(
+                                            child: Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  'Index score : ${student['index_score'] ?? 'N/A'}',
+                                                  style: TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      'Short description or additional details can go here.',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      'Skills : .....',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  StudentProfilePage()),
-                                        );
-                                      },
-                                      child: Text(
-                                        'See more detail in here',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            decoration:
-                                                TextDecoration.underline),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                        height:
-                                            16), // Add some space before the buttons
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              // Handle the Accepted button press
-                                            },
-                                            child: Text('Accept'),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              // Handle the Rejected button press
-                                            },
-                                            child: Text('Reject'),
-                                          ),
                                         ],
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(height: 8),
+                                      Text(
+                                        'Projek yang dilamar : ${student['nama_project'] ?? 'N/A'}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        'Skills : ${student['id_tawaran'] ?? 'N/A'}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StudentProfilePage(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          'See more detail in here',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                // Handle the Accepted button press
+                                              },
+                                              child: Text('Accept'),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                // Handle the Rejected button press
+                                              },
+                                              child: Text('Reject'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    );
+                  }).toList(),
                 ),
-              ),
+              ],
             ),
           ),
         ),

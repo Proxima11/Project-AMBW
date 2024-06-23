@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'listjob.dart';
 import 'applicant_homepage.dart';
 import 'form_addnewjob.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'homelistjob.dart';
 
 class HomepageEmployer extends StatelessWidget {
   @override
@@ -50,7 +53,7 @@ class HomepageEmployer extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [Listjob(), ApplicantHomepage(), FormAddnewjob()],
+          children: [Homelistjob(), ApplicantHomepage(), FormAddNewJob()],
         ),
       ),
     );

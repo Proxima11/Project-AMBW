@@ -1,17 +1,35 @@
 import 'package:flutter/material.dart';
-import 'applicant_detailjob.dart';
+import 'package:flutter_application_1/employer/applicant_detailjob.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class DetailJob extends StatelessWidget {
   final String jobTitle;
   final String description;
   final String requirements;
+  final String tanggal_akhir_rekrut;
+  final String tanggal_mulai_rekrut;
+  final String tanggal_pelaksanaan;
+  final String tanggal_update_tawaran;
+  final String waktu;
+  final int min_ipk;
+  final String jenis;
+  final String id_tawaran;
 
-  const DetailJob({
-    Key? key,
-    required this.jobTitle,
-    required this.description,
-    required this.requirements,
-  }) : super(key: key);
+  const DetailJob(
+      {Key? key,
+      required this.jobTitle,
+      required this.description,
+      required this.requirements,
+      required this.tanggal_akhir_rekrut,
+      required this.tanggal_mulai_rekrut,
+      required this.tanggal_pelaksanaan,
+      required this.tanggal_update_tawaran,
+      required this.waktu,
+      required this.min_ipk,
+      required this.id_tawaran,
+      required this.jenis})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +72,7 @@ class DetailJob extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        'Description',
+                        'id_tawaran : $id_tawaran',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -78,7 +96,36 @@ class DetailJob extends StatelessWidget {
                         requirements,
                         style: TextStyle(fontSize: 16),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
+                      Text(
+                        'Tanggal mulai rekrut : $tanggal_mulai_rekrut',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        'Tanggal akhir rekrut : $tanggal_akhir_rekrut',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Minimal ipk : $min_ipk',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Lama waktu : $waktu',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'jenis : $jenis',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'tanggal pelaksanaan  : $tanggal_pelaksanaan',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(height: 10),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -88,6 +135,7 @@ class DetailJob extends StatelessWidget {
                                 jobTitle: 'Job Title',
                                 description: 'Description of the job',
                                 requirements: 'Requirements for the job',
+                                id_tawaran: id_tawaran,
                               ),
                             ),
                           );
@@ -95,10 +143,10 @@ class DetailJob extends StatelessWidget {
                         child: Text(
                           "lihat siapa saja yang melamar disini",
                           style: TextStyle(
-                            color: Colors.blue[200],
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              color: Colors.blue[200],
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
                         ),
                       ),
                     ],
