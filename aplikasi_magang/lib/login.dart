@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_application_1/AdminPage.dart';
-import 'package:flutter_application_1/MahasiswaPage.dart';
-import 'package:flutter_application_1/DosenPage.dart';
-import 'package:flutter_application_1/EmployerPage.dart';
-import 'package:flutter_application_1/RegisterPage.dart';
+import 'admin/homepage_admin.dart';
+import 'mahasiswa/homepage_mhs.dart';
+import 'teacher/homepage_teach.dart';
+import 'employeer/homepage_employer.dart';
+import 'RegisterPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -76,25 +76,25 @@ class _LoginPageState extends State<LoginPage> {
       case 'admin':
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AdminPage()),
+          MaterialPageRoute(builder: (context) => HomePageAdmin()),
         );
         break;
       case 'dosen':
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => DosenPage()),
+          MaterialPageRoute(builder: (context) => HomePageTeach()),
         );
         break;
       case 'employer':
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => EmployerPage()),
+          MaterialPageRoute(builder: (context) => HomepageEmployer()),
         );
         break;
       case 'mahasiswa':
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MahasiswaPage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
         break;
       default:
