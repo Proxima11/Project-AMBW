@@ -33,9 +33,9 @@ class ResponsiveGrid extends StatelessWidget {
           return LayoutBuilder(
             builder: (context, constraints) {
               int crossAxisCount;
-              if (constraints.maxWidth < 600) {
+              if (constraints.maxWidth < 900) {
                 crossAxisCount = 1;
-              } else if (constraints.maxWidth < 900) {
+              } else if (constraints.maxWidth < 1300) {
                 crossAxisCount = 2;
               } else {
                 crossAxisCount = 3;
@@ -88,22 +88,58 @@ class GridItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              data['value']['nama_project'] ?? 'Title',
+              data['value']['nama_project'] ?? ' ',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
             Text(
-              'Deskripsi : ' + data['value']['deskripsi'] ??
-                  'Description goes here.',
-              maxLines: 2,
+              'Mitra : ' + data['value']['asal_perusahaan'].toString() ??
+                  ' ',
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 5),
             Text(
-              'Skill : ' + data['value']['skill'] ?? 'Skills',
-              maxLines: 2,
+              'LEAP : ' + data['value']['jenis'].toString() ??
+                  ' ',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 5),
+            Text(
+              'Pendaftaran : ' + (data['value']['tanggal_mulai_rekrut'].toString() ??
+                  '-') + ' s/d ' + (data['value']['tanggal_akhir_rekrut'].toString() ??
+                  '-'),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 5),
+            Text(
+              'Pelaksanaan : ' + (data['value']['tanggal_pelaksanaan'].toString() ??
+                  '-'),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 5),
+            Text(
+              'Lokasi : ' + data['value']['lokasi'].toString() ??
+                  ' ',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 5),
+            Text(
+              'Kuota : ' + data['value']['kuota_terima'].toString() ??
+                  ' ',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 5),
+            Text(
+              'Skill : ' + data['value']['skill'] ?? ' ',
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             Spacer(),

@@ -73,10 +73,64 @@ class _detail_lamaranState extends State<detail_lamaran> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     String jobTitle = widget.fetchData['value']['nama_project'].toString();
+    String mitra = widget.fetchData['value']['asal_perusahaan'].toString();
+    String tipe = widget.fetchData['value']['jenis'].toString();
+    String tanggal_mulai_rekrut = widget.fetchData['value']['tanggal_mulai_rekrut'].toString();
+    String tanggal_akhir_rekrut = widget.fetchData['value']['tanggal_akhir_rekrut'].toString();
+    String tanggal_pelaksanaan = widget.fetchData['value']['tanggal_pelaksanaan'].toString();
+    String lokasi = widget.fetchData['value']['lokasi'].toString();
+    String min_ipk = widget.fetchData['value']['min_ipk'].toString();
     String description = widget.fetchData['value']['deskripsi'].toString();
     String kuotaTerima = widget.fetchData['value']['kuota_terima'].toString();
     String waktu = widget.fetchData['value']['waktu'].toString();
     String skill = widget.fetchData['value']['skill'].toString();
+    String tanggal_pendaftaran = " ";
+
+    if(jobTitle == "null"){
+      jobTitle = " ";
+    }
+    if(mitra == "null"){
+      mitra = " ";
+    }
+    if(tipe == "null"){
+      tipe = " ";
+    }
+    if(tanggal_pelaksanaan == "null"){
+      tanggal_pelaksanaan = " ";
+    }
+    if(lokasi == "null"){
+      lokasi = " ";
+    }
+    if(min_ipk == "null"){
+      min_ipk = "0.00 ";
+    }else{
+      min_ipk = double.parse(min_ipk).toStringAsFixed(2);
+    }
+    if(description == "null"){
+      description = " ";
+    }
+    if(waktu == "null"){
+      waktu = " ";
+    }
+    if(skill == "null"){
+      skill = " ";
+    }
+    if(tanggal_pelaksanaan == "null"){
+      tanggal_pelaksanaan = " ";
+    }
+    if(tanggal_mulai_rekrut == "null"){
+      tanggal_mulai_rekrut = " ";
+    }
+    if(tanggal_akhir_rekrut == "null"){
+      tanggal_akhir_rekrut = " ";
+    }
+    tanggal_pendaftaran = tanggal_mulai_rekrut + " s/d " + tanggal_akhir_rekrut;
+    if(tanggal_pendaftaran == "  s/d  "){
+      tanggal_pendaftaran = " ";
+    }
+
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Lamaran'),
@@ -117,6 +171,36 @@ class _detail_lamaranState extends State<detail_lamaran> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
+                            "Mitra : " +
+                                mitra, // Job desk from fetchData
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            "Tipe Tawaran : " +
+                                tipe, // Job desk from fetchData
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            "Tanggal Pendaftaran : " +
+                                tanggal_pendaftaran, // Job desk from fetchData
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            "Tanggal Pelaksanaan : " +
+                                tanggal_pelaksanaan, // Job desk from fetchData
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            "Lokasi : " +
+                                lokasi, // Job desk from fetchData
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
                             "Kuota Terima : " +
                                 kuotaTerima, // Job desk from fetchData
                             style: TextStyle(fontSize: 18),
@@ -129,6 +213,11 @@ class _detail_lamaranState extends State<detail_lamaran> {
                           SizedBox(height: 20),
                           Text(
                             "Skill : " + skill, // Job desk from fetchData
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            "Min IPK : " + min_ipk, // Job desk from fetchData
                             style: TextStyle(fontSize: 18),
                           ),
                           SizedBox(height: 20),

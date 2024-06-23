@@ -16,6 +16,15 @@ class _detailPengumumanState extends State<detailPengumuman> {
     String judul = widget.fetchData['value']['judul'].toString();
     String tanggal = widget.fetchData['value']['tanggal'].toString();
     String deskripsi = widget.fetchData['value']['deskripsi'].toString();
+    if(judul == "null"){
+      judul = " ";
+    }
+    if(tanggal == "null"){
+      tanggal = " ";
+    }
+    if(deskripsi == "null"){
+      deskripsi = " ";
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Pengumuman'),
