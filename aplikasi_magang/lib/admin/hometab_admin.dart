@@ -103,7 +103,8 @@ class _HomeTabAdminState extends State<HomeTabAdmin> {
           ),
         ),
       ),
-      body: Row(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
             child: ListView.builder(
