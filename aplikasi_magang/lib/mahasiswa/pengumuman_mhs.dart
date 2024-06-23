@@ -1,9 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../tools/gridListPengumuman.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class pengumuman_mhs extends StatelessWidget {
+class pengumuman_mhs extends StatefulWidget {
   const pengumuman_mhs({super.key});
+
+  @override
+  State<pengumuman_mhs> createState() => _pengumuman_mhsState();
+}
+
+class _pengumuman_mhsState extends State<pengumuman_mhs> {
+  late Future<List<Map<String, dynamic>>> futureData;
+
+  @override
+  void initState() {
+    super.initState();
+    futureData = fetchData();
+  }
+
+  Future<List<Map<String, dynamic>>> fetchData() async {
+    final response = await http.get(Uri.parse(
+        'https://ambw-leap-default-rtdb.firebaseio.com/pengumuman.json'));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      return data.entries.map((e) => {'key': e.key, 'value': e.value}).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +92,9 @@ class pengumuman_mhs extends StatelessWidget {
         ),
         Expanded(
           child: Row(
-            children: [Expanded(child: ResponsiveGridPengumuman())],
+            children: [
+              Expanded(child: ResponsiveGridPengumuman(fetchData: futureData))
+            ],
           ),
         ),
       ],

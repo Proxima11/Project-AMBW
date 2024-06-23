@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:aplikasi_magang/mahasiswa/homepage_mhs.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -15,8 +14,6 @@ class detail_lamaran extends StatefulWidget {
 }
 
 class _detail_lamaranState extends State<detail_lamaran> {
-  // FirebaseStorage storage = FirebaseStorage.instance;
-  // FirebaseDatabase database = FirebaseDatabase.instance;
   bool isLoading = false;
   late DropzoneViewController controller;
 
@@ -90,26 +87,28 @@ class _detail_lamaranState extends State<detail_lamaran> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Container(
-                color: Colors.grey[300],
-                child: Column(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Container(
+                // color: Colors.grey[300],
+                child: Card(child :Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 20),
                     Center(
-                      child: Text(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
                         jobTitle, // Job Title from fetchData
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
                     ),
                     SizedBox(height: 20),
                     Padding(
@@ -138,79 +137,83 @@ class _detail_lamaranState extends State<detail_lamaran> {
                                 description, // Job desk from fetchData
                             style: TextStyle(fontSize: 18),
                           ),
+                          SizedBox(height: 20),
                         ],
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Ajukan Lamaran'),
-                      content: Container(
-                        child: Wrap(children: [
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text("Nama"),
-                                      Text("NRP"),
-                                      Text("Email"),
-                                      Text("Program Studi"),
-                                      Text("IPK"),
-                                      Text("No. Telp"),
-                                    ],
-                                  ),
-                                  Text("Foto"),
-                                ],
-                              ),
-                              SizedBox(height: 20),
-                              Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: pickFile,
-                                      child: Text('Upload PDF'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ]),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'OK'),
-                          child: const Text('Submit'),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                child: Text('Ajukan Lamaran'),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-          ],
+              SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Ajukan Lamaran'),
+                        content: SingleChildScrollView(
+                          child: Container(
+                            child: Wrap(children: [
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text("Nama"),
+                                          Text("NRP"),
+                                          Text("Email"),
+                                          Text("Program Studi"),
+                                          Text("IPK"),
+                                          Text("No. Telp"),
+                                        ],
+                                      ),
+                                      Text("Foto"),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
+                                  Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: pickFile,
+                                          child: Text('Upload PDF'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ]),
+                          ),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('Submit'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Text('Ajukan Lamaran'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

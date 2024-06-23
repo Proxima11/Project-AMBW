@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 
-class detailPengumuman extends StatelessWidget {
+class detailPengumuman extends StatefulWidget {
+  final Map<String, dynamic> fetchData;
+
+  detailPengumuman({required this.fetchData});
+
+  @override
+  State<detailPengumuman> createState() => _detailPengumumanState();
+}
+
+class _detailPengumumanState extends State<detailPengumuman> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    String judul = widget.fetchData['value']['judul'].toString();
+    String tanggal = widget.fetchData['value']['tanggal'].toString();
+    String deskripsi = widget.fetchData['value']['deskripsi'].toString();
     return Scaffold(
       appBar: AppBar(
         title: Text('Pengumuman'),
@@ -21,26 +33,20 @@ class detailPengumuman extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '18-07-2023',
+                      tanggal,
                       style: TextStyle(color: Colors.grey),
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'Informasi dan Kebutuhan Leap (Flowchart & Laporan Leap)',
+                      judul,
                       style: TextStyle(
                         fontSize: 24.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 16.0),
-                    Text(
-                      'Rekan-rekan mahasiswa, berikut ini file terkait dengan Informasi dan Laporan Leap (Magang/Riset/Community) bisa diakses di link berikut ini:',
-                    ),
+                    Text(deskripsi),
                     SizedBox(height: 8.0),
-                    Text(
-                      'https://drive.google.com/drive/folders/1SO5fqmPmxG88jQrCw0L-WHNGpGY8XUzv',
-                      style: TextStyle(color: Colors.blue),
-                    ),
                   ],
                 ),
               ),

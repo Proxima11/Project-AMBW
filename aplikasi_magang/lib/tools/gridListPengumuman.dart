@@ -1,8 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../mahasiswa/detail_pengumuman.dart';
 
 class ResponsiveGridPengumuman extends StatelessWidget {
+  final Future<List<Map<String, dynamic>>> fetchData;
+
+  ResponsiveGridPengumuman({required this.fetchData});
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -16,10 +22,18 @@ class ResponsiveGridPengumuman extends StatelessWidget {
           crossAxisCount = 3;
         }
 
-        return Column(
-          children: [
-            Expanded(
-              child: GridView.builder(
+        return FutureBuilder<List<Map<String, dynamic>>>(
+          future: fetchData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('No data available'));
+            } else {
+              final data = snapshot.data!;
+              return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 10,
@@ -27,13 +41,13 @@ class ResponsiveGridPengumuman extends StatelessWidget {
                   childAspectRatio: 4.5 / 2,
                 ),
                 itemBuilder: (context, index) {
-                  return GridItem();
+                  return GridItem(data: snapshot.data![index]);
                 },
-                itemCount: 10, // Number of items
+                itemCount: data.length,
                 padding: EdgeInsets.all(10),
-              ),
-            ),
-          ],
+              );
+            }
+          },
         );
       },
     );
@@ -41,43 +55,49 @@ class ResponsiveGridPengumuman extends StatelessWidget {
 }
 
 class GridItem extends StatelessWidget {
+  final Map<String, dynamic> data;
+
+  GridItem({required this.data});
+
+
   @override
   Widget build(BuildContext context) {
+    // log(data['value']['title']);
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Expanded(
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Title',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              data['value']['judul'] ?? 'No Title',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            SizedBox(height: 10),
+            Text(
+              data['value']['tanggal'] ?? 'No Date',
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+            Spacer(),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            detailPengumuman(fetchData: data)), // Assuming DetailPengumuman is defined
+                  );
+                },
+                child: Text('Lihat Pengumuman'),
               ),
-              SizedBox(height: 10),
-              Text('Description goes here.'),
-              Spacer(),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => detailPengumuman()),
-                      );
-                    },
-                    child: Text('Lihat Pengumuman'),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
