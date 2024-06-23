@@ -13,6 +13,7 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+  final TextEditingController _searchController = TextEditingController();
   var chosenTypeMagang;
   var chosenTypeSkill;
   var chosenLokasi;
@@ -34,14 +35,22 @@ class _HomeTabState extends State<HomeTab> {
     "Enterprise Information System"
   ];
 
-  TextEditingController _searchController = TextEditingController();
   int jobCount = 0;
-  late Future<List<Map<String, dynamic>>> futureData;
+  late Future<List<Map<String, dynamic>>> futureData = Future.value([]);
+  late Future<List<Map<String, dynamic>>> _allTawaran = Future.value([]);
+  late Future<List<Map<String, dynamic>>> _filteredTawaran = Future.value([]);
 
   @override
   void initState() {
     super.initState();
     futureData = fetchData();
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_performSearch);
+    _searchController.dispose();
+    super.dispose();
   }
 
   Future<List<Map<String, dynamic>>> fetchData() async {
@@ -50,19 +59,56 @@ class _HomeTabState extends State<HomeTab> {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
+      final List<Map<String, dynamic>> allTawaran =
+          data.entries.map((e) => {'key': e.key, 'value': e.value}).toList();
       setState(() {
         jobCount = data.length;
+        _allTawaran = Future.value(allTawaran);
+        _filteredTawaran = Future.value(allTawaran); // Initialize filtered data
       });
-      return data.entries.map((e) => {'key': e.key, 'value': e.value}).toList();
+      return allTawaran;
     } else {
       throw Exception('Failed to load data');
     }
   }
 
-  void _performSearch() {
-    // Implement your search logic here
-    print("Searching for: ${_searchController.text}");
+  Future<List<Map<String, dynamic>>> _filterTawaran(String query) async {
+    final lowerCaseQuery = query.toLowerCase();
+    final allTawaran = await _allTawaran;
+    List<Map<String, dynamic>> filteredTawaran = allTawaran.where((tawaran) {
+      final namaProject = tawaran['value']['nama_project'].toLowerCase();
+      return namaProject.contains(lowerCaseQuery);
+    }).toList();
+
+    setState(() {
+      _filteredTawaran = Future.value(filteredTawaran);
+      jobCount = filteredTawaran.length; // Update jobCount with filtered count
+    });
+
+    return filteredTawaran;
   }
+
+  void _performSearch() {
+    String query = _searchController.text.toLowerCase();
+    setState(() {
+      _filteredTawaran = _filterTawaran(query);
+    });
+  }
+
+  // Future<List<Map<String, dynamic>>> fetchData() async {
+  //   final response = await http.get(Uri.parse(
+  //       'https://ambw-leap-default-rtdb.firebaseio.com/dataTawaran.json'));
+
+  //   if (response.statusCode == 200) {
+  //     final Map<String, dynamic> data = json.decode(response.body);
+  //     setState(() {
+  //       jobCount = data.length;
+  //     });
+  //     return data.entries.map((e) => {'key': e.key, 'value': e.value}).toList();
+  //   } else {
+  //     throw Exception('Failed to load data');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +234,9 @@ class _HomeTabState extends State<HomeTab> {
         ),
         Expanded(
           child: Row(
-            children: [Expanded(child: ResponsiveGrid(fetchData: futureData))],
+            children: [
+              Expanded(child: ResponsiveGrid(fetchData: _filteredTawaran))
+            ],
           ),
         ),
       ],

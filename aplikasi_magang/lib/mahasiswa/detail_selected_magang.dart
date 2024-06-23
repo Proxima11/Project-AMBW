@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class detail_selected_magang extends StatefulWidget {
   final String studentId;
+  final String judul;
   final String nama_mahasiswa;
   final String nama_mitra;
   final String nama_pembimbing;
   final String nama_mentor;
   detail_selected_magang(
       {required this.studentId,
+      required this.judul,
       required this.nama_mahasiswa,
       required this.nama_pembimbing,
       required this.nama_mentor,
@@ -23,8 +25,9 @@ class _detail_selected_magangState extends State<detail_selected_magang> {
       length: 1,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-              "Lamaran Aplikasi Pusat Layanan Terpadu (Front-End & Back-End)"),
+          title: Text((widget.judul != null || widget.judul != 'null'
+              ? widget.judul
+              : '')),
           bottom: TabBar(
             tabs: [
               Tab(text: "Laporan & Proposal LEAP"),

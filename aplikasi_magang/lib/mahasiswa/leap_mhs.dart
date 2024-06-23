@@ -160,6 +160,7 @@ class _AktifTableState extends State<AktifTable> {
                                         .toString(),
                                     nama_mitra:
                                         tawaran['asal_perusahaan'].toString(),
+                                    judul: tawaran['nama_project'].toString(),
                                   )),
                         );
                       },
@@ -520,6 +521,7 @@ class _SelesaiTableState extends State<SelesaiTable> {
                                         .toString(),
                                     nama_mitra:
                                         tawaran['asal_perusahaan'].toString(),
+                                    judul: tawaran['nama_project'].toString(),
                                   )),
                         );
                       },

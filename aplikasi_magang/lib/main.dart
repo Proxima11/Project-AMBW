@@ -1,4 +1,3 @@
-import 'package:aplikasi_magang/mahasiswa/detail_lamaran.dart';
 import 'package:flutter/material.dart';
 import 'mahasiswa/homepage_mhs.dart';
 
