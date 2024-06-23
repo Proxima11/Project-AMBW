@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/admin/details/detailtawaran_admin.dart';
 import 'package:flutter/material.dart';
 
 class TawaranCardAdmin extends StatelessWidget {
@@ -72,13 +73,15 @@ class TawaranCardAdmin extends StatelessWidget {
                     width: double.infinity,
                     child: TextButton(
                       onPressed: (){
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => ()),
-                        //   ),
-                        // );
-                        //DetailmahasiswaAdmin(profilePicture: profilePicture, nama: nama, nrp: nrp, indexScore: indexScore);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailtawaranAdmin(
+                              namaPerusahaan: namaPerusahaan,
+                              namaProject: namaProject
+                            ),
+                          ),
+                        );
                       },
                       child: const Text("Detail Tawaran"),
                     ),

@@ -1,4 +1,4 @@
-import 'tawaranModel.dart';
+import 'tawaranprojectModel.dart';
 
 class Mahasiswa {
   final int indexPrestasi;

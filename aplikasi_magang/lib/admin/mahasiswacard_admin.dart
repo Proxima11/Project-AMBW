@@ -1,5 +1,5 @@
-import 'package:aplikasi_magang/admin/detailmahasiswa_admin.dart';
-import 'package:aplikasi_magang/admin/mahasiswaModel.dart';
+import 'package:aplikasi_magang/admin/details/detailmahasiswa_admin.dart';
+import 'package:aplikasi_magang/admin/models/mahasiswaModel.dart';
 import 'package:flutter/material.dart';
 
 class MahasiswaCard extends StatelessWidget {

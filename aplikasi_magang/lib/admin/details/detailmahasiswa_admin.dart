@@ -1,9 +1,7 @@
 import 'package:aplikasi_magang/admin/statuscard_admin.dart';
-import 'package:aplikasi_magang/admin/tawaranModel.dart';
-import 'package:aplikasi_magang/admin/mahasiswaModel.dart';
-import 'package:aplikasi_magang/admin/test.dart';
+import 'package:aplikasi_magang/admin/models/tawaranprojectModel.dart';
+import 'package:aplikasi_magang/admin/models/mahasiswaModel.dart';
 import 'package:flutter/material.dart';
-import 'package:aplikasi_magang/admin/statustawaranmahasiswa_admin.dart';
 
 class DetailmahasiswaAdmin extends StatefulWidget {
   final Mahasiswa dataMahasiswa;
@@ -21,19 +19,12 @@ class DetailmahasiswaAdmin extends StatefulWidget {
 
 class _DetailmahasiswaAdminState extends State<DetailmahasiswaAdmin> {
   @override
-  @override
   void initState() {
     super.initState();
-    // Print tawaranPilihan to check its value
-    print('Tawaran Pilihan: ${widget.dataMahasiswa.tawaranPilihan}');
-    // Print other relevant information for debugging
-    print('Username: ${widget.dataMahasiswa.username}');
-    print('IPK: ${widget.ipk}');
   }
 
   @override
   Widget build(BuildContext context) {
-    print('Building DetailmahasiswaAdmin widget...');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -79,26 +70,6 @@ class _DetailmahasiswaAdminState extends State<DetailmahasiswaAdmin> {
                   },
                 ),
               ),
-
-              // Expanded(
-              //   child: Text('${widget.dataMahasiswa.tawaranPilihan.keys}'),
-              //   // child: ListView.builder(
-              //   //   itemCount: widget.dataMahasiswa.tawaranPilihan.length,
-              //   //   itemBuilder: (context, index) {
-              //   //     // Get the tawaran at the current index
-              //   //     TawaranProject tawaran = widget
-              //   //         .dataMahasiswa.tawaranPilihan.values
-              //   //         .elementAt(index);
-              //   //     String idTawaran = tawaran.idTawaran;
-              //   //     int statusTawaran = tawaran.statusTawaran;
-              //   //     return StatusTawaranMahasiswaAdmin(
-              //   //       nrp: widget.dataMahasiswa.nrp,
-              //   //       idTawaran: idTawaran,
-              //   //       statusTawaran: statusTawaran,
-              //   //     );
-              //   //   },
-              //   // ),
-              // ),
             ],
           ),
         ),

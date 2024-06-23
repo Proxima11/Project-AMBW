@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:aplikasi_magang/admin/tawaranModel.dart';
+import 'package:aplikasi_magang/admin/models/tawaranprojectModel.dart';
 
 class StatusTawaranMahasiswaAdmin extends StatefulWidget {
   final String nrp;
