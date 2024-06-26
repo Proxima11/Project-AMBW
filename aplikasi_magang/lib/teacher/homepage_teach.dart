@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/teacher/homeTab_teach.dart';
 import 'package:flutter/material.dart';
 import 'package:aplikasi_magang/teacher/statistic_teach.dart';
 
@@ -44,11 +45,10 @@ class HomePageTeach extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            const Center(child: Text('Teacher Home Page')),
+            HomeTabTeacher(),
             StatisticTeach(),
-            // Center(child: Text('Data Mahasiswa Page')),
           ],
         ),
       ),
