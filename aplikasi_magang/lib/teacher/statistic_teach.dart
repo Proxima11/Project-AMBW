@@ -1,5 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class StatisticTeach extends StatefulWidget {
   const StatisticTeach({Key? key}) : super(key: key);
@@ -9,29 +11,97 @@ class StatisticTeach extends StatefulWidget {
 }
 
 class StatisticTeachState extends State<StatisticTeach> {
-  List<PieChartSectionData> data = [
-    PieChartSectionData(color: Colors.green, value: 40, title: '40%'),
-    PieChartSectionData(color: Colors.blue, value: 30, title: '30%'),
-    PieChartSectionData(color: Colors.purple, value: 15, title: '15%'),
-    PieChartSectionData(color: Colors.red, value: 15, title: '15%'),
-  ];
-
+  List<PieChartSectionData> data = [];
   int touchedIndex = -1;
+  bool isLoading = true;
 
-  void updateChartData() {
-    setState(() {
-      if (touchedIndex != -1) {
-        data[touchedIndex] = PieChartSectionData(
-          color: data[touchedIndex].color,
-          value: data[touchedIndex].value,
-          title: data[touchedIndex].title,
-          radius: data[touchedIndex].radius,
-          titlePositionPercentageOffset:
-              data[touchedIndex].titlePositionPercentageOffset,
-          titleStyle: data[touchedIndex].titleStyle,
-        );
+  @override
+  void initState() {
+    super.initState();
+    fetchChartData();
+  }
+
+  String format(double n) {
+    return n.toStringAsFixed(n.truncateToDouble() == n ? 0 : 2);
+  }
+
+  Future<void> fetchChartData() async {
+    final url = Uri.https(
+        'ambw-leap-default-rtdb.firebaseio.com', 'dataMahasiswa.json');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> dataJson = json.decode(response.body);
+
+      int totalData = dataJson.length;
+      List<List<double>> status = [
+        [0],
+        [0],
+        [0],
+        [0]
+      ];
+
+      dataJson.forEach((key, value) {
+        if (value['status'] == 0) {
+          status[0][0] = status[0][0] + 1;
+        } else if (value['status'] == 1) {
+          status[1][0] = status[1][0] + 1;
+        } else if (value['status'] == 2) {
+          status[2][0] = status[2][0] + 1;
+        } else if (value['status'] == 3) {
+          status[3][0] = status[3][0] + 1;
+        }
+      });
+
+      var count = 0;
+      for (var row in status) {
+        debugPrint(
+            "${row[0] / totalData * 100}% ${row[0]} ${totalData} ${count}");
+        count += 1;
       }
-    });
+
+      setState(() {
+        isLoading = false;
+
+        // keterima = 3
+        if (status[3][0] > 0) {
+          data.add(PieChartSectionData(
+            color: Colors.green,
+            value: status[3][0],
+            title: "${format(status[3][0] / totalData * 100)}%",
+          ));
+        }
+
+        // dah daftar tp ketolak semua = 2
+        if (status[2][0] > 0) {
+          data.add(PieChartSectionData(
+            color: Colors.blue,
+            value: status[2][0],
+            title: "${format(status[2][0] / totalData * 100)}%",
+          ));
+        }
+
+        // interview = 1
+        if (status[1][0] > 0) {
+          data.add(PieChartSectionData(
+            color: Colors.purple,
+            value: status[1][0],
+            title: "${format(status[1][0] / totalData * 100)}%",
+          ));
+        }
+
+        // gk daftar samsek = 0
+        if (status[0][0] > 0) {
+          data.add(PieChartSectionData(
+            color: Colors.red,
+            value: status[0][0],
+            title: "${format(status[0][0] / totalData * 100)}%",
+          ));
+        }
+      });
+    } else {
+      debugPrint('Failed to load data');
+    }
   }
 
   @override
@@ -57,59 +127,61 @@ class StatisticTeachState extends State<StatisticTeach> {
                 height: 400,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: PieChart(
-                    PieChartData(
-                      pieTouchData: PieTouchData(
-                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                          if (!event.isInterestedForInteractions ||
-                              pieTouchResponse == null ||
-                              pieTouchResponse.touchedSection == null) {
-                            setState(() {
-                              touchedIndex = -1;
-                            });
-                            return;
-                          }
-                          setState(() {
-                            touchedIndex = pieTouchResponse
-                                .touchedSection!.touchedSectionIndex;
-                            updateChartData(); // Call function to update data
-                          });
-                        },
-                      ),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 0,
-                      sections: showingSections(),
-                    ),
-                  ),
+                  child: isLoading
+                      ? CircularProgressIndicator()
+                      : PieChart(
+                          PieChartData(
+                            pieTouchData: PieTouchData(
+                              touchCallback:
+                                  (FlTouchEvent event, pieTouchResponse) {
+                                if (!event.isInterestedForInteractions ||
+                                    pieTouchResponse == null ||
+                                    pieTouchResponse.touchedSection == null) {
+                                  setState(() {
+                                    touchedIndex = -1;
+                                  });
+                                  return;
+                                }
+                                setState(() {
+                                  touchedIndex = pieTouchResponse
+                                      .touchedSection!.touchedSectionIndex;
+                                });
+                              },
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 0,
+                            sections: showingSections(),
+                          ),
+                        ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   spacing: 10,
                   runSpacing: 10,
                   children: <Widget>[
                     Indicator(
-                      color: data[0].color,
+                      color: Colors.green,
                       text: 'Student accepted',
                       isSquare: true,
                     ),
                     Indicator(
-                      color: data[1].color,
+                      color: Colors.blue,
                       text: 'Student without internship',
                       isSquare: true,
                     ),
                     Indicator(
-                      color: data[2].color,
+                      color: Colors.purple,
                       text: 'Student on interview period',
                       isSquare: true,
                     ),
                     Indicator(
-                      color: data[3].color,
+                      color: Colors.red,
                       text: 'Student not taking an internship',
                       isSquare: true,
                     ),
