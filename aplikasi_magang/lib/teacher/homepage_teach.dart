@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/login.dart';
 import 'package:aplikasi_magang/teacher/homeTab_teach.dart';
 import 'package:flutter/material.dart';
 import 'package:aplikasi_magang/teacher/statistic_teach.dart';
@@ -28,6 +29,10 @@ class HomePageTeach extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   // Logout action
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
                 },
                 style: const ButtonStyle(),
                 child: const Text(
