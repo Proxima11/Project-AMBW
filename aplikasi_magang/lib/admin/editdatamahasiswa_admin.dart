@@ -59,6 +59,7 @@ class _EditScreenState extends State<EditScreen> {
         ),
       );
     }
+    final ipkFormatted = (widget.item['indexPrestasi'] / 100.0).toStringAsFixed(2);
 
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +77,7 @@ class _EditScreenState extends State<EditScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              'IPK : ${widget.item['indexPrestasi']}',
+              'IPK : ${ipkFormatted}',
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 30),

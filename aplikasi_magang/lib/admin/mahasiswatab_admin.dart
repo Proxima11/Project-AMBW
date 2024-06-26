@@ -112,7 +112,7 @@ class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               decoration: const InputDecoration(
-                labelText: 'Search by Username or NRP',
+                labelText: 'Cari berdasarkan nama atau NRP',
                 border: OutlineInputBorder(),
               ),
               onChanged: _filterItems,
