@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/employer/applicant_detailjob.dart';
+import 'applicant_detailjob.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

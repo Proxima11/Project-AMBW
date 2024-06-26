@@ -1,112 +1,220 @@
-import 'package:aplikasi_magang/admin/mahasiswacard_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'models/mahasiswaModel.dart';
+import 'editdatamahasiswa_admin.dart';
 
 class MahasiswaTabAdmin extends StatefulWidget {
   const MahasiswaTabAdmin({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _MahasiswaTabAdminState createState() => _MahasiswaTabAdminState();
+  State<MahasiswaTabAdmin> createState() => _MahasiswaTabAdminState();
 }
 
 class _MahasiswaTabAdminState extends State<MahasiswaTabAdmin> {
-  late List<Mahasiswa> _allMahasiswa = [];
-  late List<Mahasiswa> _filteredMahasiswa = [];
-  int jumlahMahasiswa = 0;
-
-  final TextEditingController _searchController = TextEditingController();
-
-  Future<List<Mahasiswa>> fetchData() async {
-    final response = await http.get(
-      Uri.parse('https://ambw-leap-default-rtdb.firebaseio.com/dataMahasiswa.json'),
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      List<Mahasiswa> mahasiswaList = [];
-
-      data.forEach((key, value) {
-        final Mahasiswa mahasiswa = Mahasiswa.fromJson(value);
-        mahasiswaList.add(mahasiswa);
-      });
-
-      return mahasiswaList;
-    } else {
-      throw Exception('Failed to load data');
-    }
-  } 
-
+  List<Map<String, dynamic>> _items = [];
+  List<Map<String, dynamic>> _filteredItems = [];
+  String _searchQuery = "";
 
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_filterMahasiswa);
-    fetchData().then((mahasiswaList) {
-      setState(() {
-        _allMahasiswa = mahasiswaList;
-        _filteredMahasiswa = List.from(_allMahasiswa);
-        jumlahMahasiswa = _allMahasiswa.length;
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    await _fetchFromFirebase();
+  }
+
+  Future<void> _fetchFromFirebase() async {
+    final url = Uri.https(
+      'ambw-leap-default-rtdb.firebaseio.com',
+      'dataMahasiswa.json',
+    );
+
+    final response = await http.get(url);
+    final Map<String, dynamic> data = json.decode(response.body);
+    final List<Map<String, dynamic>> loadedItems = [];
+    data.forEach((key, value) {
+      loadedItems.add({
+        'id': key,
+        'indexPrestasi': value['indexPrestasi'],
+        'nrp': value['nrp'],
+        'status': value['status'],
+        'tawaranPilihan': value['tawaranPilihan'],
+        'username': value['username'],
       });
-    }).catchError((error) {
+    });
+
+    setState(() {
+      _items = loadedItems;
+      _filteredItems = loadedItems;
     });
   }
 
-  @override
-  void dispose() {
-    _searchController.removeListener(_filterMahasiswa);
-    _searchController.dispose();
-    super.dispose();
+  void _updateInFirebase(String id, Map<String, dynamic> newData) async {
+    final url = Uri.https(
+      'ambw-leap-default-rtdb.firebaseio.com',
+      'dataMahasiswa/$id.json',
+    );
+
+    final response = await http.patch(
+      url,
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: json.encode(newData),
+    );
+    debugPrint(response.body);
+    debugPrint(response.statusCode.toString());
+    _fetchData();
   }
 
-  void _filterMahasiswa() {
-    String query = _searchController.text.toLowerCase();
+  void _navigateToEditScreen(BuildContext context, Map<String, dynamic> item) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => EditScreen(
+          item: item,
+          onSave: (newData) {
+            _updateInFirebase(item['id'], newData);
+          },
+        ),
+      ),
+    );
+  }
+
+  void _filterItems(String query) {
     setState(() {
-      _filteredMahasiswa = _allMahasiswa.where((mahasiswa) {
-        return mahasiswa.username.toLowerCase().contains(query);
-      }).toList();
+      _searchQuery = query;
+      _filteredItems = _items
+          .where((item) =>
+              item['username'].toLowerCase().contains(query.toLowerCase()) ||
+              item['nrp'].toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final int maxCrossAxisCount = 4;
+    final int calculatedCrossAxisCount =
+        MediaQuery.of(context).size.width ~/ 300;
+    final int crossAxisCount = calculatedCrossAxisCount > maxCrossAxisCount
+        ? maxCrossAxisCount
+        : calculatedCrossAxisCount;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Data Mahasiswa')),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                prefixIcon: const Icon(Icons.search),
-              ),
-            ),
-          ),
-        ),
+        title: Center(child: const Text('Data Mahasiswa')),
       ),
       body: Column(
         children: [
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisExtent: 150,
-                crossAxisCount: MediaQuery.of(context).size.width ~/ 300,
-                
-                crossAxisSpacing: 5
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: const InputDecoration(
+                labelText: 'Search by Username or NRP',
+                border: OutlineInputBorder(),
               ),
-              itemCount: _filteredMahasiswa.length,
-              itemBuilder: (context, index) {
-                final mahasiswa = _filteredMahasiswa[index];
-                return MahasiswaCard(
-                  dataMahasiswa: mahasiswa,
+              onChanged: _filterItems,
+            ),
+          ),
+          Expanded(
+            child: Builder(
+              builder: (BuildContext context) {
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisExtent: 150,
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: 5,
+                  ),
+                  itemCount: _filteredItems.length,
+                  itemBuilder: (ctx, index) {
+                    final item = _filteredItems[index];
+                    final ipkFormatted =
+                        (item['indexPrestasi'] / 100.0).toStringAsFixed(2);
+
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 300,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(1.0, 1.0),
+                              blurRadius: 10.0,
+                              spreadRadius: 0.1,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  width: 150,
+                                  child: Center(child: Text("Profile Picture")),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, right: 8.0, top: 10.0),
+                                    child: Text(
+                                      item['username'],
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, right: 8.0, bottom: 10.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          item['nrp'],
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text('IPK: $ipkFormatted'),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        _navigateToEditScreen(context, item);
+                                      },
+                                      child: const Text('Edit Data Mahasiswa'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             ),
