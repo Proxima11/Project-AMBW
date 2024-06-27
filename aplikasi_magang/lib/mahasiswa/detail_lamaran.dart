@@ -23,6 +23,7 @@ class _detail_lamaranState extends State<detail_lamaran> {
   TextEditingController cvLinkController = TextEditingController();
   late DatabaseReference dbRef;
   late List<Mahasiswa> choosenMhs = [];
+  bool sudahterima = false;
 
   @override
   void initState() {
@@ -86,40 +87,54 @@ class _detail_lamaranState extends State<detail_lamaran> {
 
         if (response.statusCode == 200 && widget.studentId != "null") {
           final Map<String, dynamic> data = json.decode(response.body);
-          // Mahasiswa? selectedMahasiswa;
+          Mahasiswa? selectedMahasiswa;
           data.forEach((key, value) {
             final Mahasiswa mahasiswa = Mahasiswa.fromJson(value);
             if (mahasiswa.nrp == widget.studentId) {
               _key = key;
+              selectedMahasiswa = mahasiswa;
             }
           });
         }
         ;
 
-        DateTime now = DateTime.now();
-        String formattedDate = DateFormat('d/M/yyyy').format(now);
-        // String? id_taw;
+        if (choosenMhs[0] != null) {
+          int status_terima = choosenMhs[0].status;
+          if (status_terima == 1) {
+            sudahterima = true;
+          }
+        }
+        if (!sudahterima) {
+          DateTime now = DateTime.now();
+          String formattedDate = DateFormat('d/M/yyyy').format(now);
+          // String? id_taw;
 
-        dbRef = FirebaseDatabase.instance
-            .ref()
-            .child('dataMahasiswa')
-            .child(_key!)
-            .child('tawaranPilihan')
-            .child(widget.fetchData['value']['id_tawaran'].toString());
+          dbRef = FirebaseDatabase.instance
+              .ref()
+              .child('dataMahasiswa')
+              .child(_key!)
+              .child('tawaranPilihan')
+              .child(widget.fetchData['value']['id_tawaran'].toString());
 
-        await dbRef.set({
-          'id_tawaran': widget.fetchData['value']['id_tawaran'].toString(),
-          'nama_mentor': "",
-          'nama_pembimbing': "",
-          'status_tawaran': 0,
-          'cvLink':
-              cvLinkController.text, // Set the tanggal with the current date
-          'tanggal_update': formattedDate, // Example timestamp
-        });
+          await dbRef.set({
+            'id_tawaran': widget.fetchData['value']['id_tawaran'].toString(),
+            'nama_mentor': "",
+            'nama_pembimbing': "",
+            'status_tawaran': 0,
+            'cvLink':
+                cvLinkController.text, // Set the tanggal with the current date
+            'tanggal_update': formattedDate, // Example timestamp
+          });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Lamaran berhasil diajukan')),
-        );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Lamaran berhasil diajukan')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Anda sudah diterima di tawaran lainnya')),
+          );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal mengajukan lamaran: $e')),
