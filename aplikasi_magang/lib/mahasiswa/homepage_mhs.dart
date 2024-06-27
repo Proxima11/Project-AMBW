@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'homeTab_mhs.dart';
@@ -5,8 +6,28 @@ import 'lamaran_mhs.dart';
 import 'pengumuman_mhs.dart';
 import 'leap_mhs.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatelessWidget {
+  final String data;
+  HomePage({required this.data, super.key});
+
+  final theUser = FirebaseAuth.instance.currentUser!;
+
+  void signUserOut(context) {
+    FirebaseAuth.instance.signOut().then((_) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (Route<dynamic> route) => false,
+      );
+    }).catchError((error) {
+      // Handle error if sign out fails
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error signing out: $error')),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -17,13 +38,13 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: Row(
               children: [
-                Icon(Icons.account_circle), // Profile icon
-                SizedBox(width: 8),
+                const Icon(Icons.account_circle), // Profile icon
+                const SizedBox(width: 8),
                 Expanded(
                   child: AutoSizeText(
-                    'Welcome, Student Name',
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    'Welcome, $data',
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.bold),
                     minFontSize: 12.0,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -38,6 +59,7 @@ class HomePage extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   // Logout action
+                  signUserOut(context);
                 },
                 child: Expanded(
                   child: AutoSizeText(
@@ -49,11 +71,11 @@ class HomePage extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                style: ButtonStyle(),
+                style: const ButtonStyle(),
               ),
             ),
           ],
-          bottom: TabBar(
+          bottom: const TabBar(
             tabs: [
               Tab(text: 'Home'),
               Tab(text: 'Lamaran'),
@@ -63,7 +85,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             HomeTab(),
             lamaran_mhs(studentId: "C14210001"),

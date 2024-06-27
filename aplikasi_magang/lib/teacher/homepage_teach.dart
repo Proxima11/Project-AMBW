@@ -2,23 +2,43 @@ import 'package:aplikasi_magang/login.dart';
 import 'package:aplikasi_magang/teacher/homeTab_teach.dart';
 import 'package:flutter/material.dart';
 import 'package:aplikasi_magang/teacher/statistic_teach.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePageTeach extends StatelessWidget {
+  final String data;
+  HomePageTeach({required this.data, super.key});
+
+  final theUser = FirebaseAuth.instance.currentUser!;
+
+  void signUserOut(context) {
+    FirebaseAuth.instance.signOut().then((_) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (Route<dynamic> route) => false,
+      );
+    }).catchError((error) {
+      // Handle error if sign out fails
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error signing out: $error')),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Padding(
-            padding: EdgeInsets.all(8.0),
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Icon(Icons.account_circle), // Profile icon
-                SizedBox(width: 8),
+                const Icon(Icons.account_circle), // Profile icon
+                const SizedBox(width: 8),
                 Text(
-                  'Welcome, Teacher',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  'Welcome, $data',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ), // Student name
               ],
             ),
@@ -29,10 +49,7 @@ class HomePageTeach extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   // Logout action
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
+                  signUserOut(context);
                 },
                 style: const ButtonStyle(),
                 child: const Text(
