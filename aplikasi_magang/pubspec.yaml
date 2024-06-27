@@ -1,10 +1,10 @@
 name: aplikasi_magang
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.3.3 <4.0.0'
+  sdk: ">=3.3.3 <4.0.0"
 
 dependencies:
   flutter:
@@ -18,6 +18,7 @@ dependencies:
   flutter_dropzone: ^4.0.1
   firebase_core: ^3.1.0
   firebase_database: ^11.0.1
+  firebase_auth: ^5.1.1
   # firebase_core: ^3.1.0
   # firebase_database: ^11.0.1
 
@@ -28,3 +29,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - lib/assets/background_projectamw.jpg

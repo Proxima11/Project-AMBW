@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/background_projectambw.jpg"),
+              image: AssetImage("lib/assets/background_projectamw.jpg"),
               fit: BoxFit.cover,
             ),
           ),
@@ -193,12 +193,8 @@ class _LoginPageState extends State<LoginPage> {
                       value: _selectedRole,
                       dropdownColor: Colors.black,
                       style: TextStyle(color: Colors.white),
-                      items: <String>[
-                        'admin',
-                        'dosen',
-                        'employer',
-                        'mahasiswa'
-                      ].map((String value) {
+                      items: <String>['admin', 'dosen', 'employer', 'mahasiswa']
+                          .map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -225,20 +221,6 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         'Login',
                         style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterPage()),
-                        );
-                      },
-                      child: Text(
-                        'Don\'t have an account? Register',
-                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ],
