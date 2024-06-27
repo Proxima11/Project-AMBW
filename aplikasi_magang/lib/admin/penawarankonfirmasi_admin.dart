@@ -119,10 +119,6 @@ class _PenawarankonfirmasiAdminState extends State<PenawarankonfirmasiAdmin> {
         : calculatedCrossAxisCount;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Center(child: const Text('Data Tawaran')),
-        centerTitle: true,
-      ),
       body: Center(
         child: Column(
           children: [

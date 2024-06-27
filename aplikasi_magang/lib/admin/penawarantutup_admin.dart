@@ -119,13 +119,10 @@ class _PenawarantutupAdminState extends State<PenawarantutupAdmin> {
         : calculatedCrossAxisCount;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Center(child: const Text('Data Tawaran')),
-        centerTitle: true,
-      ),
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 20,),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(

@@ -76,7 +76,7 @@ class _DetailTawaranTutupAdminState extends State<DetailTawaranTutupAdmin> {
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Tawaran telah dikonfirmasi'),
+            content: Text('Tawaran telah dibuka kembali'),
           ),
         );
 
@@ -86,14 +86,14 @@ class _DetailTawaranTutupAdminState extends State<DetailTawaranTutupAdmin> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content:
-                Text('Tawaran gagal dikonfirmasi: ${response.reasonPhrase}'),
+                Text('Tawaran gagal dibuka: ${response.reasonPhrase}'),
           ),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Tawaran gagal dikonfirmasi: $e'),
+          content: Text('Tawaran gagal dibuka: $e'),
         ),
       );
     }
@@ -126,13 +126,6 @@ class _DetailTawaranTutupAdminState extends State<DetailTawaranTutupAdmin> {
     
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Detail Tawaran",
-          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
