@@ -149,6 +149,9 @@ class _AktifTableState extends State<AktifTable> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => detail_selected_magang(
+                                    idTawaran: filteredTawaranProjects[index]
+                                        .idTawaran
+                                        .toString(),
                                     studentId: widget.studentId.toString(),
                                     nama_mahasiswa: data.username.toString(),
                                     nama_pembimbing:
@@ -211,122 +214,6 @@ class _AktifTableState extends State<AktifTable> {
 
   @override
   Widget build(BuildContext context) {
-    // List<Map<String, dynamic>> data = [
-    //   {
-    //     'no': 1,
-    //     'nama': 'John Doe',
-    //     'nrp': '12345',
-    //     'judul': 'Proyek A',
-    //     'pembimbing':
-    //         'Prof. Xxxxxxxxxxxzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
-    //     'mentor':
-    //         'Yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',
-    //     'mitra': 'Z',
-    //     'periode': '2023',
-    //     'tipe': 'Aktif',
-    //     'aksi': 'Aksi 1'
-    //   },
-    //   {
-    //     'no': 2,
-    //     'nama': 'Jane Smith',
-    //     'nrp': '67890',
-    //     'judul': 'Proyek B',
-    //     'pembimbing': 'Prof. Y',
-    //     'mentor': 'Z',
-    //     'mitra': 'X',
-    //     'periode': '2023',
-    //     'tipe': 'Aktif'
-    //   },
-    //   // Tambahkan lebih banyak data sesuai kebutuhan
-    // ];
-
-    // Membuat list of DataRow dari data
-    // List<DataRow> rows = data.map((item) {
-    //   return DataRow(
-    //     cells: [
-    //       DataCell(Container(width: 100, child: Text('#${item['no']}'))),
-    //       DataCell(
-    //         Container(
-    //           width: 100,
-    //           child: Text(
-    //             item['nama'],
-    //             overflow: TextOverflow.ellipsis,
-    //           ),
-    //         ),
-    //       ),
-    //       DataCell(Container(
-    //         width: 100,
-    //         child: Text(
-    //           item['nrp'],
-    //           overflow: TextOverflow.ellipsis,
-    //         ),
-    //       )),
-    //       DataCell(Container(
-    //         width: 100,
-    //         child: Text(
-    //           item['judul'],
-    //           overflow: TextOverflow.ellipsis,
-    //         ),
-    //       )),
-    //       DataCell(Container(
-    //         width: 100,
-    //         child: Text(
-    //           item['pembimbing'],
-    //           overflow: TextOverflow.ellipsis,
-    //         ),
-    //       )),
-    //       DataCell(Container(
-    //         width: 100,
-    //         child: Text(
-    //           item['mentor'],
-    //           overflow: TextOverflow.ellipsis,
-    //         ),
-    //       )),
-    //       DataCell(Container(
-    //         width: 100,
-    //         child: Text(
-    //           item['mitra'],
-    //           overflow: TextOverflow.ellipsis,
-    //         ),
-    //       )),
-    //       DataCell(Container(
-    //         width: 100,
-    //         child: Text(
-    //           item['periode'],
-    //           overflow: TextOverflow.ellipsis,
-    //         ),
-    //       )),
-    //       DataCell(Container(
-    //         width: 100,
-    //         child: Text(
-    //           item['tipe'],
-    //           overflow: TextOverflow.ellipsis,
-    //         ),
-    //       )),
-    //       DataCell(Container(
-    //         width: 100,
-    //         child: ElevatedButton(
-    //           onPressed: () {
-    //             Navigator.push(
-    //               context,
-    //               MaterialPageRoute(
-    //                   builder: (context) => detail_selected_magang()),
-    //             );
-    //           },
-    //           style: ElevatedButton.styleFrom(
-    //             backgroundColor: Colors.blue,
-    //             shape: RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.circular(0), // Rectangle shape
-    //             ),
-    //             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-    //           ),
-    //           child: Icon(Icons.search, color: Colors.white),
-    //         ),
-    //       )),
-    //     ],
-    //   );
-    // }).toList();
-
     if (rows.isEmpty) {
       rows.add(
         DataRow(
@@ -466,7 +353,7 @@ class _SelesaiTableState extends State<SelesaiTable> {
       applications.forEach((key, value) {
         try {
           TawaranProject project = value;
-          if (data.status == 0 && project.statusTawaran == 5) {
+          if (project.statusTawaran == 5) {
             filteredTawaranProjects.add(project);
             filteredTawaran
                 .add(project.idTawaran); // Populate filteredTawaranIds
@@ -500,45 +387,6 @@ class _SelesaiTableState extends State<SelesaiTable> {
               DataCell(Text(data.status == 1
                   ? 'Aktif'
                   : (data.status == null ? ' ' : 'Tidak Aktif'))),
-              DataCell(
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => detail_selected_magang(
-                                    studentId: widget.studentId.toString(),
-                                    nama_mahasiswa: data.username.toString(),
-                                    nama_pembimbing:
-                                        filteredTawaranProjects[index]
-                                            .namaPembimbing
-                                            .toString(),
-                                    nama_mentor: filteredTawaranProjects[index]
-                                        .namaMentor
-                                        .toString(),
-                                    nama_mitra:
-                                        tawaran['asal_perusahaan'].toString(),
-                                    judul: tawaran['nama_project'].toString(),
-                                  )),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(0), // Rectangle shape
-                        ),
-                        padding: EdgeInsets.all(
-                            0), // Remove padding to fill the cell
-                      ),
-                      child: Icon(Icons.search, color: Colors.white),
-                    ),
-                  ),
-                ),
-              )
             ],
           );
         }).toList();
@@ -562,7 +410,7 @@ class _SelesaiTableState extends State<SelesaiTable> {
           tawaranList.add(value);
         }
       });
-      print(tawaranList[0]);
+      // print(tawaranList[0]);
 
       return tawaranList;
     } else {
@@ -585,7 +433,7 @@ class _SelesaiTableState extends State<SelesaiTable> {
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
-            DataCell(Text('-')),
+            // DataCell(Text('-')),
           ],
         ),
       );
@@ -634,9 +482,9 @@ class _SelesaiTableState extends State<SelesaiTable> {
                     DataColumn(
                         label: Text('Tipe',
                             style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Aksi',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    // DataColumn(
+                    //     label: Text('Aksi',
+                    //         style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: rows, // No data available
                 ),
