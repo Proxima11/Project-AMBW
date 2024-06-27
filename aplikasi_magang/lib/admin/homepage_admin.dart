@@ -1,4 +1,5 @@
 import 'package:aplikasi_magang/admin/RegisterPage.dart';
+import 'package:aplikasi_magang/admin/assignpembimbing_admin.dart';
 import 'package:aplikasi_magang/admin/hometab_admin.dart';
 import 'package:aplikasi_magang/admin/mahasiswatab_admin.dart';
 import 'package:aplikasi_magang/admin/penawarantab_admin.dart';
@@ -68,7 +69,7 @@ class HomePageAdmin extends StatelessWidget {
               Tab(text: 'Penawaran'),
               Tab(text: 'Mahasiswa'),
               Tab(text: 'Pengumuman'),
-              Tab(text: 'Buat Akun'),
+              Tab(text: 'Pembimbing'),
             ],
           ),
         ),
@@ -78,7 +79,7 @@ class HomePageAdmin extends StatelessWidget {
             const PenawaranTabAdmin(),
             const MahasiswaTabAdmin(),
             const PengumumanTabAdmin(),
-            RegisterPage(),
+            const AssignPembimbingAdmin(),
           ],
         ),
       ),
