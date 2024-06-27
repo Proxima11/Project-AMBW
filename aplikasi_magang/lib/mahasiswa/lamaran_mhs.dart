@@ -342,7 +342,6 @@ class _InterviewTableState extends State<InterviewTable> {
       applications.forEach((key, value) {
         try {
           TawaranProject project = value;
-          print(project.statusTawaran);
           if (project.statusTawaran == 1) {
             filteredTawaranProjects.add(project);
             filteredTawaran

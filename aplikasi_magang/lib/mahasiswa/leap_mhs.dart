@@ -139,48 +139,48 @@ class _AktifTableState extends State<AktifTable> {
               DataCell(Text(data.status == 1
                   ? 'Aktif'
                   : (data.status == null ? ' ' : 'Tidak Aktif'))),
-              DataCell(
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => detail_selected_magang(
-                                    idTawaran: filteredTawaranProjects[index]
-                                        .idTawaran
-                                        .toString(),
-                                    studentId: widget.studentId.toString(),
-                                    nama_mahasiswa: data.username.toString(),
-                                    nama_pembimbing:
-                                        filteredTawaranProjects[index]
-                                            .namaPembimbing
-                                            .toString(),
-                                    nama_mentor: filteredTawaranProjects[index]
-                                        .namaMentor
-                                        .toString(),
-                                    nama_mitra:
-                                        tawaran['asal_perusahaan'].toString(),
-                                    judul: tawaran['nama_project'].toString(),
-                                  )),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(0), // Rectangle shape
-                        ),
-                        padding: EdgeInsets.all(
-                            0), // Remove padding to fill the cell
-                      ),
-                      child: Icon(Icons.search, color: Colors.white),
-                    ),
-                  ),
-                ),
-              )
+              // DataCell(
+              //   Expanded(
+              //     child: SizedBox(
+              //       width: double.infinity,
+              //       child: ElevatedButton(
+              //         onPressed: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) => detail_selected_magang(
+              //                       idTawaran: filteredTawaranProjects[index]
+              //                           .idTawaran
+              //                           .toString(),
+              //                       studentId: widget.studentId.toString(),
+              //                       nama_mahasiswa: data.username.toString(),
+              //                       nama_pembimbing:
+              //                           filteredTawaranProjects[index]
+              //                               .namaPembimbing
+              //                               .toString(),
+              //                       nama_mentor: filteredTawaranProjects[index]
+              //                           .namaMentor
+              //                           .toString(),
+              //                       nama_mitra:
+              //                           tawaran['asal_perusahaan'].toString(),
+              //                       judul: tawaran['nama_project'].toString(),
+              //                     )),
+              //           );
+              //         },
+              //         style: ElevatedButton.styleFrom(
+              //           backgroundColor: Colors.blue,
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius:
+              //                 BorderRadius.circular(0), // Rectangle shape
+              //           ),
+              //           padding: EdgeInsets.all(
+              //               0), // Remove padding to fill the cell
+              //         ),
+              //         child: Icon(Icons.search, color: Colors.white),
+              //       ),
+              //     ),
+              //   ),
+              // )
             ],
           );
         }).toList();
@@ -227,7 +227,7 @@ class _AktifTableState extends State<AktifTable> {
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
-            DataCell(Text('-')),
+            // DataCell(Text('-')),
           ],
         ),
       );
@@ -277,9 +277,9 @@ class _AktifTableState extends State<AktifTable> {
                     DataColumn(
                         label: Text('Tipe',
                             style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Aksi',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    // DataColumn(
+                    //     label: Text('Aksi',
+                    //         style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: rows, // No data available
                 ),
@@ -384,8 +384,8 @@ class _SelesaiTableState extends State<SelesaiTable> {
               DataCell(Text(tawaran['nama_mentor'] ?? ' ')),
               DataCell(Text(tawaran['asal_perusahaan'] ?? ' ')),
               DataCell(Text(tawaran['periode'] ?? ' ')),
-              DataCell(Text(data.status == 1
-                  ? 'Aktif'
+              DataCell(Text(data.status == 5
+                  ? 'Selesai'
                   : (data.status == null ? ' ' : 'Tidak Aktif'))),
             ],
           );

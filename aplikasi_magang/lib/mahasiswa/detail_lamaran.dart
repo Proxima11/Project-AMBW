@@ -1,9 +1,9 @@
-import 'dart:io';
-import 'package:aplikasi_magang/mahasiswa/homepage_mhs.dart';
+// import 'dart:io';
+// import 'package:aplikasi_magang/mahasiswa/homepage_mhs.dart';
 import 'package:aplikasi_magang/mahasiswa/mahasiswa_operation.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dropzone/flutter_dropzone.dart';
+// import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -70,7 +70,7 @@ class _detail_lamaranState extends State<detail_lamaran> {
     String cvLink = cvLinkController.text;
     if (!isValidURL(cvLink)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a valid URL')),
+        const SnackBar(content: Text('Please enter a valid URL')),
       );
       return;
     }
@@ -86,7 +86,7 @@ class _detail_lamaranState extends State<detail_lamaran> {
 
         if (response.statusCode == 200 && widget.studentId != "null") {
           final Map<String, dynamic> data = json.decode(response.body);
-          Mahasiswa? selectedMahasiswa;
+          // Mahasiswa? selectedMahasiswa;
           data.forEach((key, value) {
             final Mahasiswa mahasiswa = Mahasiswa.fromJson(value);
             if (mahasiswa.nrp == widget.studentId) {
@@ -98,7 +98,7 @@ class _detail_lamaranState extends State<detail_lamaran> {
 
         DateTime now = DateTime.now();
         String formattedDate = DateFormat('d/M/yyyy').format(now);
-        String? id_taw;
+        // String? id_taw;
 
         dbRef = FirebaseDatabase.instance
             .ref()
@@ -118,7 +118,7 @@ class _detail_lamaranState extends State<detail_lamaran> {
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Lamaran berhasil diajukan')),
+          const SnackBar(content: Text('Lamaran berhasil diajukan')),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -130,7 +130,7 @@ class _detail_lamaranState extends State<detail_lamaran> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
+    // double screenHeight = MediaQuery.of(context).size.height;
     String jobTitle = widget.fetchData['value']['nama_project'].toString();
     String mitra = widget.fetchData['value']['asal_perusahaan'].toString();
     String tipe = widget.fetchData['value']['jenis'].toString();
@@ -195,7 +195,7 @@ class _detail_lamaranState extends State<detail_lamaran> {
       appBar: AppBar(
         title: Text('Detail Lamaran'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -218,14 +218,14 @@ class _detail_lamaranState extends State<detail_lamaran> {
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Text(
                             jobTitle, // Job Title from fetchData
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(
