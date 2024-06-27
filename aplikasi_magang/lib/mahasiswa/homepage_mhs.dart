@@ -9,10 +9,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatelessWidget {
-  final String data;
-  HomePage({required this.data, super.key});
+  // final String data;
+  // HomePage({required this.data, super.key});
 
-  final theUser = FirebaseAuth.instance.currentUser!;
+  // final theUser = FirebaseAuth.instance.currentUser!;
 
   void signUserOut(context) {
     FirebaseAuth.instance.signOut().then((_) {
@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: AutoSizeText(
-                    'Welcome, $data',
+                    'Welcome, ',
                     style: const TextStyle(
                         fontSize: 20.0, fontWeight: FontWeight.bold),
                     minFontSize: 12.0,

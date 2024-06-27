@@ -63,7 +63,15 @@ class CommonDropdownButton extends StatelessWidget {
                   validator: validator,
                   isDense: true,
                   isExpanded: true,
-                  hint: Text(hintText ?? ''),
+                  hint: Text(
+                    chosenValue == null
+                        ? hintText ?? ''
+                        : '', // Display hint only if chosenValue is null
+                    style: TextStyle(
+                        color: chosenValue == null
+                            ? Colors.black54
+                            : Colors.black), // Hint text color
+                  ),
                   iconStyleData: const IconStyleData(
                     icon: Icon(
                       Icons.arrow_drop_down,
@@ -97,7 +105,14 @@ class CommonDropdownButton extends StatelessWidget {
                       ),
                     );
                   }).toList(),
-                  onChanged: onChanged,
+                  onChanged: (value) {
+                    if (value == 'Reset') {
+                      chosenValue = null; // Set the value to null for reset
+                    } else {
+                      chosenValue = value;
+                    }
+                    onChanged?.call(chosenValue);
+                  },
                   dropdownStyleData: DropdownStyleData(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),

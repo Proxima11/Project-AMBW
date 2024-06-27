@@ -19,12 +19,14 @@ class _HomeTabState extends State<HomeTab> {
   var chosenLokasi;
 
   List<String> TypeMagangList = [
+    "Reset",
     "Industrial Experience (Magang)",
     "Community Engagement",
     "Research and Innovation"
   ];
 
   List<String> TypeSkillList = [
+    "Reset",
     "Business Intelligence",
     "Game Development",
     "Mobile Application (Android)",
@@ -77,7 +79,22 @@ class _HomeTabState extends State<HomeTab> {
     final allTawaran = await _allTawaran;
     List<Map<String, dynamic>> filteredTawaran = allTawaran.where((tawaran) {
       final namaProject = tawaran['value']['nama_project'].toLowerCase();
-      return namaProject.contains(lowerCaseQuery);
+      final typeMagang = tawaran['value']['jenis']?.toLowerCase() ?? '';
+      final typeSkill = tawaran['value']['skill']?.toLowerCase() ?? '';
+      final lokasi = tawaran['value']['lokasi']?.toLowerCase() ?? '';
+
+      final matchesQuery = namaProject.contains(lowerCaseQuery);
+      final matchesTypeMagang = chosenTypeMagang == null ||
+          typeMagang.contains(chosenTypeMagang.toLowerCase());
+      final matchesTypeSkill = chosenTypeSkill == null ||
+          typeSkill.contains(chosenTypeSkill.toLowerCase());
+      final matchesLokasi =
+          chosenLokasi == null || lokasi.contains(chosenLokasi.toLowerCase());
+
+      return matchesQuery &&
+          matchesTypeMagang &&
+          matchesTypeSkill &&
+          matchesLokasi;
     }).toList();
 
     setState(() {
@@ -183,6 +200,7 @@ class _HomeTabState extends State<HomeTab> {
                     onChanged: (value) {
                       setState(() {
                         chosenTypeSkill = value;
+                        _performSearch(); // Trigger search on dropdown change
                       });
                     }),
               ),
@@ -202,12 +220,19 @@ class _HomeTabState extends State<HomeTab> {
                     onChanged: (value) {
                       setState(() {
                         chosenTypeMagang = value;
+                        _performSearch(); // Trigger search on dropdown change
                       });
                     }),
               ),
               SizedBox(width: 16),
               Expanded(
                 child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      chosenLokasi = value;
+                      _performSearch(); // Trigger search on text change
+                    });
+                  },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black, width: 1.0),

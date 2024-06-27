@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
         //   context,
         //   MaterialPageRoute(builder: (context) => HomePage()),
         // );
-        destinationPage = HomePage(data: username);
+        destinationPage = HomePage();
         break;
       default:
         break;
