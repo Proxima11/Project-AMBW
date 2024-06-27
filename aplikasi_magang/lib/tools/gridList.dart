@@ -17,8 +17,9 @@ class ResponsiveGrid extends StatelessWidget {
   //   }
   // }
   final Future<List<Map<String, dynamic>>> fetchData;
+  final String studentId;
 
-  ResponsiveGrid({required this.fetchData});
+  ResponsiveGrid({required this.fetchData, required this.studentId});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,10 @@ class ResponsiveGrid extends StatelessWidget {
                         childAspectRatio: 3 / 2,
                       ),
                       itemBuilder: (context, index) {
-                        return GridItem(data: snapshot.data![index]);
+                        return GridItem(
+                          data: snapshot.data![index],
+                          studentId: studentId,
+                        );
                       },
                       itemCount: snapshot.data!.length,
                       padding: EdgeInsets.all(10),
@@ -72,8 +76,9 @@ class ResponsiveGrid extends StatelessWidget {
 
 class GridItem extends StatelessWidget {
   final Map<String, dynamic> data;
+  final String studentId;
 
-  GridItem({required this.data});
+  GridItem({required this.data, required this.studentId});
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +168,7 @@ class GridItem extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => detail_lamaran(
                               fetchData: data,
-                              studentId: "C14210001",
+                              studentId: studentId,
                             )),
                   );
                 },
