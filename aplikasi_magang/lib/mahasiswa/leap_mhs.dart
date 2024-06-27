@@ -380,11 +380,14 @@ class _SelesaiTableState extends State<SelesaiTable> {
               DataCell(Text(data.username)),
               DataCell(Text(data.nrp)),
               DataCell(Text(tawaran['nama_project'] ?? ' ')),
-              DataCell(Text(tawaran['nama_pembimbing'] ?? ' ')),
-              DataCell(Text(tawaran['nama_mentor'] ?? ' ')),
+              DataCell(Text(
+                  filteredTawaranProjects[index].namaPembimbing.toString() ??
+                      ' ')),
+              DataCell(Text(
+                  filteredTawaranProjects[index].namaMentor.toString() ?? ' ')),
               DataCell(Text(tawaran['asal_perusahaan'] ?? ' ')),
               DataCell(Text(tawaran['periode'] ?? ' ')),
-              DataCell(Text(data.status == 5
+              DataCell(Text(filteredTawaranProjects[index].statusTawaran == 5
                   ? 'Selesai'
                   : (data.status == null ? ' ' : 'Tidak Aktif'))),
             ],
