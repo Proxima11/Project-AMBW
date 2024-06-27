@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class EditScreen extends StatefulWidget {
   final Map<String, dynamic> item;
   final Function(Map<String, dynamic>) onSave;
@@ -45,6 +44,18 @@ class _EditScreenState extends State<EditScreen> {
     return 'N/A';
   }
 
+  void updateStatuses(String selectedKey) {
+    tawaranPilihan.forEach((key, tawaran) {
+      if ((key != selectedKey) &&(tawaran['status_tawaran'] == 0 || tawaran['status_tawaran'] == 1)) {
+        tawaran['status_tawaran'] = 4;
+      }
+    });
+  }
+
+  bool checkStatusTerima() {
+    return tawaranPilihan.values.any((tawaran) => tawaran['status_tawaran'] == 2);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -76,7 +87,7 @@ class _EditScreenState extends State<EditScreen> {
             ),
             const SizedBox(height: 10),
             Text(
-              'IPK : ${ipkFormatted}',
+              'IPK : $ipkFormatted',
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 30),
@@ -147,6 +158,9 @@ class _EditScreenState extends State<EditScreen> {
                                     setState(() {
                                       tawaran['status_tawaran'] = newValue!;
                                       tawaranPilihan[key] = tawaran;
+                                      if (newValue == 2) {
+                                        updateStatuses(key);
+                                      }
                                     });
                                   },
                                 ),
@@ -163,8 +177,10 @@ class _EditScreenState extends State<EditScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                final statusTerima = checkStatusTerima();
                 final newData = {
                   'tawaranPilihan': tawaranPilihan,
+                  'status_terima': statusTerima,
                 };
                 widget.onSave(newData);
                 Navigator.of(context).pop();
