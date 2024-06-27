@@ -5,7 +5,7 @@ import 'admin/homepage_admin.dart';
 import 'mahasiswa/homepage_mhs.dart';
 import 'teacher/homepage_teach.dart';
 import 'employeer/homepage_employer.dart';
-import 'RegisterPage.dart';
+import 'admin/RegisterPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {

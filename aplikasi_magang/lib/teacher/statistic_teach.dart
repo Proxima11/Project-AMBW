@@ -53,12 +53,12 @@ class StatisticTeachState extends State<StatisticTeach> {
         }
       });
 
-      var count = 0;
-      for (var row in status) {
-        debugPrint(
-            "${row[0] / totalData * 100}% ${row[0]} ${totalData} ${count}");
-        count += 1;
-      }
+      // var count = 0;
+      // for (var row in status) {
+      //   debugPrint(
+      //       "${row[0] / totalData * 100}% ${row[0]} ${totalData} ${count}");
+      //   count += 1;
+      // }
 
       setState(() {
         isLoading = false;

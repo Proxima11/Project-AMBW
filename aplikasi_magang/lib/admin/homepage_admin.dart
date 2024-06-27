@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/admin/RegisterPage.dart';
 import 'package:aplikasi_magang/admin/hometab_admin.dart';
 import 'package:aplikasi_magang/admin/mahasiswatab_admin.dart';
 import 'package:aplikasi_magang/admin/penawarantab_admin.dart';
@@ -29,7 +30,7 @@ class HomePageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           title: Padding(
@@ -67,15 +68,17 @@ class HomePageAdmin extends StatelessWidget {
               Tab(text: 'Penawaran'),
               Tab(text: 'Mahasiswa'),
               Tab(text: 'Pengumuman'),
+              Tab(text: 'Buat Akun'),
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            HomeTabAdmin(),
-            PenawaranTabAdmin(),
-            MahasiswaTabAdmin(),
-            PengumumanTabAdmin(),
+            const HomeTabAdmin(),
+            const PenawaranTabAdmin(),
+            const MahasiswaTabAdmin(),
+            const PengumumanTabAdmin(),
+            RegisterPage(),
           ],
         ),
       ),
