@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ListjobWaitingApproval extends StatefulWidget {
-  const ListjobWaitingApproval({super.key});
+  final String data;
+  const ListjobWaitingApproval({required this.data, super.key});
 
   @override
   State<ListjobWaitingApproval> createState() => _ListjobState();
@@ -35,7 +36,7 @@ class _ListjobState extends State<ListjobWaitingApproval> {
       final List<Map<String, dynamic>> filteredData = [];
 
       data.forEach((key, value) {
-        if (value['asal_perusahaan'] == 'PT SINAR ABADI' &&
+        if (value['asal_perusahaan'] == widget.data &&
             value['sudah_diterima'] < value['kuota_terima'] &&
             value['status_approval'] == 0) {
           filteredData.add(value as Map<String, dynamic>);

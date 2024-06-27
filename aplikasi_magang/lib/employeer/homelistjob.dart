@@ -7,6 +7,9 @@ import 'dart:convert';
 import 'listjob_waiting_approval.dart';
 
 class Homelistjob extends StatelessWidget {
+  final String data;
+  Homelistjob({required this.data, super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -21,7 +24,10 @@ class Homelistjob extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [Listjob(), ListjobWaitingApproval()],
+          children: [
+            Listjob(Username_p: data),
+            ListjobWaitingApproval(data: data)
+          ],
         ),
       ),
     );

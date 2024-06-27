@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'StudentProfiePage.dart';
 
 class ApplicantHomepage extends StatefulWidget {
-  const ApplicantHomepage({super.key});
+  final String data;
+  const ApplicantHomepage({required this.data, super.key});
+  // const ApplicantHomepage({super.key});
 
   @override
   State<ApplicantHomepage> createState() => _ApplicantHomepageState();
@@ -45,17 +47,19 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
         final List<Map<String, dynamic>> filteredData = [];
 
         dataMahasiswa.forEach((key, value) {
-          if (value['tawaranPilihan'] != null) {
+          if (value['status'] == 0 && value['tawaranPilihan'] != null) {
             // Iterate through each tawaranPilihan
             value['tawaranPilihan'].forEach((tawaranKey, tawaranValue) {
               final idTawaranMahasiswa = tawaranValue['id_tawaran'];
-              if (dataTawaran.containsKey(idTawaranMahasiswa)) {
+              if (dataTawaran.containsKey(idTawaranMahasiswa) &&
+                  tawaranValue['status_tawaran'] == 0) {
                 final tawaranData = dataTawaran[idTawaranMahasiswa];
-                if (tawaranData['asal_perusahaan'] == 'PT SINAR ABADI') {
+                if (tawaranData['asal_perusahaan'] == widget.data) {
                   filteredData.add({
                     'username': value['username'],
                     'nama_project': tawaranData['nama_project'],
-                    'index_score': value['indexPrestasi']
+                    'index_score': value['indexPrestasi'],
+                    'id_tawaran': tawaranData['id_tawaran']
                   });
                 }
               }
@@ -70,6 +74,104 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
         // Debug log
         print(
             'Data filtered with matching id_tawaran in both datasets and asal_perusahaan = PT SINAR ABADI: $_filteredData');
+      } else {
+        print(
+            'Failed to fetch data from Firebase. Mahasiswa status code: ${responseMahasiswa.statusCode}, Tawaran status code: ${responseTawaran.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
+
+  Future<void> _updateDataFromFirebase(
+      String idTawaranYangDiKlik, int condition, String username) async {
+    final urlMahasiswa = Uri.https(
+      'ambw-leap-default-rtdb.firebaseio.com',
+      'dataMahasiswa.json',
+    );
+
+    final urlTawaran = Uri.https(
+      'ambw-leap-default-rtdb.firebaseio.com',
+      'dataTawaran/$idTawaranYangDiKlik.json',
+    );
+
+    try {
+      final responseMahasiswa = await http.get(urlMahasiswa);
+      final responseTawaran = await http.get(urlTawaran);
+
+      if (responseMahasiswa.statusCode == 200 &&
+          responseTawaran.statusCode == 200) {
+        final Map<String, dynamic> dataMahasiswa =
+            json.decode(responseMahasiswa.body);
+        final Map<String, dynamic> tawaranData =
+            json.decode(responseTawaran.body);
+
+        int currentSudahDiterima = tawaranData['sudah_diterima'] ?? 0;
+
+        dataMahasiswa.forEach((key, value) async {
+          if (value['tawaranPilihan'] != null &&
+              value['username'] == username) {
+            bool accepted = false;
+
+            if (condition == 0) {
+              value['status'] = 1;
+            }
+
+            value['tawaranPilihan'].forEach((tawaranKey, tawaranValue) async {
+              final idTawaranMahasiswa = tawaranValue['id_tawaran'];
+              if (idTawaranMahasiswa == idTawaranYangDiKlik &&
+                  tawaranData['asal_perusahaan'] == widget.data) {
+                // Update status tawaran dalam tawaranPilihan
+                if (condition == 0) {
+                  tawaranValue['status_tawaran'] = 2;
+                  tawaranData['sudah_diterima'] = currentSudahDiterima + 1;
+                  accepted = true;
+                } else if (condition == 1) {
+                  tawaranValue['status_tawaran'] = 3;
+                }
+
+                // Update dataMahasiswa di Firebase
+                final updateUrlMahasiswa = Uri.https(
+                  'ambw-leap-default-rtdb.firebaseio.com',
+                  'dataMahasiswa/$key.json',
+                );
+
+                await http.patch(updateUrlMahasiswa, body: json.encode(value));
+
+                // Update dataTawaran di Firebase
+                final updateUrlTawaran = Uri.https(
+                  'ambw-leap-default-rtdb.firebaseio.com',
+                  'dataTawaran/$idTawaranMahasiswa.json',
+                );
+
+                await http.patch(updateUrlTawaran,
+                    body: json.encode(tawaranData));
+              }
+            });
+
+            // Jika tawaran diterima, ubah semua tawaran lain menjadi 3
+            if (accepted) {
+              value['tawaranPilihan'].forEach((tawaranKey, tawaranValue) async {
+                final idTawaranMahasiswa = tawaranValue['id_tawaran'];
+                if (idTawaranMahasiswa != idTawaranYangDiKlik) {
+                  tawaranValue['status_tawaran'] = 3;
+
+                  // Update dataMahasiswa di Firebase
+                  final updateUrlMahasiswa = Uri.https(
+                    'ambw-leap-default-rtdb.firebaseio.com',
+                    'dataMahasiswa/$key.json',
+                  );
+
+                  await http.patch(updateUrlMahasiswa,
+                      body: json.encode(value));
+                }
+              });
+            }
+          }
+        });
+
+        // Debug log
+        print('Data updated for tawaran from PT SINAR ABADI.');
       } else {
         print(
             'Failed to fetch data from Firebase. Mahasiswa status code: ${responseMahasiswa.statusCode}, Tawaran status code: ${responseTawaran.statusCode}');
@@ -190,7 +292,7 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
                                       ),
                                       SizedBox(height: 8),
                                       Text(
-                                        'Skills : ${student['id_tawaran'] ?? 'N/A'}',
+                                        'id_tawaran : ${student['id_tawaran'] ?? 'N/A'}',
                                         style: TextStyle(
                                           fontSize: 16,
                                         ),
@@ -223,12 +325,20 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
                                             ElevatedButton(
                                               onPressed: () {
                                                 // Handle the Accepted button press
+                                                _updateDataFromFirebase(
+                                                    '${student['id_tawaran']}',
+                                                    0,
+                                                    '${student['username']}');
                                               },
                                               child: Text('Accept'),
                                             ),
                                             ElevatedButton(
                                               onPressed: () {
                                                 // Handle the Rejected button press
+                                                _updateDataFromFirebase(
+                                                    '${student['id_tawaran']}',
+                                                    1,
+                                                    '${student['username']}');
                                               },
                                               child: Text('Reject'),
                                             ),
