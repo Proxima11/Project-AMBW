@@ -5,7 +5,6 @@ import 'admin/homepage_admin.dart';
 import 'mahasiswa/homepage_mhs.dart';
 import 'teacher/homepage_teach.dart';
 import 'employeer/homepage_employer.dart';
-import 'RegisterPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -103,133 +102,169 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("lib/assets/background_projectamw.jpg"),
-              fit: BoxFit.cover,
-            ),
+Widget build(BuildContext context) {
+  return Stack(
+    children: [
+      Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("lib/assets/background_projectamw.jpg"),
+            fit: BoxFit.cover,
           ),
         ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Stack(
-            fit: StackFit.expand,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.black.withOpacity(0.3),
-                      Colors.black.withOpacity(0.3),
+      ),
+      Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.3),
+                    Colors.black.withOpacity(0.3),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 0,
+              top: 0,
+              bottom: 0,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 3,
+                color: Colors.black.withOpacity(0.7),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Welcome Back!',
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _usernameController,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white.withOpacity(0.1),
+                                labelText: 'Username',
+                                labelStyle: TextStyle(color: Colors.white),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                prefixIcon: Icon(Icons.person, color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.white),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 4,
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: _selectedRole,
+                                dropdownColor: Colors.black,
+                                style: TextStyle(color: Colors.white),
+                                iconEnabledColor: Colors.white,
+                                items: <String>[
+                                  'admin',
+                                  'dosen',
+                                  'employer',
+                                  'mahasiswa'
+                                ].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    _selectedRole = newValue!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: !_isPasswordVisible,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.1),
+                          labelText: 'Password',
+                          labelStyle: TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          prefixIcon: Icon(Icons.lock, color: Colors.white),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: _login,
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          backgroundColor: Colors.blueAccent,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
                     ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Welcome Back!',
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    TextField(
-                      controller: _usernameController,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.1),
-                        labelText: 'Username',
-                        labelStyle: TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        prefixIcon: Icon(Icons.person, color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: !_isPasswordVisible,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.1),
-                        labelText: 'Password',
-                        labelStyle: TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        prefixIcon: Icon(Icons.lock, color: Colors.white),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    DropdownButton<String>(
-                      value: _selectedRole,
-                      dropdownColor: Colors.black,
-                      style: TextStyle(color: Colors.white),
-                      items: <String>['admin', 'dosen', 'employer', 'mahasiswa']
-                          .map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedRole = newValue!;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: _login,
-                      style: ElevatedButton.styleFrom(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        backgroundColor: Colors.blueAccent,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
-    );
-  }
+            ),
+          ],
+        ),
+      )
+    ],
+  );
+}
 }

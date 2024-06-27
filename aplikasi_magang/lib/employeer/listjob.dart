@@ -20,7 +20,7 @@ class _ListjobState extends State<Listjob> {
     _fetchDataFromFirebase(); // Fetch data saat aplikasi dimuat
   }
 
-  // Fungsi untuk mengambil data dari Firebase
+  // Fungsi untuk mengambil data dari Firebase fgasdasdfg
   Future<void> _fetchDataFromFirebase() async {
     final url = Uri.https(
       'ambw-leap-default-rtdb.firebaseio.com',
