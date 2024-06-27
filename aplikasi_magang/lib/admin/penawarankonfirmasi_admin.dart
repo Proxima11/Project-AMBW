@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:aplikasi_magang/admin/detailtawaranaktif_admin.dart';
+import 'package:aplikasi_magang/admin/detailtawarankonfirmasi_admin.dart';
 
-class HomeTabAdmin extends StatefulWidget {
-  const HomeTabAdmin({super.key});
+class PenawarankonfirmasiAdmin extends StatefulWidget {
+  const PenawarankonfirmasiAdmin({super.key});
 
   @override
-  State<HomeTabAdmin> createState() => _HomeTabAdminState();
+  State<PenawarankonfirmasiAdmin> createState() => _PenawarankonfirmasiAdminState();
 }
 
-class _HomeTabAdminState extends State<HomeTabAdmin> {
+class _PenawarankonfirmasiAdminState extends State<PenawarankonfirmasiAdmin> {
   List<Map<String, dynamic>> _items = [];
   List<Map<String, dynamic>> _filteredItems = [];
   TextEditingController _searchController = TextEditingController();
@@ -42,7 +42,7 @@ class _HomeTabAdminState extends State<HomeTabAdmin> {
     final Map<String, dynamic> data = json.decode(response.body);
     final List<Map<String, dynamic>> loadedItems = [];
     data.forEach((key, value) {
-      if (value['status_approval'].toString() == '1') {
+      if (value['status_approval'].toString() == '0') {
         loadedItems.add({
           'id': key,
           'asal_perusahaan': value['asal_perusahaan'],
@@ -82,7 +82,7 @@ class _HomeTabAdminState extends State<HomeTabAdmin> {
         final asalPerusahaan = item['asal_perusahaan'].toLowerCase();
 
         // First filter by status_approval == '1'
-        bool passesStatusFilter = statusProject == '1';
+        bool passesStatusFilter = statusProject == '0';
 
         // Second filter by search query if provided
         bool passesSearchFilter = query.isEmpty ||
@@ -98,7 +98,7 @@ class _HomeTabAdminState extends State<HomeTabAdmin> {
       BuildContext context, Map<String, dynamic> item) async {
     final result = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => DetailTawaranAktifAdmin(item: item),
+        builder: (context) => DetailTawaranKonfirmasiAdmin(item: item),
       ),
     );
 

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class DetailTawaranAktifAdmin extends StatefulWidget {
+class DetailTawaranKonfirmasiAdmin extends StatefulWidget {
   final Map<String, dynamic> item;
 
-  DetailTawaranAktifAdmin({required this.item});
+  DetailTawaranKonfirmasiAdmin({required this.item});
 
   @override
-  _DetailTawaranAktifAdminState createState() => _DetailTawaranAktifAdminState();
+  _DetailTawaranKonfirmasiAdminState createState() => _DetailTawaranKonfirmasiAdminState();
 }
 
-class _DetailTawaranAktifAdminState extends State<DetailTawaranAktifAdmin> {
+class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAdmin> {
   late Map<String, dynamic> _item;
   List<Map<String, dynamic>> _relatedMahasiswa = [];
 
@@ -66,7 +66,7 @@ class _DetailTawaranAktifAdminState extends State<DetailTawaranAktifAdmin> {
       final response = await http.patch(
         Uri.parse(apiUrl),
         body: jsonEncode({
-          'status_approval': 2,
+          'status_approval': 1,
         }),
       );
 
@@ -76,7 +76,7 @@ class _DetailTawaranAktifAdminState extends State<DetailTawaranAktifAdmin> {
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Tawaran telah ditutup'),
+            content: Text('Tawaran telah dikonfirmasi'),
           ),
         );
 
@@ -86,14 +86,14 @@ class _DetailTawaranAktifAdminState extends State<DetailTawaranAktifAdmin> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content:
-                Text('Tawaran gagal ditutup: ${response.reasonPhrase}'),
+                Text('Tawaran gagal dikonfirmasi: ${response.reasonPhrase}'),
           ),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Tawaran gagal ditutup: $e'),
+          content: Text('Tawaran gagal dikonfirmasi: $e'),
         ),
       );
     }
