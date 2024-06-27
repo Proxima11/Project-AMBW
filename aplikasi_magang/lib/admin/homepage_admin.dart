@@ -1,5 +1,6 @@
 import 'package:aplikasi_magang/admin/hometab_admin.dart';
 import 'package:aplikasi_magang/admin/mahasiswatab_admin.dart';
+import 'package:aplikasi_magang/admin/pengumumantab_admin.dart';
 import 'package:flutter/material.dart';
 
 
@@ -57,7 +58,8 @@ class HomePageAdmin extends StatelessWidget {
             //const Center(child: Text('Admin Home Page')),
             MahasiswaTabAdmin(),
             //Center(child: Text('Data Mahasiswa Page')),
-            const Center(child: Text('Pengumuman Page')),
+            PengumumanTabAdmin(),
+            //const Center(child: Text('Pengumuman Page')),
           ],
         ),
       ),

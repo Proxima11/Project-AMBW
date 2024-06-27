@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:aplikasi_magang/admin/details/detailtawaranaktif_admin.dart';
+import 'package:aplikasi_magang/admin/detailtawaranaktif_admin.dart';
 
 void main() {
   runApp(const HomeTabAdmin());
