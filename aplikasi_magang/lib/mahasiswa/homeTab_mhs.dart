@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/mahasiswa/mahasiswa_operation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -8,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HomeTab extends StatefulWidget {
+  final String studentId;
+  HomeTab({required this.studentId});
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
@@ -19,12 +22,14 @@ class _HomeTabState extends State<HomeTab> {
   var chosenLokasi;
 
   List<String> TypeMagangList = [
+    "Reset",
     "Industrial Experience (Magang)",
     "Community Engagement",
     "Research and Innovation"
   ];
 
   List<String> TypeSkillList = [
+    "Reset",
     "Business Intelligence",
     "Game Development",
     "Mobile Application (Android)",
@@ -66,6 +71,61 @@ class _HomeTabState extends State<HomeTab> {
         _allTawaran = Future.value(allTawaran);
         _filteredTawaran = Future.value(allTawaran); // Initialize filtered data
       });
+      late List<Mahasiswa> choosenMhs = [];
+
+      final response_mhs = await http.get(
+        Uri.parse(
+            'https://ambw-leap-default-rtdb.firebaseio.com/dataMahasiswa.json'),
+      );
+      if (response_mhs.statusCode == 200 && widget.studentId != "null") {
+        final Map<String, dynamic> datamhs = json.decode(response_mhs.body);
+        Mahasiswa? selectedMahasiswa;
+
+        datamhs.forEach((key, value) {
+          final Mahasiswa mahasiswa = Mahasiswa.fromJson(value);
+          if (mahasiswa.nrp == widget.studentId) {
+            selectedMahasiswa = mahasiswa;
+          }
+        });
+
+        if (selectedMahasiswa != null) {
+          setState(() {
+            choosenMhs.add(selectedMahasiswa!);
+          });
+        }
+        List<String> _filteredTawaranID = [];
+        List<TawaranProject> filteredTawaranProjects = [];
+
+        if (choosenMhs.isNotEmpty) {
+          final Map<String, dynamic> applications =
+              choosenMhs[0].tawaranPilihan;
+
+          applications.forEach((key, value) {
+            try {
+              TawaranProject project = value;
+              filteredTawaranProjects.add(project);
+              _filteredTawaranID.add(project.idTawaran);
+            } catch (e) {
+              print('Error parsing TawaranProject from JSON: $e');
+              // Handle parsing error (e.g., log it, skip this project, etc.)
+            }
+
+            List<Map<String, dynamic>> filteredTawaran = [];
+            _filteredTawaran.then((tawaranList) {
+              filteredTawaran = tawaranList
+                  .where(
+                      (tawaran) => !_filteredTawaranID.contains(tawaran['key']))
+                  .toList();
+              setState(() {
+                _filteredTawaran = Future.value(filteredTawaran);
+                jobCount = filteredTawaran.length;
+              });
+            });
+          });
+        }
+        ;
+      }
+
       return allTawaran;
     } else {
       throw Exception('Failed to load data');
@@ -77,13 +137,83 @@ class _HomeTabState extends State<HomeTab> {
     final allTawaran = await _allTawaran;
     List<Map<String, dynamic>> filteredTawaran = allTawaran.where((tawaran) {
       final namaProject = tawaran['value']['nama_project'].toLowerCase();
-      return namaProject.contains(lowerCaseQuery);
+      final typeMagang = tawaran['value']['jenis']?.toLowerCase() ?? '';
+      final typeSkill = tawaran['value']['skill']?.toLowerCase() ?? '';
+      final lokasi = tawaran['value']['lokasi']?.toLowerCase() ?? '';
+
+      final matchesQuery = namaProject.contains(lowerCaseQuery);
+      final matchesTypeMagang = chosenTypeMagang == null ||
+          typeMagang.contains(chosenTypeMagang.toLowerCase());
+      final matchesTypeSkill = chosenTypeSkill == null ||
+          typeSkill.contains(chosenTypeSkill.toLowerCase());
+      final matchesLokasi =
+          chosenLokasi == null || lokasi.contains(chosenLokasi.toLowerCase());
+
+      return matchesQuery &&
+          matchesTypeMagang &&
+          matchesTypeSkill &&
+          matchesLokasi;
     }).toList();
 
     setState(() {
       _filteredTawaran = Future.value(filteredTawaran);
       jobCount = filteredTawaran.length; // Update jobCount with filtered count
     });
+
+    late List<Mahasiswa> choosenMhs = [];
+
+    final response_mhs = await http.get(
+      Uri.parse(
+          'https://ambw-leap-default-rtdb.firebaseio.com/dataMahasiswa.json'),
+    );
+    if (response_mhs.statusCode == 200 && widget.studentId != "null") {
+      final Map<String, dynamic> datamhs = json.decode(response_mhs.body);
+      Mahasiswa? selectedMahasiswa;
+
+      datamhs.forEach((key, value) {
+        final Mahasiswa mahasiswa = Mahasiswa.fromJson(value);
+        if (mahasiswa.nrp == widget.studentId) {
+          selectedMahasiswa = mahasiswa;
+        }
+      });
+
+      if (selectedMahasiswa != null) {
+        setState(() {
+          choosenMhs.add(selectedMahasiswa!);
+        });
+      }
+      List<String> _filteredTawaranID = [];
+      List<TawaranProject> filteredTawaranProjects = [];
+
+      if (choosenMhs.isNotEmpty) {
+        final Map<String, dynamic> applications = choosenMhs[0].tawaranPilihan;
+
+        applications.forEach((key, value) {
+          try {
+            TawaranProject project = value;
+            filteredTawaranProjects.add(project);
+            _filteredTawaranID.add(project.idTawaran);
+          } catch (e) {
+            print('Error parsing TawaranProject from JSON: $e');
+            // Handle parsing error (e.g., log it, skip this project, etc.)
+          }
+
+          List<Map<String, dynamic>> filteredTawaran = [];
+          _filteredTawaran.then((tawaranList) {
+            filteredTawaran = tawaranList
+                .where(
+                    (tawaran) => !_filteredTawaranID.contains(tawaran['key']))
+                .toList();
+            setState(() {
+              _filteredTawaran = Future.value(filteredTawaran);
+              jobCount = filteredTawaran.length;
+            });
+          });
+        });
+      }
+      ;
+    }
+    ;
 
     return filteredTawaran;
   }
@@ -183,6 +313,7 @@ class _HomeTabState extends State<HomeTab> {
                     onChanged: (value) {
                       setState(() {
                         chosenTypeSkill = value;
+                        _performSearch(); // Trigger search on dropdown change
                       });
                     }),
               ),
@@ -202,12 +333,19 @@ class _HomeTabState extends State<HomeTab> {
                     onChanged: (value) {
                       setState(() {
                         chosenTypeMagang = value;
+                        _performSearch(); // Trigger search on dropdown change
                       });
                     }),
               ),
               SizedBox(width: 16),
               Expanded(
                 child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      chosenLokasi = value;
+                      _performSearch(); // Trigger search on text change
+                    });
+                  },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black, width: 1.0),

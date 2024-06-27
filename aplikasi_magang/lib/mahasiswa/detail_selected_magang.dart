@@ -1,6 +1,12 @@
+import 'package:aplikasi_magang/mahasiswa/mahasiswa_operation.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class detail_selected_magang extends StatefulWidget {
+  final String idTawaran;
   final String studentId;
   final String judul;
   final String nama_mahasiswa;
@@ -8,7 +14,8 @@ class detail_selected_magang extends StatefulWidget {
   final String nama_pembimbing;
   final String nama_mentor;
   detail_selected_magang(
-      {required this.studentId,
+      {required this.idTawaran,
+      required this.studentId,
       required this.judul,
       required this.nama_mahasiswa,
       required this.nama_pembimbing,
@@ -37,6 +44,7 @@ class _detail_selected_magangState extends State<detail_selected_magang> {
         body: TabBarView(
           children: [
             LamaranTab(
+              idTawaran: widget.idTawaran.toString(),
               studentId: widget.studentId.toString(),
               nama_mahasiswa: widget.nama_mahasiswa.toString(),
               nama_pembimbing: widget.nama_pembimbing.toString(),
@@ -51,13 +59,15 @@ class _detail_selected_magangState extends State<detail_selected_magang> {
 }
 
 class LamaranTab extends StatefulWidget {
+  final String idTawaran;
   final String studentId;
   final String nama_mahasiswa;
   final String nama_mitra;
   final String nama_pembimbing;
   final String nama_mentor;
   LamaranTab(
-      {required this.studentId,
+      {required this.idTawaran,
+      required this.studentId,
       required this.nama_mahasiswa,
       required this.nama_pembimbing,
       required this.nama_mentor,
@@ -67,6 +77,78 @@ class LamaranTab extends StatefulWidget {
 }
 
 class _LamaranTabState extends State<LamaranTab> {
+  TextEditingController cvLinkController_proposal = TextEditingController();
+  TextEditingController cvLinkController_kemajuan = TextEditingController();
+  TextEditingController cvLinkController_akhir = TextEditingController();
+  late DatabaseReference dbRef;
+  late List<Mahasiswa> choosenMhs = [];
+
+  bool isValidURL(String url) {
+    Uri? uri = Uri.tryParse(url);
+    return uri != null && (uri.isAbsolute || uri.hasScheme);
+  }
+
+  void submitproposal() async {
+    String cvLink = cvLinkController_proposal.text;
+    if (!isValidURL(cvLink)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid URL')),
+      );
+      return;
+    }
+
+    if (cvLink.isNotEmpty && choosenMhs.isNotEmpty) {
+      try {
+        final response = await http.get(
+          Uri.parse(
+              'https://ambw-leap-default-rtdb.firebaseio.com/dataMahasiswa.json'),
+        );
+
+        String? _key;
+
+        if (response.statusCode == 200 && widget.studentId != "null") {
+          final Map<String, dynamic> data = json.decode(response.body);
+          Mahasiswa? selectedMahasiswa;
+          data.forEach((key, value) {
+            final Mahasiswa mahasiswa = Mahasiswa.fromJson(value);
+            if (mahasiswa.nrp == widget.studentId) {
+              choosenMhs.add(mahasiswa);
+              _key = key;
+            }
+          });
+        }
+        ;
+
+        DateTime now = DateTime.now();
+        String formattedDate = DateFormat('d/M/yyyy').format(now);
+        String? id_taw;
+
+        dbRef = FirebaseDatabase.instance
+            .ref()
+            .child('dataMahasiswa')
+            .child(_key!)
+            .child('tawaranPilihan')
+            .child(widget.idTawaran)
+            .child('laporan');
+
+        await dbRef.set({
+          'jenis_laporan': "Laporan Proposal",
+          'status_laporan': 0,
+          'laporanLink': cvLink, // Set the tanggal with the current date
+          'tanggal_update': formattedDate, // Example timestamp
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Laporan berhasil diajukan')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal mengajukan laporan: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -196,7 +278,60 @@ class _LamaranTabState extends State<LamaranTab> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: const Text(
+                                            'Ajukan Laporan Proposal Leap'),
+                                        content: SingleChildScrollView(
+                                          child: Container(
+                                            child: Wrap(children: [
+                                              Column(
+                                                children: [
+                                                  TextField(
+                                                    controller:
+                                                        cvLinkController_proposal,
+                                                    decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors.black,
+                                                            width: 1.0),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10.0),
+                                                        ),
+                                                      ),
+                                                      hintText: 'Link CV',
+                                                    ),
+                                                    onChanged: (value) {
+                                                      setState(() {});
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ]),
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                context, 'Cancel'),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              submitproposal();
+                                              Navigator.pop(context, 'OK');
+                                            },
+                                            child: const Text('Submit'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
                                   child: Text('Upload Laporan Proposal Leap'),
                                 ),
                                 ElevatedButton(

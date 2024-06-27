@@ -161,7 +161,10 @@ class GridItem extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => detail_lamaran(fetchData: data)),
+                        builder: (context) => detail_lamaran(
+                              fetchData: data,
+                              studentId: "C14210001",
+                            )),
                   );
                 },
                 child: Text('Lihat Detail'),

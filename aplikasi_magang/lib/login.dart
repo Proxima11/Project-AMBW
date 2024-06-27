@@ -5,6 +5,8 @@ import 'admin/homepage_admin.dart';
 import 'mahasiswa/homepage_mhs.dart';
 import 'teacher/homepage_teach.dart';
 import 'employeer/homepage_employer.dart';
+import 'admin/RegisterPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,55 +14,82 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailCController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
-  String _selectedRole = 'mahasiswa';
+  String _selectedRole = 'admin';
 
   Future<void> _login() async {
-    final url = Uri.https(
-        'ambw-leap-default-rtdb.firebaseio.com', 'account/$_selectedRole.json');
-    final response = await http.get(url);
+    try {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-
+      final url = Uri.https('ambw-leap-default-rtdb.firebaseio.com',
+          'account/$_selectedRole.json');
+      final response = await http.get(url);
       bool authenticated = false;
+      var username = "";
 
-      data.forEach((key, value) {
-        if (value['username'] == _usernameController.text &&
-            value['password'] == _passwordController.text) {
-          authenticated = true;
-        }
-      });
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
 
-      if (authenticated) {
+        data.forEach((key, value) {
+          if (value['email'] == _emailCController.text &&
+              value['password'] == _passwordController.text) {
+            authenticated = true;
+            username = value['username'];
+          }
+        });
+      }
+
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailCController.text,
+        password: _passwordController.text,
+      );
+
+      if (userCredential.user != null && authenticated) {
         debugPrint('Login successful as $_selectedRole');
-        _showDialog('Login successful', true, _selectedRole);
+        _showDialog('Login successful', true, _selectedRole, username);
       } else {
         debugPrint('Invalid credentials');
-        _showDialog('Invalid credentials', false, '');
+        _showDialog('Invalid credentials', false, _selectedRole, username);
       }
-    } else {
-      debugPrint('Failed to load data');
-      _showDialog('Failed to load data', false, '');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        debugPrint('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        debugPrint('Wrong password provided for that user.');
+      }
+      _showDialog('Invalid credentials', false, _selectedRole, '');
+    } catch (e) {
+      debugPrint('Failed to load data: $e');
+      _showDialog('Failed to load data', false, _selectedRole, '');
     }
   }
 
-  void _showDialog(String message, bool success, String role) {
+  void _showDialog(String message, bool success, String role, String username) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Login Status'),
+          title: const Text('Login Status'),
           content: Text(message),
           actions: <Widget>[
             ElevatedButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
                 if (success) {
-                  _redirectToRolePage(role);
+                  _redirectToRolePage(role, username);
+                } else {
+                  Navigator.pop(context);
                 }
               },
             ),
@@ -70,35 +99,46 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _redirectToRolePage(String role) {
+  void _redirectToRolePage(String role, String username) {
+    Widget destinationPage = LoginPage();
     switch (role) {
       case 'admin':
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePageAdmin()),
-        );
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => HomePageAdmin()),
+        // );
+
+        destinationPage = HomePageAdmin(data: username);
         break;
       case 'dosen':
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePageTeach()),
-        );
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => HomePageTeach()),
+        // );
+        destinationPage = HomePageTeach(data: username);
         break;
       case 'employer':
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomepageEmployer()),
-        );
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => HomepageEmployer()),
+        // );
+        destinationPage = HomepageEmployer(data: username);
         break;
       case 'mahasiswa':
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => HomePage()),
+        // );
+        destinationPage = HomePage(data: username);
         break;
       default:
         break;
     }
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => destinationPage),
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override

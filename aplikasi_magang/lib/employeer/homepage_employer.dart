@@ -1,3 +1,4 @@
+import 'package:aplikasi_magang/login.dart';
 import 'package:flutter/material.dart';
 import 'listjob.dart';
 import 'applicant_homepage.dart';
@@ -5,8 +6,28 @@ import 'form_addnewjob.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'homelistjob.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomepageEmployer extends StatelessWidget {
+  final String data;
+  HomepageEmployer({required this.data, super.key});
+
+  final theUser = FirebaseAuth.instance.currentUser!;
+
+  void signUserOut(context) {
+    FirebaseAuth.instance.signOut().then((_) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        (Route<dynamic> route) => false,
+      );
+    }).catchError((error) {
+      // Handle error if sign out fails
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error signing out: $error')),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -32,6 +53,7 @@ class HomepageEmployer extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   // Logout action
+                  signUserOut(context);
                 },
                 style: const ButtonStyle(),
                 child: const Text(
