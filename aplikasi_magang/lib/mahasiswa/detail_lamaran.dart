@@ -20,7 +20,6 @@ class detail_lamaran extends StatefulWidget {
 
 class _detail_lamaranState extends State<detail_lamaran> {
   bool isLoading = false;
-  late DropzoneViewController controller;
   TextEditingController cvLinkController = TextEditingController();
   late DatabaseReference dbRef;
   late List<Mahasiswa> choosenMhs = [];
@@ -99,16 +98,17 @@ class _detail_lamaranState extends State<detail_lamaran> {
 
         DateTime now = DateTime.now();
         String formattedDate = DateFormat('d/M/yyyy').format(now);
+        String? id_taw;
 
         dbRef = FirebaseDatabase.instance
             .ref()
             .child('dataMahasiswa')
             .child(_key!)
             .child('tawaranPilihan')
-            .child(widget.fetchData['value']['idTawaran'].toString());
+            .child(widget.fetchData['value']['id_tawaran'].toString());
 
         await dbRef.set({
-          'id_tawaran': widget.fetchData['value']['idTawaran'].toString(),
+          'id_tawaran': widget.fetchData['value']['id_tawaran'].toString(),
           'nama_mentor': "",
           'nama_pembimbing': "",
           'status_tawaran': 0,

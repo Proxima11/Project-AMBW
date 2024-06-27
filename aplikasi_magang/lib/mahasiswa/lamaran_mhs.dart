@@ -572,116 +572,116 @@ class _ApprovedTableState extends State<ApprovedTable> {
               DataCell(
                   Text(filteredTawaranProjects[index].tanggalUpdate ?? ' ')),
               DataCell(Text(tawaran['periode'] ?? ' ')),
-              DataCell(
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: IntrinsicWidth(
-                                child: Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(
-                                              height:
-                                                  10), // Adjusted space for the X button
-                                          Text(
-                                            'Terima Lamaran',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 10),
-                                          Text(
-                                            'Apakah anda ingin untuk menerima magang ini?',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          Text(
-                                            'Anda hanya bisa sekali untuk menerima magang. Tawaran magang lainnya akan tertolak.',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                          SizedBox(height: 10),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  // Approve action
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text(
-                                                  'Reject',
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.red,
-                                                ),
-                                              ),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  // Approve action
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text(
-                                                  'Approve',
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.green,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: IconButton(
-                                        icon: Icon(Icons.close),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(0), // Rectangle shape
-                        ),
-                        padding: EdgeInsets.all(
-                            0), // Remove padding to fill the cell
-                      ),
-                      child: Icon(Icons.edit, color: Colors.white),
-                    ),
-                  ),
-                ),
-              )
+              // DataCell(
+              //   Expanded(
+              //     child: SizedBox(
+              //       width: double.infinity,
+              //       child: ElevatedButton(
+              //         onPressed: () {
+              //           showDialog(
+              //             context: context,
+              //             builder: (BuildContext context) {
+              //               return Dialog(
+              //                 shape: RoundedRectangleBorder(
+              //                   borderRadius: BorderRadius.circular(10),
+              //                 ),
+              //                 child: IntrinsicWidth(
+              //                   child: Stack(
+              //                     children: [
+              //                       Padding(
+              //                         padding: const EdgeInsets.all(20.0),
+              //                         child: Column(
+              //                           mainAxisSize: MainAxisSize.min,
+              //                           children: [
+              //                             SizedBox(
+              //                                 height:
+              //                                     10), // Adjusted space for the X button
+              //                             Text(
+              //                               'Terima Lamaran',
+              //                               style: TextStyle(
+              //                                 fontSize: 20,
+              //                                 fontWeight: FontWeight.bold,
+              //                               ),
+              //                             ),
+              //                             SizedBox(height: 10),
+              //                             Text(
+              //                               'Apakah anda ingin untuk menerima magang ini?',
+              //                               textAlign: TextAlign.center,
+              //                             ),
+              //                             Text(
+              //                               'Anda hanya bisa sekali untuk menerima magang. Tawaran magang lainnya akan tertolak.',
+              //                               textAlign: TextAlign.center,
+              //                               style: TextStyle(color: Colors.red),
+              //                             ),
+              //                             SizedBox(height: 10),
+              //                             Row(
+              //                               mainAxisAlignment:
+              //                                   MainAxisAlignment.spaceEvenly,
+              //                               children: [
+              //                                 ElevatedButton(
+              //                                   onPressed: () {
+              //                                     // Approve action
+              //                                     Navigator.of(context).pop();
+              //                                   },
+              //                                   child: Text(
+              //                                     'Reject',
+              //                                     style: TextStyle(
+              //                                         color: Colors.black),
+              //                                   ),
+              //                                   style: ElevatedButton.styleFrom(
+              //                                     backgroundColor: Colors.red,
+              //                                   ),
+              //                                 ),
+              //                                 ElevatedButton(
+              //                                   onPressed: () {
+              //                                     // Approve action
+              //                                     Navigator.of(context).pop();
+              //                                   },
+              //                                   child: Text(
+              //                                     'Approve',
+              //                                     style: TextStyle(
+              //                                         color: Colors.black),
+              //                                   ),
+              //                                   style: ElevatedButton.styleFrom(
+              //                                     backgroundColor: Colors.green,
+              //                                   ),
+              //                                 ),
+              //                               ],
+              //                             ),
+              //                           ],
+              //                         ),
+              //                       ),
+              //                       Positioned(
+              //                         top: 0,
+              //                         right: 0,
+              //                         child: IconButton(
+              //                           icon: Icon(Icons.close),
+              //                           onPressed: () {
+              //                             Navigator.of(context).pop();
+              //                           },
+              //                         ),
+              //                       ),
+              //                     ],
+              //                   ),
+              //                 ),
+              //               );
+              //             },
+              //           );
+              //         },
+              //         style: ElevatedButton.styleFrom(
+              //           backgroundColor: Colors.blue,
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius:
+              //                 BorderRadius.circular(0), // Rectangle shape
+              //           ),
+              //           padding: EdgeInsets.all(
+              //               0), // Remove padding to fill the cell
+              //         ),
+              //         child: Icon(Icons.edit, color: Colors.white),
+              //       ),
+              //     ),
+              //   ),
+              // )
             ],
           );
         }).toList();
@@ -697,7 +697,6 @@ class _ApprovedTableState extends State<ApprovedTable> {
       rows.add(
         DataRow(
           cells: [
-            DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
@@ -751,9 +750,6 @@ class _ApprovedTableState extends State<ApprovedTable> {
                             style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text('Periode',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Aksi',
                             style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: rows, // No data available
