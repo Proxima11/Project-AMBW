@@ -75,7 +75,7 @@ class HomepageEmployer extends StatelessWidget {
               Tab(text: 'Home'),
               Tab(text: 'Pelamar'),
               Tab(
-                text: 'Upload Open Pekerjaan Baru',
+                text: 'Tambah Pekerjaan',
               ),
             ],
           ),
