@@ -58,8 +58,8 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     try {
-      final url = Uri.https(
-          'ambw-leap-default-rtdb.firebaseio.com', 'account/$_selectedRole.json');
+      final url = Uri.https('ambw-leap-default-rtdb.firebaseio.com',
+          'account/$_selectedRole.json');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -90,7 +90,8 @@ class _RegisterPageState extends State<RegisterPage> {
       }
 
       if (_selectedRole == "mahasiswa") {
-        final url2 = Uri.https('ambw-leap-default-rtdb.firebaseio.com', 'dataMahasiswa.json');
+        final url2 = Uri.https(
+            'ambw-leap-default-rtdb.firebaseio.com', 'dataMahasiswa.json');
         final response2 = await http.get(url2);
 
         if (response2.statusCode == 200) {
@@ -115,15 +116,18 @@ class _RegisterPageState extends State<RegisterPage> {
 
           data_2[newUserKey] = newData;
 
-          debugPrint('New dataMahasiswa entry with dummy data: ${json.encode(newData)}');
+          debugPrint(
+              'New dataMahasiswa entry with dummy data: ${json.encode(newData)}');
 
-          final updateResponse2 = await http.put(url2, body: json.encode(data_2));
+          final updateResponse2 =
+              await http.put(url2, body: json.encode(data_2));
 
           if (updateResponse2.statusCode == 200) {
             debugPrint('Mahasiswa data update successful');
             //_showDialog('Mahasiswa data update successful');
           } else {
-            debugPrint('Failed to update mahasiswa data: ${updateResponse2.statusCode}');
+            debugPrint(
+                'Failed to update mahasiswa data: ${updateResponse2.statusCode}');
             debugPrint('Response body: ${updateResponse2.body}');
             _showDialog('Failed to update mahasiswa data');
           }
@@ -169,138 +173,141 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DropdownButtonFormField<String>(
-                value: _selectedRole,
-                items: _roles.map((String role) {
-                  return DropdownMenuItem<String>(
-                    value: role,
-                    child: Text(role),
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Role'),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedRole = newValue;
-                    _showIpkField = newValue ==
-                        'mahasiswa'; // Show IPK field only for Mahasiswa
-                  });
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select a role';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              if (_showIpkField)
-                TextFormField(
-                  controller: _nrpController,
-                  decoration: InputDecoration(
-                    labelText: 'NRP',
-                    prefixIcon: const Icon(Icons.numbers, color: Colors.black),
-                  ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DropdownButtonFormField<String>(
+                  value: _selectedRole,
+                  items: _roles.map((String role) {
+                    return DropdownMenuItem<String>(
+                      value: role,
+                      child: Text(role),
+                    );
+                  }).toList(),
+                  decoration: InputDecoration(labelText: 'Role'),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedRole = newValue;
+                      _showIpkField = newValue ==
+                          'mahasiswa'; // Show IPK field only for Mahasiswa
+                    });
+                  },
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your NRP';
+                    if (value == null) {
+                      return 'Please select a role';
                     }
                     return null;
                   },
                 ),
-              const SizedBox(height: 10),
-              if (_showIpkField)
-                TextFormField(
-                  controller: _ipkController,
-                  decoration: InputDecoration(
-                    labelText: 'IPK',
-                    prefixIcon: const Icon(Icons.grade, color: Colors.black),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your IPK';
-                    }
-                    return null;
-                  },
-                ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _usernameController,
-                decoration: InputDecoration(
-                  labelText: 'Username',
-                  prefixIcon: const Icon(Icons.person, color: Colors.black),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a username';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: const Icon(Icons.mail, color: Colors.black),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  prefixIcon: const Icon(Icons.lock, color: Colors.black),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Colors.black,
+                const SizedBox(height: 20),
+                if (_showIpkField)
+                  TextFormField(
+                    controller: _nrpController,
+                    decoration: InputDecoration(
+                      labelText: 'NRP',
+                      prefixIcon:
+                          const Icon(Icons.numbers, color: Colors.black),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your NRP';
+                      }
+                      return null;
                     },
                   ),
-                ),
-                obscureText: !_isPasswordVisible,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 40),
-              Center(
-                child: ElevatedButton(
-                  onPressed: _register,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                const SizedBox(height: 10),
+                if (_showIpkField)
+                  TextFormField(
+                    controller: _ipkController,
+                    decoration: InputDecoration(
+                      labelText: 'IPK',
+                      prefixIcon: const Icon(Icons.grade, color: Colors.black),
                     ),
-                    backgroundColor: Colors.blueAccent,
-                    foregroundColor: Colors.white,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your IPK';
+                      }
+                      return null;
+                    },
                   ),
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(fontSize: 18),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    prefixIcon: const Icon(Icons.person, color: Colors.black),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a username';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: const Icon(Icons.mail, color: Colors.black),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an email';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: const Icon(Icons.lock, color: Colors.black),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
+                  obscureText: !_isPasswordVisible,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 40),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: _register,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      backgroundColor: Colors.blueAccent,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text(
+                      'Register',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
