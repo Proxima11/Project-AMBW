@@ -132,8 +132,11 @@ class _AktifTableState extends State<AktifTable> {
               DataCell(Text(data.username)),
               DataCell(Text(data.nrp)),
               DataCell(Text(tawaran['nama_project'] ?? ' ')),
-              DataCell(Text(tawaran['nama_pembimbing'] ?? ' ')),
-              DataCell(Text(tawaran['nama_mentor'] ?? ' ')),
+              DataCell(Text(
+                  filteredTawaranProjects[index].namaPembimbing.toString() ??
+                      ' ')),
+              // DataCell(Text(filteredTawaranProjects[index].namaMentor.toString() ??
+              //         ' ')),
               DataCell(Text(tawaran['asal_perusahaan'] ?? ' ')),
               DataCell(Text(tawaran['periode'] ?? ' ')),
               DataCell(Text(data.status == 1
@@ -224,7 +227,7 @@ class _AktifTableState extends State<AktifTable> {
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
-            DataCell(Text('-')),
+            // DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
             // DataCell(Text('-')),
@@ -265,9 +268,9 @@ class _AktifTableState extends State<AktifTable> {
                     DataColumn(
                         label: Text('Nama Pembimbing',
                             style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Mentor',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    // DataColumn(
+                    //     label: Text('Mentor',
+                    //         style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text('Mitra',
                             style: TextStyle(fontWeight: FontWeight.bold))),
@@ -383,8 +386,8 @@ class _SelesaiTableState extends State<SelesaiTable> {
               DataCell(Text(
                   filteredTawaranProjects[index].namaPembimbing.toString() ??
                       ' ')),
-              DataCell(Text(
-                  filteredTawaranProjects[index].namaMentor.toString() ?? ' ')),
+              // DataCell(Text(
+              //     filteredTawaranProjects[index].namaMentor.toString() ?? ' ')),
               DataCell(Text(tawaran['asal_perusahaan'] ?? ' ')),
               DataCell(Text(tawaran['periode'] ?? ' ')),
               DataCell(Text(filteredTawaranProjects[index].statusTawaran == 5
@@ -435,7 +438,6 @@ class _SelesaiTableState extends State<SelesaiTable> {
             DataCell(Text('-')),
             DataCell(Text('-')),
             DataCell(Text('-')),
-            DataCell(Text('-')),
             // DataCell(Text('-')),
           ],
         ),
@@ -472,9 +474,6 @@ class _SelesaiTableState extends State<SelesaiTable> {
                             style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text('Nama Pembimbing',
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Mentor',
                             style: TextStyle(fontWeight: FontWeight.bold))),
                     DataColumn(
                         label: Text('Mitra',
