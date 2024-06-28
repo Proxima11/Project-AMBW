@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AssignPembimbingAdmin extends StatefulWidget {
-  const AssignPembimbingAdmin({super.key});
+  const AssignPembimbingAdmin({Key? key}) : super(key: key);
 
   @override
   State<AssignPembimbingAdmin> createState() => _AssignPembimbingAdminState();
@@ -167,6 +167,8 @@ class _AssignPembimbingAdminState extends State<AssignPembimbingAdmin> {
                   return Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      constraints: BoxConstraints(maxWidth: 700),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(5),
@@ -179,9 +181,8 @@ class _AssignPembimbingAdminState extends State<AssignPembimbingAdmin> {
                           ),
                         ],
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(10.0),
@@ -189,28 +190,52 @@ class _AssignPembimbingAdminState extends State<AssignPembimbingAdmin> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(item['username'], style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                                Text(item['nrp'], style: TextStyle(fontSize: 12, color: Colors.grey),),
-                                SizedBox(height: 10,),
-                                Text('Asal Perusahaan: $asalPerusahaan',style: TextStyle(fontSize: 15,),),
-                                Text('Nama Projek: $namaProject',style: TextStyle(fontSize: 15,),),
+                                Text(
+                                  item['username'],
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  item['nrp'],
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  'Asal Perusahaan: $asalPerusahaan',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Text(
+                                  'Nama Projek: $namaProject',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
+                          const Divider(),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: DropdownButton<String>(
                               hint: const Text('Pilih Pembimbing'),
-                              value:
-                                  selectedDosen == null || selectedDosen!.isEmpty
-                                      ? 'belum ada pembimbing'
-                                      : selectedDosen,
+                              value: selectedDosen == null ||
+                                      selectedDosen!.isEmpty
+                                  ? 'belum ada pembimbing'
+                                  : selectedDosen,
                               onChanged: (String? newValue) {
                                 if (newValue != null &&
                                     newValue != 'belum ada pembimbing') {
                                   setState(() {
                                     selectedDosen = newValue;
-                                    item['tawaranPilihan'].forEach((key, value) {
+                                    item['tawaranPilihan']
+                                        .forEach((key, value) {
                                       if (value['status_tawaran'] == 2) {
                                         _updateNamaPembimbing(
                                             item['id'], key, selectedDosen!);
@@ -224,8 +249,9 @@ class _AssignPembimbingAdminState extends State<AssignPembimbingAdmin> {
                                   value: 'belum ada pembimbing',
                                   child: Text('belum ada pembimbing'),
                                 ),
-                                ..._dosenUsernames.map<DropdownMenuItem<String>>(
-                                    (String value) {
+                                ..._dosenUsernames
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
@@ -238,45 +264,6 @@ class _AssignPembimbingAdminState extends State<AssignPembimbingAdmin> {
                       ),
                     ),
                   );
-                  // return ListTile(
-                  //   title: Text(item['username']),
-                  //   subtitle: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Text('NRP: ${item['nrp']}'),
-                  //       Text('Asal Perusahaan: $asalPerusahaan'),
-                  //       Text('Nama Projek: $namaProject'),
-                  //       DropdownButton<String>(
-                  //         hint: const Text('Pilih Pembimbing'),
-                  //         value: selectedDosen == null || selectedDosen!.isEmpty ? 'belum ada pembimbing' : selectedDosen,
-                  //         onChanged: (String? newValue) {
-                  //           if (newValue != null && newValue != 'belum ada pembimbing') {
-                  //             setState(() {
-                  //               selectedDosen = newValue;
-                  //               item['tawaranPilihan'].forEach((key, value) {
-                  //                 if (value['status_tawaran'] == 2) {
-                  //                   _updateNamaPembimbing(item['id'], key, selectedDosen!);
-                  //                 }
-                  //               });
-                  //             });
-                  //           }
-                  //         },
-                  //         items: [
-                  //           const DropdownMenuItem<String>(
-                  //             value: 'belum ada pembimbing',
-                  //             child: Text('belum ada pembimbing'),
-                  //           ),
-                  //           ..._dosenUsernames.map<DropdownMenuItem<String>>((String value) {
-                  //             return DropdownMenuItem<String>(
-                  //               value: value,
-                  //               child: Text(value),
-                  //             );
-                  //           }).toList(),
-                  //         ],
-                  //       ),
-                  //     ],
-                  //   ),
-                  // );
                 }
                 return const SizedBox.shrink();
               },

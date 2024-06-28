@@ -270,7 +270,6 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
                                         ),
                                       ),
                                       SizedBox(height: 8),
-                                      
                                       GestureDetector(
                                         onTap: () {
                                           Navigator.push(
