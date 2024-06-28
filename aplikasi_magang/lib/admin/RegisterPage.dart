@@ -121,7 +121,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
           if (updateResponse2.statusCode == 200) {
             debugPrint('Mahasiswa data update successful');
-            _showDialog('Mahasiswa data update successful');
+            //_showDialog('Mahasiswa data update successful');
           } else {
             debugPrint('Failed to update mahasiswa data: ${updateResponse2.statusCode}');
             debugPrint('Response body: ${updateResponse2.body}');
