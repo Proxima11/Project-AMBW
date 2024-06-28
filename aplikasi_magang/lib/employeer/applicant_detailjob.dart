@@ -58,11 +58,11 @@ class _ApplicantDetailjobState extends State<ApplicantDetailjob> {
           final List<Map<String, dynamic>> filteredData = [];
 
           dataMahasiswa.forEach((key, value) {
-            if (value['status'] == 0 && value['tawaranPilihan'] != null) {
+            if (value['status'] == 1 && value['tawaranPilihan'] != null) {
               value['tawaranPilihan'].forEach((tawaranKey, tawaranValue) {
                 final idTawaranMahasiswa = tawaranValue['id_tawaran'];
                 if (idTawaranMahasiswa == widget.id_tawaran &&
-                    tawaranValue['status_tawaran'] == 0) {
+                    tawaranValue['status_tawaran'] == 2) {
                   final tawaranData = dataTawaran[idTawaranMahasiswa];
                   if (tawaranData['asal_perusahaan'] == widget.get_username) {
                     filteredData.add({
