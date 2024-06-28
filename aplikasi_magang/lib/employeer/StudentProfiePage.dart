@@ -35,7 +35,8 @@ class StudentProfilePage extends StatelessWidget {
                   Center(
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('assets/profilepic.png'),
+                      child: Icon(Icons.account_circle,
+                          size: 100), // Changed to Icon
                     ),
                   ),
                   SizedBox(height: 16),

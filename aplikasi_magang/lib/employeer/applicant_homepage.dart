@@ -178,10 +178,12 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final buttonFontSize = screenWidth * 0.04;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Applicant Homepage'),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -214,8 +216,6 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Container(
-                          width: double.infinity,
-                          height: 200,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
@@ -229,20 +229,13 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(16.0),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/profilepic.png'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                                CircleAvatar(
+                                  radius: 50,
+                                  child: Icon(Icons.account_circle, size: 80),
                                 ),
                                 SizedBox(width: 16),
                                 Expanded(
@@ -260,20 +253,11 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          Expanded(
-                                            child: Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  'Index score : ${student['index_score'] ?? 'N/A'}',
-                                                  style: TextStyle(
-                                                    fontSize: 24,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            'Score: ${student['index_score'] ?? 'N/A'}',
+                                            style: TextStyle(
+                                              fontSize: 18,
                                             ),
                                           ),
                                         ],
@@ -312,30 +296,46 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                // Handle the Accepted button press
-                                                _updateDataFromFirebase(
-                                                    '${student['id_tawaran']}',
-                                                    0,
-                                                    '${student['username']}');
-                                              },
-                                              child: Text('Accept'),
+                                            Expanded(
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  _updateDataFromFirebase(
+                                                      '${student['id_tawaran']}',
+                                                      0,
+                                                      '${student['username']}');
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 12),
+                                                  textStyle: TextStyle(
+                                                      fontSize: buttonFontSize),
+                                                ),
+                                                child: Text('Accept'),
+                                              ),
                                             ),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                // Handle the Rejected button press
-                                                _updateDataFromFirebase(
-                                                    '${student['id_tawaran']}',
-                                                    1,
-                                                    '${student['username']}');
-                                              },
-                                              child: Text('Reject'),
+                                            SizedBox(width: 16),
+                                            Expanded(
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  _updateDataFromFirebase(
+                                                      '${student['id_tawaran']}',
+                                                      1,
+                                                      '${student['username']}');
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 12),
+                                                  textStyle: TextStyle(
+                                                      fontSize: buttonFontSize),
+                                                ),
+                                                child: Text('Reject'),
+                                              ),
                                             ),
                                           ],
                                         ),
