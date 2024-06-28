@@ -124,7 +124,7 @@ class _DetailTawaranAktifAdminState extends State<DetailTawaranAktifAdmin> {
   Widget build(BuildContext context) {
     final ipkFormatted = _item['min_ipk'].toStringAsFixed(2);
     
-
+    print("update");
     return Scaffold(
       appBar: AppBar(
         title: Text(
