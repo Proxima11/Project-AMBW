@@ -98,11 +98,9 @@ class _HomeTabTeacherState extends State<HomeTabTeacher> {
 
   @override
   Widget build(BuildContext context) {
-    final int maxCrossAxisCount = 3; // Maximum number of cards per row
-    final int calculatedCrossAxisCount = max(
-        1,
-        MediaQuery.of(context).size.width ~/
-            400); // Calculate based on screen width and desired card width
+    final int maxCrossAxisCount = 3;
+    final int calculatedCrossAxisCount =
+        max(1, MediaQuery.of(context).size.width ~/ 400);
     final int crossAxisCount = calculatedCrossAxisCount > maxCrossAxisCount
         ? maxCrossAxisCount
         : calculatedCrossAxisCount;
@@ -132,7 +130,7 @@ class _HomeTabTeacherState extends State<HomeTabTeacher> {
                   crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: 400 / 350, // Width to height ratio
+                  childAspectRatio: 400 / 350,
                 ),
                 itemCount: _filteredItems.length,
                 itemBuilder: (ctx, index) {

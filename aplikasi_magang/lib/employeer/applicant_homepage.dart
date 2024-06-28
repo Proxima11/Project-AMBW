@@ -121,7 +121,6 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
               final idTawaranMahasiswa = tawaranValue['id_tawaran'];
               if (idTawaranMahasiswa == idTawaranYangDiKlik &&
                   tawaranData['asal_perusahaan'] == widget.data) {
-                // Update status tawaran dalam tawaranPilihan
                 if (condition == 0) {
                   tawaranValue['status_tawaran'] = 2;
                   tawaranData['sudah_diterima'] = currentSudahDiterima + 1;
@@ -130,7 +129,6 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
                   tawaranValue['status_tawaran'] = 3;
                 }
 
-                // Update dataMahasiswa di Firebase
                 final updateUrlMahasiswa = Uri.https(
                   'ambw-leap-default-rtdb.firebaseio.com',
                   'dataMahasiswa/$key.json',
@@ -138,7 +136,6 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
 
                 await http.patch(updateUrlMahasiswa, body: json.encode(value));
 
-                // Update dataTawaran di Firebase
                 final updateUrlTawaran = Uri.https(
                   'ambw-leap-default-rtdb.firebaseio.com',
                   'dataTawaran/$idTawaranMahasiswa.json',
@@ -149,14 +146,12 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
               }
             });
 
-            // Jika tawaran diterima, ubah semua tawaran lain menjadi 3
             if (accepted) {
               value['tawaranPilihan'].forEach((tawaranKey, tawaranValue) async {
                 final idTawaranMahasiswa = tawaranValue['id_tawaran'];
                 if (idTawaranMahasiswa != idTawaranYangDiKlik) {
                   tawaranValue['status_tawaran'] = 3;
 
-                  // Update dataMahasiswa di Firebase
                   final updateUrlMahasiswa = Uri.https(
                     'ambw-leap-default-rtdb.firebaseio.com',
                     'dataMahasiswa/$key.json',
@@ -170,7 +165,7 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
           }
         });
 
-        // Debug log
+        await _fetchDataFromFirebase();
         print('Data updated for tawaran from PT SINAR ABADI.');
       } else {
         print(
