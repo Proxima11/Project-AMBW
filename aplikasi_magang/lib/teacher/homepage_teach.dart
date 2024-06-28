@@ -3,6 +3,7 @@ import 'package:aplikasi_magang/teacher/homeTab_teach.dart';
 import 'package:flutter/material.dart';
 import 'package:aplikasi_magang/teacher/statistic_teach.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomePageTeach extends StatelessWidget {
   final String data;
@@ -36,10 +37,16 @@ class HomePageTeach extends StatelessWidget {
               children: [
                 const Icon(Icons.account_circle), // Profile icon
                 const SizedBox(width: 8),
-                Text(
-                  'Welcome, $data',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ), // Student name
+                Expanded(
+                  child: AutoSizeText(
+                    'Welcome, $data',
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.bold),
+                    minFontSize: 12.0,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),

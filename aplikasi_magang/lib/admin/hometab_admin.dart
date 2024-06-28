@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:aplikasi_magang/admin/detailtawaranaktif_admin.dart';
+import 'dart:math';
 
 class HomeTabAdmin extends StatefulWidget {
   const HomeTabAdmin({super.key});
@@ -113,7 +114,7 @@ class _HomeTabAdminState extends State<HomeTabAdmin> {
   Widget build(BuildContext context) {
     final int maxCrossAxisCount = 3;
     final int calculatedCrossAxisCount =
-        MediaQuery.of(context).size.width ~/ 400;
+        max(1, MediaQuery.of(context).size.width ~/ 400);
     final int crossAxisCount = calculatedCrossAxisCount > maxCrossAxisCount
         ? maxCrossAxisCount
         : calculatedCrossAxisCount;
