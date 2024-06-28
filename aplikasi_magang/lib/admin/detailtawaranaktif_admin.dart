@@ -136,7 +136,7 @@ class _DetailTawaranAktifAdminState extends State<DetailTawaranAktifAdmin> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
+          child: Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

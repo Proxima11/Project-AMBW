@@ -8,10 +8,12 @@ class DetailTawaranKonfirmasiAdmin extends StatefulWidget {
   DetailTawaranKonfirmasiAdmin({required this.item});
 
   @override
-  _DetailTawaranKonfirmasiAdminState createState() => _DetailTawaranKonfirmasiAdminState();
+  _DetailTawaranKonfirmasiAdminState createState() =>
+      _DetailTawaranKonfirmasiAdminState();
 }
 
-class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAdmin> {
+class _DetailTawaranKonfirmasiAdminState
+    extends State<DetailTawaranKonfirmasiAdmin> {
   late Map<String, dynamic> _item;
   List<Map<String, dynamic>> _relatedMahasiswa = [];
 
@@ -81,7 +83,8 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
         );
 
         // Navigate back to HomeTabAdmin and refresh data
-        Navigator.of(context).pop(true); // Pop the DetailScreen from the navigation stack
+        Navigator.of(context)
+            .pop(true); // Pop the DetailScreen from the navigation stack
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -99,23 +102,22 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
     }
   }
 
-  String _getStatus(Map<String, dynamic> tawaran){
+  String _getStatus(Map<String, dynamic> tawaran) {
     print(tawaran['status_tawaran']);
     String statusMahasiswa = '';
     int status = tawaran['status_tawaran'];
 
-
-      if (status == 0) {
-        statusMahasiswa = 'Mendaftar';
-      } else if (status == 1) {
-        statusMahasiswa = 'Proses Wawancara';
-      } else if (status == 2) {
-        statusMahasiswa = 'Diterima';
-      } else if (status == 3) {
-        statusMahasiswa = 'Ditolak';
-      } else if (status == 4) {
-        statusMahasiswa = 'Dibatalkan';
-      }
+    if (status == 0) {
+      statusMahasiswa = 'Mendaftar';
+    } else if (status == 1) {
+      statusMahasiswa = 'Proses Wawancara';
+    } else if (status == 2) {
+      statusMahasiswa = 'Diterima';
+    } else if (status == 3) {
+      statusMahasiswa = 'Ditolak';
+    } else if (status == 4) {
+      statusMahasiswa = 'Dibatalkan';
+    }
 
     return statusMahasiswa;
   }
@@ -123,7 +125,6 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
   @override
   Widget build(BuildContext context) {
     final ipkFormatted = _item['min_ipk'].toStringAsFixed(2);
-    
 
     return Scaffold(
       appBar: AppBar(
@@ -136,12 +137,16 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
+          child: Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Center(child: Text(_item['nama_project'], style: TextStyle(fontSize: 18),)),
+                Center(
+                    child: Text(
+                  _item['nama_project'],
+                  style: TextStyle(fontSize: 18),
+                )),
                 SizedBox(height: 20.0),
                 Expanded(
                   child: Row(
@@ -155,13 +160,23 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Mitra : ${_item['asal_perusahaan']}'),
-                              SizedBox(height: 8,),
+                              SizedBox(
+                                height: 8,
+                              ),
                               Text('Min IPK : $ipkFormatted'),
-                              SizedBox(height: 8,),
-                              Text('Tanggal Mulai Pendaftaran : ${_item['tanggal_mulai_rekrut']}'),
-                              SizedBox(height: 8,),
-                              Text('Tanggal Akhir Pendaftaran : ${_item['tanggal_akhir_rekrut']}'),
-                              SizedBox(height: 8,),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                  'Tanggal Mulai Pendaftaran : ${_item['tanggal_mulai_rekrut']}'),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                  'Tanggal Akhir Pendaftaran : ${_item['tanggal_akhir_rekrut']}'),
+                              SizedBox(
+                                height: 8,
+                              ),
                               Text('Kuota: ${_item['kuota_terima']} orang'),
                             ],
                           ),
@@ -174,13 +189,22 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Jenis Tawaran : ${_item['jenis']}'),
-                              SizedBox(height: 8,),
+                              SizedBox(
+                                height: 8,
+                              ),
                               Text('Skill : ${_item['skill']}'),
-                              SizedBox(height: 8,),
-                              Text('Tanggal Pelaksanaan : ${_item['tanggal_pelaksanaan']}'),
-                              SizedBox(height: 8,),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                  'Tanggal Pelaksanaan : ${_item['tanggal_pelaksanaan']}'),
+                              SizedBox(
+                                height: 8,
+                              ),
                               Text('Periode Pelaksanaan: ${_item['periode']}'),
-                              SizedBox(height: 8,),
+                              SizedBox(
+                                height: 8,
+                              ),
                               Text('Lokasi Pelaksanaan: ${_item['lokasi']}'),
                             ],
                           ),
@@ -202,8 +226,6 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
                   child: ListView.builder(
                     itemCount: _relatedMahasiswa.length,
                     itemBuilder: (context, index) {
-                    
-            
                       return Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Container(
@@ -229,7 +251,8 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(_relatedMahasiswa[index]['username']),
                                     Text(_relatedMahasiswa[index]['nrp'])
@@ -239,11 +262,13 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text('Status Mahasiswa :'),
-                                    Text(_getStatus(_relatedMahasiswa[index]['tawaran'])),
+                                    Text(_getStatus(
+                                        _relatedMahasiswa[index]['tawaran'])),
                                   ],
                                 ),
                               ),
