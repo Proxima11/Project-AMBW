@@ -109,9 +109,6 @@ class _FormAddNewJob extends State<FormAddNewJob> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Upload New Job'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
