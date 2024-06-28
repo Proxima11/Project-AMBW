@@ -124,6 +124,13 @@ class _DetailMahasiswaAdminState extends State<DetailMahasiswaAdmin> {
           Expanded(
             child: Builder(
               builder: (BuildContext context) {
+                double screenWidth = MediaQuery.of(context).size.width;
+                double size;
+                if (screenWidth * 0.2 > 100) {
+                  size = 100;
+                } else {
+                  size = screenWidth * 0.2;
+                }
                 return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisExtent: 150,
@@ -133,8 +140,13 @@ class _DetailMahasiswaAdminState extends State<DetailMahasiswaAdmin> {
                   itemCount: _filteredItems.length,
                   itemBuilder: (ctx, index) {
                     final item = _filteredItems[index];
-                    final ipkFormatted =
-                        (item['indexPrestasi'] / 100.0).toStringAsFixed(2);
+                    final ipkFormatted;
+                    if (item['indexPrestasi'] != null) {
+                      ipkFormatted =
+                          item['indexPrestasi'].toStringAsFixed(2).toString();
+                    } else {
+                      ipkFormatted = ipkFormatted = 'not assigned';
+                    }
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -154,69 +166,79 @@ class _DetailMahasiswaAdminState extends State<DetailMahasiswaAdmin> {
                             ),
                           ],
                         ),
-                        child: Row(
-                          children: [
-                            const Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                  width: 100,
-                                  child: Center(
-                                    //child: Text("Profile Picture")
-                                    child: Icon(Icons.account_circle, size: 100,),
+                        child: Expanded(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: 100,
+                                    child: Center(
+                                      //child: Text("Profile Picture")
+                                      child: Icon(
+                                        Icons.account_circle,
+                                        size: size,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, right: 8.0, top: 10.0),
-                                    child: Text(
-                                      item['username'],
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8.0, right: 8.0, bottom: 10.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          item['nrp'],
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text('IPK: $ipkFormatted'),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: TextButton(
-                                      onPressed: () {
-                                        _navigateToEditScreen(context, item);
-                                      },
-                                      child: const Text('Edit Data Mahasiswa'),
-                                    ),
-                                  ),
-                                ],
+                              SizedBox(
+                                width: 8,
                               ),
-                            ),
-                          ],
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8.0, top: 10.0),
+                                      child: Text(
+                                        item['username'],
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8.0, bottom: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            item['nrp'],
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text('IPK: $ipkFormatted'),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          _navigateToEditScreen(context, item);
+                                        },
+                                        child:
+                                            const Text('Edit Data Mahasiswa'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
