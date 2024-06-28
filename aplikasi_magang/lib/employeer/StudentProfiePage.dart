@@ -14,7 +14,8 @@ class StudentProfilePage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: Container(
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width * 0.9,
+              constraints: BoxConstraints(maxWidth: 700),
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.white,

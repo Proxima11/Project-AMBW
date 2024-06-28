@@ -233,7 +233,6 @@ class _ApplicantDetailjobState extends State<ApplicantDetailjob> {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Container(
                           width: double.infinity,
-                          height: 200,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
@@ -249,17 +248,19 @@ class _ApplicantDetailjobState extends State<ApplicantDetailjob> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   width: 100,
                                   height: 100,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/profilepic.png'),
-                                      fit: BoxFit.cover,
-                                    ),
+                                    color: Colors.grey[300],
+                                  ),
+                                  child: Icon(
+                                    Icons.account_circle,
+                                    size: 80,
+                                    color: Colors.grey[600],
                                   ),
                                 ),
                                 SizedBox(width: 16),
@@ -267,34 +268,20 @@ class _ApplicantDetailjobState extends State<ApplicantDetailjob> {
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            student['username'] ?? 'N/A',
-                                            style: TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Align(
-                                              alignment: Alignment.centerRight,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  'Index score : ${student['index_score'] ?? 'N/A'}',
-                                                  style: TextStyle(
-                                                    fontSize: 24,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                      Text(
+                                        student['username'] ?? 'N/A',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'Index score : ${student['index_score'] ?? 'N/A'}',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
                                       ),
                                       SizedBox(height: 8),
                                       Text(
@@ -330,14 +317,14 @@ class _ApplicantDetailjobState extends State<ApplicantDetailjob> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             ElevatedButton(
                                               onPressed: () {
-                                                // Handle the Accepted button press
                                                 _updateDataFromFirebase(
                                                     '${student['id_tawaran']}',
                                                     0,
@@ -347,7 +334,6 @@ class _ApplicantDetailjobState extends State<ApplicantDetailjob> {
                                             ),
                                             ElevatedButton(
                                               onPressed: () {
-                                                // Handle the Rejected button press
                                                 _updateDataFromFirebase(
                                                     '${student['id_tawaran']}',
                                                     1,

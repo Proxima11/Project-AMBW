@@ -18,8 +18,8 @@ class Homelistjob extends StatelessWidget {
         appBar: AppBar(
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'List job approved'),
-              Tab(text: 'Waiting for approved from admin'),
+              Tab(text: 'Approved Job'),
+              Tab(text: 'Pending Job'),
             ],
           ),
         ),

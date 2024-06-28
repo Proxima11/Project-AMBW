@@ -98,31 +98,28 @@ class _ListjobState extends State<Listjob> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 35),
                   child: Container(
-                    width: MediaQuery.of(context).size.width *
-                        0.9, // Adjust width according to screen size
+                    width: MediaQuery.of(context).size.width * 0.9,
                     constraints: BoxConstraints(maxWidth: 800),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2), // Shadow color
-                          spreadRadius: 2, // How much the shadow spreads
-                          blurRadius: 10, // How blurry the shadow is
-                          offset: Offset(0, 5), // Offset of the shadow
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
                         ),
                       ],
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(
-                          16.0), // Add padding to the container
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start, // Align text to the left
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0), // Add padding to the left
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
                               item['nama_project'].toString(),
                               style:
@@ -131,31 +128,22 @@ class _ListjobState extends State<Listjob> {
                           ),
                           SizedBox(height: 15),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0), // Add padding to the left
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
-                                "Kuota: ${item['kuota_terima'].toString()}"), // Assuming there is a 'kuota' field
+                                "Kuota: ${item['kuota_terima'].toString()}"),
                           ),
                           SizedBox(height: 10),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0), // Add padding to the left
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .start, // Align text and button to the left
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  item['deskripsi'].toString(),
-                                  maxLines: 3, // Limit to 3 lines
-                                  overflow: TextOverflow
-                                      .ellipsis, // Ellipsis for overflow
-                                ),
-                                SizedBox(
-                                    height:
-                                        10), // Add some space between the text and the button
+                                Text(item['deskripsi'].toString()),
+                                SizedBox(height: 10),
                                 ElevatedButton(
                                   onPressed: () {
-                                    // Handle button press
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
