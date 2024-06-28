@@ -54,7 +54,8 @@ class _EditScreenState extends State<EditScreen> {
   }
 
   bool checkStatusTerima() {
-    return tawaranPilihan.values.any((tawaran) => tawaran['status_tawaran'] == 2);
+    return tawaranPilihan.values
+        .any((tawaran) => tawaran['status_tawaran'] == 2);
   }
 
   @override
@@ -73,7 +74,12 @@ class _EditScreenState extends State<EditScreen> {
         ),
       );
     }
-    final ipkFormatted = (widget.item['indexPrestasi'] / 100.0).toStringAsFixed(2);
+    final ipkFormatted;
+    if (widget.item['indexPrestasi'] != null) {
+      ipkFormatted = (widget.item['indexPrestasi'] / 100.0).toStringAsFixed(2);
+    } else {
+      ipkFormatted = "not assigned";
+    }
 
     List<String> validIds = dataTawaran.keys.toList();
 
@@ -112,10 +118,13 @@ class _EditScreenState extends State<EditScreen> {
                   final key = tawaranPilihan.keys.elementAt(index);
                   final tawaran = tawaranPilihan[key];
                   if (!validIds.contains(tawaran['id_tawaran'])) {
-                    return SizedBox.shrink(); // Skip rendering if id_tawaran is not found in dataTawaran
+                    return SizedBox
+                        .shrink(); // Skip rendering if id_tawaran is not found in dataTawaran
                   }
-                  final namaProject = getTawaranDetail(tawaran['id_tawaran'], 'nama_project');
-                  final asalPerusahaan = getTawaranDetail(tawaran['id_tawaran'], 'asal_perusahaan');
+                  final namaProject =
+                      getTawaranDetail(tawaran['id_tawaran'], 'nama_project');
+                  final asalPerusahaan = getTawaranDetail(
+                      tawaran['id_tawaran'], 'asal_perusahaan');
 
                   return Padding(
                     padding: EdgeInsets.all(8.0),
@@ -141,7 +150,8 @@ class _EditScreenState extends State<EditScreen> {
                           children: [
                             Text(
                               '$namaProject',
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 8),
                             Text(
@@ -154,17 +164,25 @@ class _EditScreenState extends State<EditScreen> {
                                 Expanded(
                                   child: Text(
                                     'Status Lamaran:',
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 DropdownButton<int>(
                                   value: tawaran['status_tawaran'],
                                   items: const [
-                                    DropdownMenuItem(value: 0, child: Text('Applied')),
-                                    DropdownMenuItem(value: 1, child: Text('Interview Process')),
-                                    DropdownMenuItem(value: 2, child: Text('Accepted')),
-                                    DropdownMenuItem(value: 3, child: Text('Rejected')),
-                                    DropdownMenuItem(value: 4, child: Text('Canceled')),
+                                    DropdownMenuItem(
+                                        value: 0, child: Text('Applied')),
+                                    DropdownMenuItem(
+                                        value: 1,
+                                        child: Text('Interview Process')),
+                                    DropdownMenuItem(
+                                        value: 2, child: Text('Accepted')),
+                                    DropdownMenuItem(
+                                        value: 3, child: Text('Rejected')),
+                                    DropdownMenuItem(
+                                        value: 4, child: Text('Canceled')),
                                   ],
                                   onChanged: (newValue) {
                                     setState(() {
