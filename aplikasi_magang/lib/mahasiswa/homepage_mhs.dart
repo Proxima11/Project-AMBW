@@ -1,7 +1,6 @@
 import 'package:aplikasi_magang/login.dart';
 import 'package:aplikasi_magang/mahasiswa/mahasiswa_operation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'homeTab_mhs.dart';
 import 'lamaran_mhs.dart';
 import 'pengumuman_mhs.dart';
