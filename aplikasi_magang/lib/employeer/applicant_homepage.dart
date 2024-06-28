@@ -270,12 +270,7 @@ class _ApplicantHomepageState extends State<ApplicantHomepage> {
                                         ),
                                       ),
                                       SizedBox(height: 8),
-                                      Text(
-                                        'id_tawaran : ${student['id_tawaran'] ?? 'N/A'}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                        ),
-                                      ),
+                                      
                                       GestureDetector(
                                         onTap: () {
                                           Navigator.push(
