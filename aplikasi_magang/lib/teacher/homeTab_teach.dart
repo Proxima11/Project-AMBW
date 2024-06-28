@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:math';
 
 void main() {
   runApp(const HomeTabTeacher());
 }
 
 class HomeTabTeacher extends StatefulWidget {
-  const HomeTabTeacher({super.key});
+  const HomeTabTeacher({Key? key}) : super(key: key);
 
   @override
   State<HomeTabTeacher> createState() => _HomeTabTeacherState();
@@ -15,7 +16,6 @@ class HomeTabTeacher extends StatefulWidget {
 
 class _HomeTabTeacherState extends State<HomeTabTeacher> {
   List<Map<String, dynamic>> _items = [];
-  List<Map<String, dynamic>> _firstFilteredItems = [];
   List<Map<String, dynamic>> _filteredItems = [];
   TextEditingController _searchController = TextEditingController();
 
@@ -31,8 +31,7 @@ class _HomeTabTeacherState extends State<HomeTabTeacher> {
   Future<void> _fetchData() async {
     await _fetchFromFirebase();
     setState(() {
-      _filteredItems = List.from(
-          _items); // Initialize _filteredItems with all items initially
+      _filteredItems = List.from(_items);
     });
   }
 
@@ -73,8 +72,7 @@ class _HomeTabTeacherState extends State<HomeTabTeacher> {
 
     setState(() {
       _items = loadedItems;
-      _filteredItems =
-          List.from(loadedItems); // Ensure _filteredItems is also initialized
+      _filteredItems = List.from(loadedItems);
     });
   }
 
@@ -100,9 +98,11 @@ class _HomeTabTeacherState extends State<HomeTabTeacher> {
 
   @override
   Widget build(BuildContext context) {
-    final int maxCrossAxisCount = 3;
-    final int calculatedCrossAxisCount =
-        MediaQuery.of(context).size.width ~/ 400;
+    final int maxCrossAxisCount = 3; // Maximum number of cards per row
+    final int calculatedCrossAxisCount = max(
+        1,
+        MediaQuery.of(context).size.width ~/
+            400); // Calculate based on screen width and desired card width
     final int crossAxisCount = calculatedCrossAxisCount > maxCrossAxisCount
         ? maxCrossAxisCount
         : calculatedCrossAxisCount;
@@ -127,85 +127,71 @@ class _HomeTabTeacherState extends State<HomeTabTeacher> {
               ),
             ),
             Expanded(
-              child: Builder(
-                builder: (context) {
-                  return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisExtent: 400,
-                      crossAxisCount: crossAxisCount,
-                      crossAxisSpacing: 5,
-                    ),
-                    itemCount: _filteredItems.length,
-                    itemBuilder: (ctx, index) {
-                      return Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(
-                              maxWidth: 400, // Fixed maximum width
-                            ),
-                            child: Container(
-                              width: double.infinity,
-                              height: 350,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 10.0,
-                                    spreadRadius: 0.1,
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _filteredItems[index]['nama_project'],
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          _filteredItems[index]
-                                              ['asal_perusahaan'],
-                                          style: const TextStyle(
-                                              fontSize: 12, color: Colors.grey),
-                                        ),
-                                        const SizedBox(height: 30),
-                                        Text(
-                                          "Deskripsi : ${_filteredItems[index]['deskripsi']}",
-                                          style: const TextStyle(fontSize: 15),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          "Skill : ${_filteredItems[index]['skill']}",
-                                          style: const TextStyle(fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 400 / 350, // Width to height ratio
+                ),
+                itemCount: _filteredItems.length,
+                itemBuilder: (ctx, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 10.0,
+                            spreadRadius: 0.1,
                           ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _filteredItems[index]['nama_project'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              _filteredItems[index]['asal_perusahaan'],
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 30),
+                            Text(
+                              "Deskripsi : ${_filteredItems[index]['deskripsi']}",
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "Skill : ${_filteredItems[index]['skill']}",
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                            Text(
+                              "Pendaftaran : ${_filteredItems[index]['tanggal_mulai_rekrut']} s/d ${_filteredItems[index]['tanggal_akhir_rekrut']}",
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "Pelaksanaan : ${_filteredItems[index]['tanggal_pelaksanaan']}",
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                          ],
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   );
                 },
               ),
