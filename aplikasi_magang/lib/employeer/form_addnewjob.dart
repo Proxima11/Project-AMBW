@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class FormAddNewJob extends StatefulWidget {
+  final String data;
+  const FormAddNewJob({required this.data, super.key});
   @override
   _FormAddNewJob createState() => _FormAddNewJob();
 }
@@ -14,6 +16,7 @@ class _FormAddNewJob extends State<FormAddNewJob> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _requirementsController = TextEditingController();
   final TextEditingController _kuotaController = TextEditingController();
+  final TextEditingController _waktucontroller = TextEditingController();
 
   @override
   void dispose() {
@@ -22,6 +25,7 @@ class _FormAddNewJob extends State<FormAddNewJob> {
     _descriptionController.dispose();
     _requirementsController.dispose();
     _kuotaController.dispose();
+    _waktucontroller.dispose();
     super.dispose();
   }
 
@@ -32,7 +36,8 @@ class _FormAddNewJob extends State<FormAddNewJob> {
       String jobTitle = _jobTitleController.text;
       String description = _descriptionController.text;
       String requirements = _requirementsController.text;
-      String kuota = _kuotaController.text;
+      int kuota = int.tryParse(_kuotaController.text) ?? 0; // Convert to int
+      int waktu = int.tryParse(_waktucontroller.text) ?? 0; // Convert to int
 
       // URL Firebase Database
       final url = Uri.https(
@@ -46,19 +51,20 @@ class _FormAddNewJob extends State<FormAddNewJob> {
         final Map<String, dynamic> dataTawaran =
             json.decode(getDataResponse.body);
         int idTawaran = dataTawaran.length + 1;
+        print('idTaawran : $idTawaran');
         String tawaran = 'tawaran$idTawaran';
 
         // Buat data JSON untuk dikirim ke Firebase
         Map<String, dynamic> data = {
           'id_tawaran': tawaran,
-          'asal_perusahaan': company,
+          'asal_perusahaan': widget.data,
           'nama_project': jobTitle,
           'deskripsi': description,
           'skill': requirements,
-          'kuota_terima': 3,
+          'kuota_terima': kuota,
           'sudah_diterima': 0,
           'username': company,
-          'waktu': company,
+          'waktu': waktu,
           'status_approval': 0
         };
 
@@ -184,6 +190,20 @@ class _FormAddNewJob extends State<FormAddNewJob> {
                 },
               ),
               SizedBox(height: 16),
+              TextFormField(
+                controller: _waktucontroller,
+                decoration: InputDecoration(
+                  labelText: 'waktu',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Ajukan rentang kuota';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitForm,
                 child: Text('Ajukan approval'),
@@ -194,10 +214,4 @@ class _FormAddNewJob extends State<FormAddNewJob> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: FormAddNewJob(),
-  ));
 }

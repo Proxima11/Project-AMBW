@@ -373,7 +373,11 @@ class _HomeTabState extends State<HomeTab> {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: ResponsiveGrid(fetchData: _filteredTawaran))
+              Expanded(
+                  child: ResponsiveGrid(
+                fetchData: _filteredTawaran,
+                studentId: widget.studentId,
+              ))
             ],
           ),
         ),

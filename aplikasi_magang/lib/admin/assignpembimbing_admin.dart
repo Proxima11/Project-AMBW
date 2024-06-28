@@ -49,8 +49,10 @@ class _AssignPembimbingAdminState extends State<AssignPembimbingAdmin> {
     if (responseMahasiswa.statusCode == 200 &&
         responseTawaran.statusCode == 200 &&
         responseDosen.statusCode == 200) {
-      final Map<String, dynamic> dataMahasiswa = json.decode(responseMahasiswa.body);
-      final Map<String, dynamic> dataTawaran = json.decode(responseTawaran.body);
+      final Map<String, dynamic> dataMahasiswa =
+          json.decode(responseMahasiswa.body);
+      final Map<String, dynamic> dataTawaran =
+          json.decode(responseTawaran.body);
       final Map<String, dynamic> dataDosen = json.decode(responseDosen.body);
 
       final List<Map<String, dynamic>> loadedItems = [];
@@ -79,7 +81,8 @@ class _AssignPembimbingAdminState extends State<AssignPembimbingAdmin> {
         _dosenUsernames = dosenUsernames;
       });
     } else {
-      debugPrint('Failed to load data: ${responseMahasiswa.statusCode}, ${responseTawaran.statusCode}, ${responseDosen.statusCode}');
+      debugPrint(
+          'Failed to load data: ${responseMahasiswa.statusCode}, ${responseTawaran.statusCode}, ${responseDosen.statusCode}');
     }
   }
 
@@ -101,7 +104,8 @@ class _AssignPembimbingAdminState extends State<AssignPembimbingAdmin> {
     return 'N/A';
   }
 
-  void _updateNamaPembimbing(String idMahasiswa, String idTawaran, String namaPembimbing) async {
+  void _updateNamaPembimbing(
+      String idMahasiswa, String idTawaran, String namaPembimbing) async {
     final url = Uri.https(
       'ambw-leap-default-rtdb.firebaseio.com',
       'dataMahasiswa/$idMahasiswa/tawaranPilihan/$idTawaran.json',
@@ -151,52 +155,128 @@ class _AssignPembimbingAdminState extends State<AssignPembimbingAdmin> {
 
                 item['tawaranPilihan'].forEach((key, value) {
                   if (value['status_tawaran'] == 2) {
-                    asalPerusahaan = getTawaranDetail(value['id_tawaran'], 'asal_perusahaan')!;
-                    namaProject = getTawaranDetail(value['id_tawaran'], 'nama_project')!;
+                    asalPerusahaan = getTawaranDetail(
+                        value['id_tawaran'], 'asal_perusahaan')!;
+                    namaProject =
+                        getTawaranDetail(value['id_tawaran'], 'nama_project')!;
                     selectedDosen = value['nama_pembimbing'];
                   }
                 });
 
                 if (asalPerusahaan.isNotEmpty && namaProject.isNotEmpty) {
-                  return ListTile(
-                    title: Text(item['username']),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('NRP: ${item['nrp']}'),
-                        Text('Asal Perusahaan: $asalPerusahaan'),
-                        Text('Nama Projek: $namaProject'),
-                        DropdownButton<String>(
-                          hint: const Text('Pilih Pembimbing'),
-                          value: selectedDosen == null || selectedDosen!.isEmpty ? 'belum ada pembimbing' : selectedDosen,
-                          onChanged: (String? newValue) {
-                            if (newValue != null && newValue != 'belum ada pembimbing') {
-                              setState(() {
-                                selectedDosen = newValue;
-                                item['tawaranPilihan'].forEach((key, value) {
-                                  if (value['status_tawaran'] == 2) {
-                                    _updateNamaPembimbing(item['id'], key, selectedDosen!);
-                                  }
-                                });
-                              });
-                            }
-                          },
-                          items: [
-                            const DropdownMenuItem<String>(
-                              value: 'belum ada pembimbing',
-                              child: Text('belum ada pembimbing'),
+                  return Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 10.0,
+                            spreadRadius: 0.1,
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(item['username'], style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                Text(item['nrp'], style: TextStyle(fontSize: 12, color: Colors.grey),),
+                                SizedBox(height: 10,),
+                                Text('Asal Perusahaan: $asalPerusahaan',style: TextStyle(fontSize: 15,),),
+                                Text('Nama Projek: $namaProject',style: TextStyle(fontSize: 15,),),
+                              ],
                             ),
-                            ..._dosenUsernames.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ],
-                        ),
-                      ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: DropdownButton<String>(
+                              hint: const Text('Pilih Pembimbing'),
+                              value:
+                                  selectedDosen == null || selectedDosen!.isEmpty
+                                      ? 'belum ada pembimbing'
+                                      : selectedDosen,
+                              onChanged: (String? newValue) {
+                                if (newValue != null &&
+                                    newValue != 'belum ada pembimbing') {
+                                  setState(() {
+                                    selectedDosen = newValue;
+                                    item['tawaranPilihan'].forEach((key, value) {
+                                      if (value['status_tawaran'] == 2) {
+                                        _updateNamaPembimbing(
+                                            item['id'], key, selectedDosen!);
+                                      }
+                                    });
+                                  });
+                                }
+                              },
+                              items: [
+                                const DropdownMenuItem<String>(
+                                  value: 'belum ada pembimbing',
+                                  child: Text('belum ada pembimbing'),
+                                ),
+                                ..._dosenUsernames.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
+                  // return ListTile(
+                  //   title: Text(item['username']),
+                  //   subtitle: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Text('NRP: ${item['nrp']}'),
+                  //       Text('Asal Perusahaan: $asalPerusahaan'),
+                  //       Text('Nama Projek: $namaProject'),
+                  //       DropdownButton<String>(
+                  //         hint: const Text('Pilih Pembimbing'),
+                  //         value: selectedDosen == null || selectedDosen!.isEmpty ? 'belum ada pembimbing' : selectedDosen,
+                  //         onChanged: (String? newValue) {
+                  //           if (newValue != null && newValue != 'belum ada pembimbing') {
+                  //             setState(() {
+                  //               selectedDosen = newValue;
+                  //               item['tawaranPilihan'].forEach((key, value) {
+                  //                 if (value['status_tawaran'] == 2) {
+                  //                   _updateNamaPembimbing(item['id'], key, selectedDosen!);
+                  //                 }
+                  //               });
+                  //             });
+                  //           }
+                  //         },
+                  //         items: [
+                  //           const DropdownMenuItem<String>(
+                  //             value: 'belum ada pembimbing',
+                  //             child: Text('belum ada pembimbing'),
+                  //           ),
+                  //           ..._dosenUsernames.map<DropdownMenuItem<String>>((String value) {
+                  //             return DropdownMenuItem<String>(
+                  //               value: value,
+                  //               child: Text(value),
+                  //             );
+                  //           }).toList(),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // );
                 }
                 return const SizedBox.shrink();
               },

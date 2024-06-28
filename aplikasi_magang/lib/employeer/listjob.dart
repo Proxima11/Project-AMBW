@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Listjob extends StatefulWidget {
-  const Listjob({super.key});
+  final String Username_p;
+  const Listjob({required this.Username_p, super.key});
+  // const Listjob({super.key});
 
   @override
   State<Listjob> createState() => _ListjobState();
@@ -20,7 +22,7 @@ class _ListjobState extends State<Listjob> {
     _fetchDataFromFirebase(); // Fetch data saat aplikasi dimuat
   }
 
-  // Fungsi untuk mengambil data dari Firebase fgasdasdfg
+  // Fungsi untuk mengambil data dari Firebase
   Future<void> _fetchDataFromFirebase() async {
     final url = Uri.https(
       'ambw-leap-default-rtdb.firebaseio.com',
@@ -34,10 +36,14 @@ class _ListjobState extends State<Listjob> {
       final Map<String, dynamic> data = json.decode(response.body);
       final List<Map<String, dynamic>> filteredData = [];
 
+      print("Total data items: ${data.length}");
+      print("data mentah $data ");
+
       data.forEach((key, value) {
-        if (value['asal_perusahaan'] == 'PT SINAR ABADI' &&
-            value['sudah_diterima'] < value['kuota_terima'] &&
-            value['status_approval'] == 1) {
+        print("Processing item with key: $key and value: $value");
+        if (value['asal_perusahaan'] == widget.Username_p &&
+            value['status_approval'] == 1 &&
+            value['sudah_diterima'] < value['kuota_terima']) {
           filteredData.add(value as Map<String, dynamic>);
         }
       });
@@ -46,8 +52,7 @@ class _ListjobState extends State<Listjob> {
         _filteredData = filteredData;
       });
 
-      // Debug log
-      // print('Data berhasil diambil dan difilter: $_filteredData');
+      print('Data berhasil diambil dan difilter: $_filteredData');
     } else {
       // Gagal mendapatkan data
       print(
@@ -69,19 +74,19 @@ class _ListjobState extends State<Listjob> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DetailJob(
-                          jobTitle: item['nama_project'],
-                          description: item['deskripsi'],
-                          requirements:
-                              item['requirements'] ?? 'No requirements',
-                          tanggal_akhir_rekrut: item['tanggal_akhir_rekrut'],
-                          tanggal_mulai_rekrut: item['tanggal_mulai_rekrut'],
-                          tanggal_pelaksanaan: item['tanggal_pelaksanaan'],
-                          tanggal_update_tawaran:
-                              item['tanggal_update_tawaran'],
-                          waktu: item['waktu'],
-                          min_ipk: item['min_ipk'],
-                          jenis: item['jenis'],
-                          id_tawaran: item['id_tawaran']),
+                        jobTitle: item['nama_project'],
+                        description: item['deskripsi'],
+                        requirements: item['requirements'] ?? 'No requirements',
+                        tanggal_akhir_rekrut: item['tanggal_akhir_rekrut'],
+                        tanggal_mulai_rekrut: item['tanggal_mulai_rekrut'],
+                        tanggal_pelaksanaan: item['tanggal_pelaksanaan'],
+                        tanggal_update_tawaran: item['tanggal_update_tawaran'],
+                        waktu: item['waktu'],
+                        min_ipk: item['min_ipk'],
+                        jenis: item['jenis'],
+                        id_tawaran: item['id_tawaran'],
+                        get_username: widget.Username_p,
+                      ),
                     ),
                   );
                 },
@@ -156,7 +161,8 @@ class _ListjobState extends State<Listjob> {
                                           waktu: item['waktu'],
                                           min_ipk: item['min_ipk'],
                                           jenis: item['jenis'],
-                                          id_tawaran: item['id_tawaran']),
+                                          id_tawaran: item['id_tawaran'],
+                                          get_username: widget.Username_p),
                                     ),
                                   );
                                 },

@@ -46,7 +46,8 @@ class _EditScreenState extends State<EditScreen> {
 
   void updateStatuses(String selectedKey) {
     tawaranPilihan.forEach((key, tawaran) {
-      if ((key != selectedKey) &&(tawaran['status_tawaran'] == 0 || tawaran['status_tawaran'] == 1)) {
+      if ((key != selectedKey) &&
+          (tawaran['status_tawaran'] == 0 || tawaran['status_tawaran'] == 1)) {
         tawaran['status_tawaran'] = 4;
       }
     });
@@ -61,7 +62,10 @@ class _EditScreenState extends State<EditScreen> {
     if (isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.item['username'], style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          title: Text(
+            widget.item['username'],
+            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
           centerTitle: true,
         ),
         body: Center(
@@ -71,9 +75,14 @@ class _EditScreenState extends State<EditScreen> {
     }
     final ipkFormatted = (widget.item['indexPrestasi'] / 100.0).toStringAsFixed(2);
 
+    List<String> validIds = dataTawaran.keys.toList();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.item['username'], style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+        title: Text(
+          widget.item['username'],
+          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -102,6 +111,9 @@ class _EditScreenState extends State<EditScreen> {
                 itemBuilder: (ctx, index) {
                   final key = tawaranPilihan.keys.elementAt(index);
                   final tawaran = tawaranPilihan[key];
+                  if (!validIds.contains(tawaran['id_tawaran'])) {
+                    return SizedBox.shrink(); // Skip rendering if id_tawaran is not found in dataTawaran
+                  }
                   final namaProject = getTawaranDetail(tawaran['id_tawaran'], 'nama_project');
                   final asalPerusahaan = getTawaranDetail(tawaran['id_tawaran'], 'asal_perusahaan');
 

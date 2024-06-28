@@ -156,18 +156,21 @@ class _DetailMahasiswaAdminState extends State<DetailMahasiswaAdmin> {
                         ),
                         child: Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                               flex: 1,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SizedBox(
-                                  width: 150,
-                                  child: Center(child: Text("Profile Picture")),
+                                  width: 100,
+                                  child: Center(
+                                    //child: Text("Profile Picture")
+                                    child: Icon(Icons.account_circle, size: 100,),
+                                  ),
                                 ),
                               ),
                             ),
                             Expanded(
-                              flex: 2,
+                              flex: 3,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,

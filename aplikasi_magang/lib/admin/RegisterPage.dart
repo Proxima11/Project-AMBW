@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -33,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> _register() async {
     if (_passwordController.text.length < 6) {
-      _showDialog('Minimum 6 character !');
+      _showDialog('Minimum 6 characters!');
       return;
     }
 
@@ -46,7 +45,6 @@ class _RegisterPageState extends State<RegisterPage> {
       },
     );
 
-    // Error handling email and pass fireauth
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text,
@@ -60,8 +58,8 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     try {
-      final url = Uri.https('ambw-leap-default-rtdb.firebaseio.com',
-          'account/$_selectedRole.json');
+      final url = Uri.https(
+          'ambw-leap-default-rtdb.firebaseio.com', 'account/$_selectedRole.json');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -92,8 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
       }
 
       if (_selectedRole == "mahasiswa") {
-        final url2 = Uri.https(
-            'ambw-leap-default-rtdb.firebaseio.com', 'dataMahasiswa.json');
+        final url2 = Uri.https('ambw-leap-default-rtdb.firebaseio.com', 'dataMahasiswa.json');
         final response2 = await http.get(url2);
 
         if (response2.statusCode == 200) {
@@ -101,14 +98,39 @@ class _RegisterPageState extends State<RegisterPage> {
           final String newUserKey =
               'dataMahasiswa' + (data_2.length + 1).toString();
 
-          data_2[newUserKey] = {
+          final dummyData = {
+            'id': 'dummyId',
+            'id_tawaran': 'dummyIdTawaran',
+            'status_tawaran': 0,
+          };
+
+          final newData = {
             'indexPrestasi': int.parse(_ipkController.text),
             'nrp': _nrpController.text,
             'status': 0,
+            'status_terima': false,
+            'tawaranPilihan': {'dummy': dummyData}, // Include dummy data here
             'username': _usernameController.text,
           };
 
-          await http.put(url2, body: json.encode(data_2));
+          data_2[newUserKey] = newData;
+
+          debugPrint('New dataMahasiswa entry with dummy data: ${json.encode(newData)}');
+
+          final updateResponse2 = await http.put(url2, body: json.encode(data_2));
+
+          if (updateResponse2.statusCode == 200) {
+            debugPrint('Mahasiswa data update successful');
+            //_showDialog('Mahasiswa data update successful');
+          } else {
+            debugPrint('Failed to update mahasiswa data: ${updateResponse2.statusCode}');
+            debugPrint('Response body: ${updateResponse2.body}');
+            _showDialog('Failed to update mahasiswa data');
+          }
+        } else {
+          debugPrint('Failed to load mahasiswa data: ${response2.statusCode}');
+          debugPrint('Response body: ${response2.body}');
+          _showDialog('Failed to load mahasiswa data');
         }
       }
     } catch (e) {
@@ -261,7 +283,6 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const SizedBox(height: 40),
               Center(
-                // Center widget added here
                 child: ElevatedButton(
                   onPressed: _register,
                   style: ElevatedButton.styleFrom(
