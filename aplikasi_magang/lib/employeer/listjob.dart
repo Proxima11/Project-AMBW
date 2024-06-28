@@ -74,17 +74,22 @@ class _ListjobState extends State<Listjob> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DetailJob(
-                        jobTitle: item['nama_project'],
-                        description: item['deskripsi'],
-                        requirements: item['requirements'] ?? 'No requirements',
-                        tanggal_akhir_rekrut: item['tanggal_akhir_rekrut'],
-                        tanggal_mulai_rekrut: item['tanggal_mulai_rekrut'],
-                        tanggal_pelaksanaan: item['tanggal_pelaksanaan'],
-                        tanggal_update_tawaran: item['tanggal_update_tawaran'],
-                        waktu: item['waktu'],
+                        jobTitle: item['nama_project'].toString(),
+                        description: item['deskripsi'].toString(),
+                        requirements: item['requirements']?.toString() ??
+                            'No requirements',
+                        tanggal_akhir_rekrut:
+                            item['tanggal_akhir_rekrut'].toString(),
+                        tanggal_mulai_rekrut:
+                            item['tanggal_mulai_rekrut'].toString(),
+                        tanggal_pelaksanaan:
+                            item['tanggal_pelaksanaan'].toString(),
+                        tanggal_update_tawaran:
+                            item['tanggal_update_tawaran'].toString(),
+                        waktu: item['waktu'].toString(),
                         min_ipk: item['min_ipk'],
-                        jenis: item['jenis'],
-                        id_tawaran: item['id_tawaran'],
+                        jenis: item['jenis'].toString(),
+                        id_tawaran: item['id_tawaran'].toString(),
                         get_username: widget.Username_p,
                       ),
                     ),
@@ -93,8 +98,9 @@ class _ListjobState extends State<Listjob> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 35),
                   child: Container(
-                    width: 800,
-                    height: 200,
+                    width: MediaQuery.of(context).size.width *
+                        0.9, // Adjust width according to screen size
+                    constraints: BoxConstraints(maxWidth: 800),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -105,73 +111,91 @@ class _ListjobState extends State<Listjob> {
                           blurRadius: 10, // How blurry the shadow is
                           offset: Offset(0, 5), // Offset of the shadow
                         ),
-                      ], // Membuat sudut tumpul
+                      ],
                     ),
-                    child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start, // Align text to the left
-                      children: [
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0), // Add padding to the left
-                          child: Text(
-                            item['nama_project'],
-                            style: TextStyle(color: Colors.black, fontSize: 34),
+                    child: Padding(
+                      padding: const EdgeInsets.all(
+                          16.0), // Add padding to the container
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start, // Align text to the left
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0), // Add padding to the left
+                            child: Text(
+                              item['nama_project'].toString(),
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 24),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 15),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0), // Add padding to the left
-                          child: Text(
-                              "Kuota: ${item['kuota_terima']}"), // Assuming there is a 'kuota' field
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0), // Add padding to the left
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment
-                                .start, // Align text and button to the left
-                            children: [
-                              Text(item['deskripsi']),
-                              SizedBox(
-                                  height:
-                                      30), // Add some space between the text and the button
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Handle button press
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailJob(
-                                          jobTitle: item['nama_project'],
-                                          description: item['deskripsi'],
-                                          requirements: item['requirements'] ??
+                          SizedBox(height: 15),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0), // Add padding to the left
+                            child: Text(
+                                "Kuota: ${item['kuota_terima'].toString()}"), // Assuming there is a 'kuota' field
+                          ),
+                          SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0), // Add padding to the left
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .start, // Align text and button to the left
+                              children: [
+                                Text(
+                                  item['deskripsi'].toString(),
+                                  maxLines: 3, // Limit to 3 lines
+                                  overflow: TextOverflow
+                                      .ellipsis, // Ellipsis for overflow
+                                ),
+                                SizedBox(
+                                    height:
+                                        10), // Add some space between the text and the button
+                                ElevatedButton(
+                                  onPressed: () {
+                                    // Handle button press
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetailJob(
+                                          jobTitle:
+                                              item['nama_project'].toString(),
+                                          description:
+                                              item['deskripsi'].toString(),
+                                          requirements: item['requirements']
+                                                  ?.toString() ??
                                               'No requirements',
                                           tanggal_akhir_rekrut:
-                                              item['tanggal_akhir_rekrut'],
+                                              item['tanggal_akhir_rekrut']
+                                                  .toString(),
                                           tanggal_mulai_rekrut:
-                                              item['tanggal_mulai_rekrut'],
+                                              item['tanggal_mulai_rekrut']
+                                                  .toString(),
                                           tanggal_pelaksanaan:
-                                              item['tanggal_pelaksanaan'],
+                                              item['tanggal_pelaksanaan']
+                                                  .toString(),
                                           tanggal_update_tawaran:
-                                              item['tanggal_update_tawaran'],
-                                          waktu: item['waktu'],
+                                              item['tanggal_update_tawaran']
+                                                  .toString(),
+                                          waktu: item['waktu'].toString(),
                                           min_ipk: item['min_ipk'],
-                                          jenis: item['jenis'],
-                                          id_tawaran: item['id_tawaran'],
-                                          get_username: widget.Username_p),
-                                    ),
-                                  );
-                                },
-                                child: Text('See details'),
-                              ),
-                            ],
+                                          jenis: item['jenis'].toString(),
+                                          id_tawaran:
+                                              item['id_tawaran'].toString(),
+                                          get_username: widget.Username_p,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Text('See details'),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

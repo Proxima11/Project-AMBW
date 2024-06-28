@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'homelistjob.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomepageEmployer extends StatelessWidget {
   final String data;
@@ -40,10 +41,16 @@ class HomepageEmployer extends StatelessWidget {
               children: [
                 const Icon(Icons.account_circle), // Profile icon
                 const SizedBox(width: 8),
-                Text(
-                  'Welcome, $data',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ), // Student name
+                Expanded(
+                  child: AutoSizeText(
+                    'Welcome, $data',
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.bold),
+                    minFontSize: 12.0,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),
@@ -68,7 +75,7 @@ class HomepageEmployer extends StatelessWidget {
               Tab(text: 'Home'),
               Tab(text: 'Pelamar'),
               Tab(
-                text: 'Upload Open Pekerjaan Baru',
+                text: 'Tambah Pekerjaan',
               ),
             ],
           ),

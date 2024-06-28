@@ -65,11 +65,15 @@ class _ListjobState extends State<ListjobWaitingApproval> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: _filteredData.map((item) {
               return GestureDetector(
+                onTap: () {
+                  // Handle tap event
+                },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 35),
                   child: Container(
-                    width: 800,
-                    height: 200,
+                    width: MediaQuery.of(context).size.width *
+                        0.9, // Adjust width according to screen size
+                    constraints: BoxConstraints(maxWidth: 800),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -82,42 +86,51 @@ class _ListjobState extends State<ListjobWaitingApproval> {
                         ),
                       ], // Membuat sudut tumpul
                     ),
-                    child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start, // Align text to the left
-                      children: [
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0), // Add padding to the left
-                          child: Text(
-                            item['nama_project'],
-                            style: TextStyle(color: Colors.black, fontSize: 34),
+                    child: Padding(
+                      padding: const EdgeInsets.all(
+                          16.0), // Add padding to the container
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start, // Align text to the left
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0), // Add padding to the left
+                            child: Text(
+                              item['nama_project'].toString(),
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 24),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 15),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0), // Add padding to the left
-                          child: Text(
-                              "Kuota: ${item['kuota_terima']}"), // Assuming there is a 'kuota' field
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0), // Add padding to the left
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment
-                                .start, // Align text and button to the left
-                            children: [
-                              Text(item['deskripsi']),
-                              SizedBox(
-                                  height:
-                                      30), // Add some space between the text and the button
-                            ],
+                          SizedBox(height: 15),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0), // Add padding to the left
+                            child: Text(
+                                "Kuota: ${item['kuota_terima'].toString()}"), // Assuming there is a 'kuota' field
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0), // Add padding to the left
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .start, // Align text and button to the left
+                              children: [
+                                Text(
+                                  item['deskripsi'].toString(),
+                                  maxLines: 3, // Limit to 3 lines
+                                  overflow: TextOverflow
+                                      .ellipsis, // Ellipsis for overflow
+                                ),
+                                SizedBox(
+                                    height:
+                                        10), // Add some space between the text and the button
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

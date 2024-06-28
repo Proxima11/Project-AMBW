@@ -7,6 +7,7 @@ import 'package:aplikasi_magang/admin/pengumumantab_admin.dart';
 import 'package:aplikasi_magang/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomePageAdmin extends StatelessWidget {
   final String data;
@@ -40,9 +41,15 @@ class HomePageAdmin extends StatelessWidget {
               children: [
                 const Icon(Icons.account_circle), // Profile icon
                 const SizedBox(width: 8),
-                Text(
-                  'Welcome, $data',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                Expanded(
+                  child: AutoSizeText(
+                    'Welcome, $data',
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.bold),
+                    minFontSize: 12.0,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
