@@ -136,7 +136,7 @@ class _DetailTawaranKonfirmasiAdminState extends State<DetailTawaranKonfirmasiAd
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Expanded(
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
