@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'homelistjob.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'list_mhs_aktif.dart';
 
 class HomepageEmployer extends StatelessWidget {
   final String data;
@@ -32,7 +33,7 @@ class HomepageEmployer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: Padding(
@@ -77,6 +78,9 @@ class HomepageEmployer extends StatelessWidget {
               Tab(
                 text: 'Tambah Pekerjaan',
               ),
+              Tab(
+                text: 'List Mahasiswa yang sedang magang sekarang',
+              ),
             ],
           ),
         ),
@@ -84,7 +88,8 @@ class HomepageEmployer extends StatelessWidget {
           children: [
             Homelistjob(data: data),
             ApplicantHomepage(data: data),
-            FormAddNewJob(data: data)
+            FormAddNewJob(data: data),
+            ListMhsAktif(data: data)
           ],
         ),
       ),

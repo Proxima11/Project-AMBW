@@ -17,6 +17,11 @@ class _FormAddNewJob extends State<FormAddNewJob> {
   final TextEditingController _requirementsController = TextEditingController();
   final TextEditingController _kuotaController = TextEditingController();
   final TextEditingController _waktucontroller = TextEditingController();
+  final TextEditingController _tanggalawalcontroller = TextEditingController();
+  final TextEditingController _tanggalakhir_controller =
+      TextEditingController();
+  final TextEditingController _tanggalpelaksanaancontroller =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -26,6 +31,9 @@ class _FormAddNewJob extends State<FormAddNewJob> {
     _requirementsController.dispose();
     _kuotaController.dispose();
     _waktucontroller.dispose();
+    _tanggalawalcontroller.dispose();
+    _tanggalakhir_controller.dispose();
+    _tanggalpelaksanaancontroller.dispose();
     super.dispose();
   }
 
@@ -36,6 +44,9 @@ class _FormAddNewJob extends State<FormAddNewJob> {
       String jobTitle = _jobTitleController.text;
       String description = _descriptionController.text;
       String requirements = _requirementsController.text;
+      String tanggalAwal = _tanggalawalcontroller.text;
+      String tanggalAkhir = _tanggalakhir_controller.text;
+      String tanggalPelaksanaan = _tanggalpelaksanaancontroller.text;
       int kuota = int.tryParse(_kuotaController.text) ?? 0; // Convert to int
       int waktu = int.tryParse(_waktucontroller.text) ?? 0; // Convert to int
 
@@ -51,7 +62,7 @@ class _FormAddNewJob extends State<FormAddNewJob> {
         final Map<String, dynamic> dataTawaran =
             json.decode(getDataResponse.body);
         int idTawaran = dataTawaran.length + 1;
-        print('idTaawran : $idTawaran');
+        print('idTawaran: $idTawaran');
         String tawaran = 'tawaran$idTawaran';
 
         // Buat data JSON untuk dikirim ke Firebase
@@ -65,6 +76,9 @@ class _FormAddNewJob extends State<FormAddNewJob> {
           'sudah_diterima': 0,
           'username': company,
           'waktu': waktu,
+          'tanggal_awal': tanggalAwal,
+          'tanggal_akhir': tanggalAkhir,
+          'tanggal_pelaksanaan': tanggalPelaksanaan,
           'status_approval': 0
         };
 
@@ -92,6 +106,10 @@ class _FormAddNewJob extends State<FormAddNewJob> {
           _descriptionController.clear();
           _requirementsController.clear();
           _kuotaController.clear();
+          _waktucontroller.clear();
+          _tanggalawalcontroller.clear();
+          _tanggalakhir_controller.clear();
+          _tanggalpelaksanaancontroller.clear();
 
           print('dataTawaran length: ${dataTawaran.length}');
         } else {
@@ -190,12 +208,54 @@ class _FormAddNewJob extends State<FormAddNewJob> {
               TextFormField(
                 controller: _waktucontroller,
                 decoration: InputDecoration(
-                  labelText: 'waktu',
+                  labelText: 'Waktu',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Ajukan rentang kuota';
+                    return 'Ajukan waktu';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _tanggalawalcontroller,
+                decoration: InputDecoration(
+                  labelText: 'Tanggal Awal',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Ajukan tanggal awal';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _tanggalakhir_controller,
+                decoration: InputDecoration(
+                  labelText: 'Tanggal Akhir Rekrut',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Ajukan tanggal akhir rekrut';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _tanggalpelaksanaancontroller,
+                decoration: InputDecoration(
+                  labelText: 'Tanggal Pelaksanaan',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Ajukan tanggal pelaksanaan';
                   }
                   return null;
                 },
